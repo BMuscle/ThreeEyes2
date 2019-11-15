@@ -3,10 +3,10 @@
 enum MOUSE{
 	LEFT,
 	RIGHT,
-	SIZE,
+	TYPE_SIZE,
 };
 
-int mouse[MOUSE::SIZE];//
+int mouse[MOUSE::TYPE_SIZE];//
 
 void Mouse_Update() {
 	if ((GetMouseInput() & MOUSE_INPUT_LEFT) != 0) {
