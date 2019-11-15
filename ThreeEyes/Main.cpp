@@ -5,7 +5,7 @@
 // プログラムは WinMain から始まります
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-		SetBackgroundColor(255, 255, 255);//背景を白色に変更
+		SetBackgroundColor(100, 100, 100);//背景を白色に変更
 		ChangeWindowMode(TRUE);//非全画面にセット
 		SetGraphMode(640, 480, 32);//画面サイズ指定
 		SetOutApplicationLogValidFlag(FALSE);//log.textを生成しないように
