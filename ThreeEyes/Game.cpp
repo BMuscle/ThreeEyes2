@@ -18,15 +18,14 @@ struct Pos {
 };
 
 Board myBoard;
-
-int turn = PLAYER;
+TURN nowTurn = PLAYER;
 BOOL isGameClear = FALSE;
 int gameResult;
 
+
 void Game_Initialize() {//呼ばれていない
-	turn = PLAYER;
+	nowTurn = PLAYER;
 	isGameClear = FALSE;
-	
 }
 
 void Game_Finalize() {
@@ -49,28 +48,28 @@ void Game_Update() {
 
 	BOOL isSet = FALSE;//石を置いたかどうかフラグ
 
-	if (turn == PLAYER) {//プレイヤーの行動
+	if (nowTurn == PLAYER) {//プレイヤーの行動
 		Pos pos;
 		if (getLeftDown() == FALSE) { return; }//入力チェック
 		if (getMousePos(&pos) == FALSE) { return; }//マウス入力 & 範囲チェック
 
 		if (isSetStone(myBoard, pos.x, pos.y)) {//石置けるかチェック
-			myBoard.board[pos.y][pos.x] = turn;//置く
+			myBoard.board[pos.y][pos.x] = nowTurn;//置く
 			isSet = TRUE;
 		}
 	}
-	else if (turn == COM) {//コンピュータの行動
-		Pos pos = cpuThink(myBoard, turn);
-		myBoard.board[pos.y][pos.x] = turn;
+	else if (nowTurn == COM) {//コンピュータの行動
+		Pos pos = cpuThink(myBoard, nowTurn);
+		myBoard.board[pos.y][pos.x] = nowTurn;
 		isSet = TRUE;
 	}
 
 	if (isSet) {	//石置かれたなら エンドチェック&ターンチェンジ
-		if (isClear(myBoard, turn)) {
+		if (isWin(myBoard, nowTurn)) {
 			isGameClear = TRUE;
 		}
 		else {
-			turn = changeTurn(turn);
+			nowTurn = changeTurn(nowTurn);
 		}
 	}
 }
@@ -85,11 +84,11 @@ int getGameResult() {
 }
 
 
-int changeTurn(int turn) {
-	return (turn % 2) + 1;
+TURN changeTurn(TURN turn) {
+	return (TURN)((turn % 2) + 1);
 }
 
-int getKey() {	//キー入力if文で取る
+BOOL getKey(Pos *pos) {	//キー入力if文で取る
 	int number = -1;
 	switch (CheckHitKeyAll()) {
 	case KEY_INPUT_1:
@@ -120,7 +119,14 @@ int getKey() {	//キー入力if文で取る
 		number = 8;
 		break;
 	}
-	return number;
+
+	if (number >= 0) {
+		Pos result;
+		pos->x = number % BOARD_SIZE;
+		pos->y = number / BOARD_SIZE;
+		return TRUE;
+	}
+	return FALSE;
 }
 
 void  boardDraw() {//盤面描画
@@ -138,9 +144,9 @@ void  boardDraw() {//盤面描画
 				color = 0x00FF00;
 				break;
 			}
-			int dx = BOARD_OFFSET_X + x * RECT_SIZE;
-			int dy = BOARD_OFFSET_Y + y * RECT_SIZE;
-			DrawBox(dx, dy, dx + RECT_SIZE, dy + RECT_SIZE, color, TRUE);
+			int dx = BOARD_OFFSET_X + x * RECT_WIDTH;
+			int dy = BOARD_OFFSET_Y + y * RECT_HEIGHT;
+			DrawBox(dx, dy, dx + RECT_WIDTH, dy + RECT_HEIGHT, color, TRUE);
 		}
 	}
 }
@@ -159,18 +165,18 @@ BOOL getMousePos(Pos* pos) {//マウスの入力座標取得
 	GetMousePoint(&x, &y);
 	x -= BOARD_OFFSET_X;
 	y -= BOARD_OFFSET_Y;
-	if (x >= 0 && x <= BOARD_DRAW_SIZE &&
-		y >= 0 && y <= BOARD_DRAW_SIZE) {
+	if (x >= 0 && x <= BOARD_WIDTH &&
+		y >= 0 && y <= BOARD_HEIGHT) {
 		//枠内に入っている
-		pos->x = x / RECT_SIZE;
-		pos->y = y / RECT_SIZE;
+		pos->x = x / RECT_WIDTH;
+		pos->y = y / RECT_HEIGHT;
 		return TRUE;
 	}
 	return FALSE;
 }
 
 
-BOOL isClear(Board board, int turn) {//クリアしているかどうか
+BOOL isWin(Board board, TURN turn) {//クリアしているかどうか
 	//縦並び判定
 	for (int y = 0; y < BOARD_SIZE; y++) {
 		if (board.board[y][0] == turn && board.board[y][1] == turn && board.board[y][2] == turn) {
@@ -213,7 +219,7 @@ BOOL isDrow(Board board) {  //引き分け判定 変更済み 石が置ける場所を発見したらre
 }
 
 
-Pos cpuThink(Board board, int turn) {
+Pos cpuThink(Board board, TURN turn) {
 	Pos pos;
 	for (int i = 0; i < 2; i++) {//あと１つで勝てるパターン探索→あと１つで負けるパターン探索
 		for (int y = 0; y < BOARD_SIZE; y++) {
@@ -221,7 +227,7 @@ Pos cpuThink(Board board, int turn) {
 				if (isSetStone(board, x, y)) {
 					Board tmp = board;
 					tmp.board[y][x] = turn;
-					if (isClear(tmp, turn)) {
+					if (isWin(tmp, turn)) {
 						pos.x = x;
 						pos.y = y;
 						return pos;
@@ -267,10 +273,10 @@ Pos cpuThink(Board board, int turn) {
 int isGameEnd() {
 	//ゲームが終わっているならば
 	if (isGameClear) {
-		if (turn == PLAYER) {
+		if (nowTurn == PLAYER) {
 			return 1;//PLAYERの勝ち
 		}
-		else if (turn == COM) {
+		else if (nowTurn == COM) {
 			return 2;//COMの勝ち
 		}		
 	}
