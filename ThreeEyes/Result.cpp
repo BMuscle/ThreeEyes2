@@ -3,11 +3,12 @@
 #include"SceneMgr.h"
 
 
-int resultImg; //画像ハンドル値
-int coutinueBox_x1, coutinueBox_x2, coutinueBox_y1, coutinueBox_y2;	//coutinueボックス座標
-int endBox_x1, endBox_x2, endBox_y1, endBox_y2;						//endボックス座標
-int string_y1, string_y2;
-int nextSelect = 0;		//次の画面をどうするかの数値を持つ
+int resultImg;					//画像ハンドル値
+int nextSelect;					//次の画面をどうするかの数値を持つ
+int colorBox1, colorBox2;		//マウスオン時にボックスの色を変更する
+int resultMousex, resultMousey;	//マウス座標を入れる変数
+int resultMouseInput;			//マウスの入力状態
+int coutinue_fclor, end_fcolor;	//ボックス内の文字色
 
 void Result_Initialize(int winlose) {	//winloseが1なら勝ち、2なら負け、3なら引き分け
 	if (winlose == 1) {
@@ -15,7 +16,7 @@ void Result_Initialize(int winlose) {	//winloseが1なら勝ち、2なら負け、3なら引き
 		resultImg = LoadGraph("images/win.png");
 		winlose = 0;
 	}
-	else if(winlose == 2){
+	else if (winlose == 2) {
 		//負けの時の処理
 		resultImg = LoadGraph("images/lose.png");
 		winlose = 0;
@@ -25,33 +26,36 @@ void Result_Initialize(int winlose) {	//winloseが1なら勝ち、2なら負け、3なら引き
 		resultImg = LoadGraph("images/draw.png");
 		winlose = 0;
 	}
-	
-	//coutinueボックス初期値
-	coutinueBox_x1 = 100; coutinueBox_x2 = 210;
-	coutinueBox_y1 = 350; coutinueBox_y2 = 390;
 
-	//endボックス初期値
-	endBox_x1 = 400; endBox_x2 = 510;
-	endBox_y1 = 350; endBox_y2 = 390;
 
-	//文字列座標初期値
-	string_y1 = string_y2 = 360;
+	//縁の色設定
+	colorBox1 = GetColor(0, 255, 0);
+	colorBox2 = GetColor(0, 0, 0);
+
+	//文字色設定
+	coutinue_fclor = GetColor(0, 0, 0);
+	end_fcolor = GetColor(0, 0, 0);
+
+	nextSelect = SCENE_NONE;
 }
 
 void Result_Finalize() {
 	DeleteGraph(resultImg);
 	nextSelect = 0;
+	resultMouseInput = 0;
 }
 
 void Result_Update() {
+	GetMousePoint(&resultMousex, &resultMousey);
 	Result_Select();
+	resultMouseInput = GetMouseInput();
 	if (CheckHitKey(KEY_INPUT_RETURN) == 1) {
-		if (nextSelect == 1) {
+		if (nextSelect == SCENE_GAME) {
 			//ゲーム画面へ
 			Result_Finalize();
 			SceneMgr_ChangeScene(SCENE_GAME);
 		}
-		else if (nextSelect == 2) {
+		else if (nextSelect == SCENE_TITLE) {
 			//タイトル画面へ
 			Result_Finalize();
 			SceneMgr_ChangeScene(SCENE_TITLE);
@@ -62,29 +66,52 @@ void Result_Update() {
 void Result_Select()
 {
 	if (CheckHitKey(KEY_INPUT_RIGHT)) {
-		coutinueBox_y1 = 350;
-		coutinueBox_y2 = 390;
-		endBox_y1 = 330;
-		endBox_y2 = 370;
-		string_y1 = 360;
-		string_y2 = 340;
-		nextSelect = 2;
+		coutinue_fclor = GetColor(0, 0, 0);
+		end_fcolor = GetColor(255, 0, 0);
+		nextSelect = SCENE_TITLE;
 	}
 	if (CheckHitKey(KEY_INPUT_LEFT)) {
-		coutinueBox_y1 = 330;
-		coutinueBox_y2 = 370;
-		endBox_y1 = 350;
-		endBox_y2 = 390;
-		string_y1 = 340;
-		string_y2 = 360;
-		nextSelect = 1;
+		coutinue_fclor = GetColor(255, 0, 0);
+		end_fcolor = GetColor(0, 0, 0);
+		nextSelect = SCENE_GAME;
 	}
 }
 
 void Result_Draw() {
 	DrawGraph(200, 50, resultImg, FALSE);
-	DrawBox(coutinueBox_x1, coutinueBox_y1, coutinueBox_x2, coutinueBox_y2, GetColor(0, 0, 0), FALSE);
-	DrawBox(endBox_x1, endBox_y1, endBox_x2, endBox_y2, GetColor(0, 0, 0), FALSE);
-	DrawFormatString(130, string_y1, GetColor(0, 0, 0), "続ける");
-	DrawFormatString(430, string_y2, GetColor(0, 0, 0), "やめる");
+	DrawBox(90, 370, 190, 410, colorBox1, FALSE);
+	DrawBox(390, 370, 490, 410, colorBox2, FALSE);
+	DrawFormatString(115, 380, coutinue_fclor, "続ける");
+	DrawFormatString(415, 380, end_fcolor, "やめる");
+	Result_EndMouseSelect();
+}
+
+void Result_EndMouseSelect()
+{
+	//左のボックス
+	if (resultMousex >= 90 && resultMousex <= 190 && resultMousey >= 370 && resultMousey <= 410) {
+		//色を変える処理
+		colorBox1 = GetColor(0, 255, 0);
+		if ((resultMouseInput & MOUSE_INPUT_LEFT) != 0) {
+			Result_Finalize();
+			SceneMgr_ChangeScene(SCENE_GAME);
+		}
+	}
+	else {
+		colorBox1 = GetColor(0, 0, 0);
+
+	}
+
+	//右のボックス
+	if (resultMousex >= 390 && resultMousex <= 490 && resultMousey >= 370 && resultMousey <= 410) {
+		//色を変える処理
+		colorBox2 = GetColor(0, 255, 0);
+		if ((resultMouseInput & MOUSE_INPUT_LEFT) != 0) {
+			Result_Finalize();
+			SceneMgr_ChangeScene(SCENE_TITLE);
+		}
+	}
+	else {
+		colorBox2 = GetColor(0, 0, 0);
+	}
 }
