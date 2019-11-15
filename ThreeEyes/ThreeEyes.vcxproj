@@ -158,12 +158,15 @@
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MyMouse.cpp" />
     <ClCompile Include="Result.cpp" />
     <ClCompile Include="SceneMgr.cpp" />
     <ClCompile Include="Title.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
+    <ClInclude Include="MyMouse.h" />
+    <ClInclude Include="MyWindow.h" />
     <ClInclude Include="Result.h" />
     <ClInclude Include="SceneMgr.h" />
     <ClInclude Include="Title.h" />

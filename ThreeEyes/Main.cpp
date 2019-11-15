@@ -1,13 +1,15 @@
 #include "DxLib.h"
 #include <stdio.h>
 #include"SceneMgr.h"
+#include "MyMouse.h"
+#include "MyWindow.h"
 
 // プログラムは WinMain から始まります
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 		SetBackgroundColor(100, 100, 100);//背景を白色に変更
 		ChangeWindowMode(TRUE);//非全画面にセット
-		SetGraphMode(640, 480, 32);//画面サイズ指定
+		SetGraphMode(WINDOW_WIDTH, WINDOW_HEIGHT, 32);//画面サイズ指定
 		SetOutApplicationLogValidFlag(FALSE);//log.textを生成しないように
 
 
@@ -21,7 +23,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		while (ScreenFlip() == 0 && ProcessMessage() == 0 && ClearDrawScreen() == 0) {//画面更新 & メッセージ処理 & 画面消去
 			
 				//SetDrawScreen(DX_SCREEN_BACK);//描画先を裏画面に
-
+				Mouse_Update();
 				/* Mainに書くのはこの二つのみ*/
 				SceneMgr_Update();
 				SceneMgr_Draw();
