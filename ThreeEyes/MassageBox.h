@@ -14,3 +14,4 @@ int drawMassageBox(MassageBox* msgbox, BOOL transFlag);
 
 int drawAtMassageBox(MassageBox* msgbox, int x, int y, BOOL transFlag);
 int drawAtMassageBox(MassageBox* msgbox, BOOL transFlag);
+
