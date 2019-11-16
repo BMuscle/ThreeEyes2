@@ -10,20 +10,20 @@ MyString initMyString(const char* str, int color, int FontHandle, int x, int y) 
 	return mystr;
 }
 
-int MyDrawString(int x, int y, MyString* string) {
+int mydrawString(int x, int y, MyString* string) {
 	return DrawStringToHandle(x, y, string->str, string->color, string->FontHandle);
 }
 
-int MyDrawString(MyString* string) {
-	return MyDrawString(string->x, string->y, string);
+int mydrawString(MyString* string) {
+	return mydrawString(string->x, string->y, string);
 }
 
-int MyDrawAtString(int x, int y, MyString* string) {
+int mydrawAtString(int x, int y, MyString* string) {
 	x = x - GetDrawStringWidthToHandle(string->str, strlen(string->str), string->FontHandle) / 2;
 	y = y - GetFontSizeToHandle(string->FontHandle) / 2;
 	return DrawStringToHandle(x, y, string->str, string->color, string->FontHandle);
 }
 
-int MyDrawAtString(MyString* string) {
-	return MyDrawAtString(string->x, string->y, string);
+int mydrawAtString(MyString* string) {
+	return mydrawAtString(string->x, string->y, string);
 }

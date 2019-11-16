@@ -11,7 +11,7 @@ struct MyString {//strÇÕ64éöêßå¿
 MyString initMyString(const char* str, int color, int FontHandle, int x, int y);
 
 
-int MyDrawString(int x, int y, MyString* string);
-int MyDrawString(MyString* string);
-int MyDrawAtString(int x, int y, MyString* string);
-int MyDrawAtString(MyString* string);
+int mydrawString(int x, int y, MyString* string);
+int mydrawString(MyString* string);
+int mydrawAtString(int x, int y, MyString* string);
+int mydrawAtString(MyString* string);

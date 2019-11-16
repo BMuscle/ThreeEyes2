@@ -9,8 +9,8 @@ struct MassageBox {
 };
 
 MassageBox initMassageBox(const char* FileName, const char* str, int color, int FontHandle, int x, int y, int width, int height);
-int DrawMassageBox(MassageBox* msgbox, int x, int y, BOOL transFlag);
-int DrawMassageBox(MassageBox* msgbox, BOOL transFlag);
+int drawMassageBox(MassageBox* msgbox, int x, int y, BOOL transFlag);
+int drawMassageBox(MassageBox* msgbox, BOOL transFlag);
 
-int DrawAtMassageBox(MassageBox* msgbox, int x, int y, BOOL transFlag);
-int DrawAtMassageBox(MassageBox* msgbox, BOOL transFlag);
+int drawAtMassageBox(MassageBox* msgbox, int x, int y, BOOL transFlag);
+int drawAtMassageBox(MassageBox* msgbox, BOOL transFlag);
