@@ -42,7 +42,7 @@ void SceneMgr_ChangeScene(scene nextscene) {
 			funcDraw = Title_Draw;
 			break;
 		case SCENE_GAME:
-
+			Game_Initialize();
 			funcUpdate = Game_Update;
 			funcDraw = Game_Draw;
 			break;

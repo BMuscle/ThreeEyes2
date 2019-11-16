@@ -2,6 +2,7 @@
 #include"Game.h"
 #include"SceneMgr.h"
 #include"Result.h"
+#include "Sprite.h"
 
 enum TURN {
 	PLAYER = 1,
@@ -17,15 +18,25 @@ struct Pos {
 	int x, y;
 };
 
+Sprite back;
+Sprite frame;
+Sprite maru;
+Sprite batu;
+
 Board myBoard;
-TURN nowTurn = PLAYER;
-BOOL isGameClear = FALSE;
+TURN nowTurn;
+BOOL isGameClear;
 int gameResult;
 
 
-void Game_Initialize() {//åƒÇŒÇÍÇƒÇ¢Ç»Ç¢
+void Game_Initialize() {
 	nowTurn = PLAYER;
 	isGameClear = FALSE;
+	
+	back = initSprite("images/1blackboard.png", 640, 480);
+	frame = initSprite("images/flame.png", 300, 300);
+	maru = initSprite("images/maru.png", 100, 100);
+	batu = initSprite("images/batsu.png", 100, 100);
 }
 
 void Game_Finalize() {
@@ -76,6 +87,7 @@ void Game_Update() {
 }
 
 void Game_Draw() {
+	drawAtSprite(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, &back, TRUE);
 	boardDraw();
 	DrawFormatString(50, 50, GetColor(0, 0, 0), "ÉQÅ[ÉÄâÊñ Ç≈Ç∑");
 }
@@ -131,23 +143,18 @@ BOOL getKey(Pos *pos) {	//ÉLÅ[ì¸óÕifï∂Ç≈éÊÇÈ
 }
 
 void  boardDraw() {//î’ñ ï`âÊ
+	drawSprite(BOARD_OFFSET_X, BOARD_OFFSET_Y, &frame, TRUE);
 	int color;
 	for (int y = 0; y < BOARD_SIZE; y++) {
 		for (int x = 0; x < BOARD_SIZE; x++) {
 			switch (myBoard.board[y][x]) {
-			case 0:
-				color = 0x000000;
-				break;
 			case 1:
-				color = 0xFF0000;
+				drawSprite(BOARD_OFFSET_X + x * RECT_WIDTH, BOARD_OFFSET_Y + y * RECT_HEIGHT, &maru, TRUE);
 				break;
 			case 2:
-				color = 0x00FF00;
+				drawSprite(BOARD_OFFSET_X + x * RECT_WIDTH, BOARD_OFFSET_Y + y * RECT_HEIGHT, &batu, TRUE);
 				break;
 			}
-			int dx = BOARD_OFFSET_X + x * RECT_WIDTH;
-			int dy = BOARD_OFFSET_Y + y * RECT_HEIGHT;
-			DrawBox(dx, dy, dx + RECT_WIDTH, dy + RECT_HEIGHT, color, TRUE);
 		}
 	}
 }
