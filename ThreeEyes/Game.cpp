@@ -265,9 +265,17 @@ Pos cpuThink(Board board, TURN turn) {
 		pos.y = 2;
 		return pos;
 	}
-	//エラー　どれも置けない
-	pos.x = -1;
-	pos.y = -1;
+
+	for (int i = 0; i < 2; i++) {//あと１つで勝てるパターン探索→あと１つで負けるパターン探索
+		for (int y = 0; y < BOARD_SIZE; y++) {
+			for (int x = 0; x < BOARD_SIZE; x++) {
+				if (isSetStone(board, x, y)) {
+					pos.x = x;
+					pos.y = y;
+				}
+			}
+		}
+	}
 	return pos;
 }
 
