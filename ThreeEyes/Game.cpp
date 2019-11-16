@@ -41,11 +41,12 @@ void Game_Update() {
 	gameResult = isGameEnd();//ゲームが終わっているなら
 	if (gameResult > 0) {
 		//シーン変更
+		SceneMgr_ChangeScene(SCENE_RESULT);
+		Result_Initialize(getGameResult());
 		return;
 	}
 
 	//ゲーム処理
-
 	BOOL isSet = FALSE;//石を置いたかどうかフラグ
 
 	if (nowTurn == PLAYER) {//プレイヤーの行動
