@@ -3,6 +3,7 @@
 #include"SceneMgr.h"
 #include "MyMouse.h"
 #include "MyWindow.h"
+#include "MassageBox.h"
 
 // プログラムは WinMain から始まります
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
@@ -20,6 +21,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		SetMouseDispFlag(TRUE);
 		SceneMgr_Initialize();			//初期化処理
 
+		int Font00 = CreateFontToHandle("メイリオ", 70, 3, DX_FONTTYPE_ANTIALIASING_EDGE);
+		MassageBox msg = initMassageBox("images/title.png", "メッセージ", 0xFF00FF, Font00, WINDOW_WIDTH/2, WINDOW_HEIGHT/2, 502, 143);
+
 		while (ScreenFlip() == 0 && ProcessMessage() == 0 && ClearDrawScreen() == 0) {//画面更新 & メッセージ処理 & 画面消去
 			
 				//SetDrawScreen(DX_SCREEN_BACK);//描画先を裏画面に
@@ -27,6 +31,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 				/* Mainに書くのはこの二つのみ*/
 				SceneMgr_Update();
 				SceneMgr_Draw();
+				DrawAtMassageBox(&msg, TRUE);
 
 		}
 
