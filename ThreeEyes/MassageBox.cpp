@@ -22,3 +22,7 @@ int drawAtMassageBox(MassageBox* msgbox, int x, int y, BOOL transFlag) {
 int drawAtMassageBox(MassageBox* msgbox, BOOL transFlag) {
 	return drawAtMassageBox(msgbox, msgbox->mystr.x, msgbox->mystr.y, transFlag);
 }
+
+void deleteMassageBox(MassageBox* msgbox) {
+	deleteSprite(&msgbox->sprite);
+}

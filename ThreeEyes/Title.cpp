@@ -13,12 +13,14 @@ MassageBox startGame;
 MassageBox endGame;
 
 void Title_Initialize() {
-	Font00 = CreateFontToHandle("ゴシック", 16, 1, DX_FONTTYPE_ANTIALIASING_EDGE);
+	Font00 = CreateFontToHandle("ゴシック", 15, 6, DX_FONTTYPE_ANTIALIASING);
 	Title = LoadGraph("images/title.png");
 	SEnter = LoadSoundMem("music/enter1.wav");
 	SSelect = LoadSoundMem("music/select1.wav");
 	startGame = initMassageBox("images/enpitu.png", "ゲーム開始", GetColor(0, 0, 0), Font00, 180, 370, 170, 60);
 	endGame = initMassageBox("images/enpitu.png", "終了", GetColor(0, 0, 0), Font00, 480, 370, 170, 60);
+	startGame.mystr.alpha = 255 * 0.5;
+	endGame.mystr.alpha = 255 * 0.5;
 }
 
 void Title_Finalize() {
