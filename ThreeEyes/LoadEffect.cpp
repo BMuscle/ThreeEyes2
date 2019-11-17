@@ -1,7 +1,7 @@
 #include "LoadEffect.h"
 
-#define ROD_HEIGHT 100
-#define ROD_SIZE ((WINDOW_HEIGHT + (ROD_HEIGHT + 1)) / ROD_HEIGHT) 
+#define ROD_HEIGHT 100//—Î‚Ì‰æ‘œ‚‚³
+#define ROD_SIZE 4	//Á‚·–{”
 
 
 enum LOAD_STATE {//Œ»Ý‚Ìƒ[ƒhó‘Ô
@@ -15,6 +15,7 @@ int backImg;
 LOAD_STATE loadflag;
 
 Sprite greenRod;
+Sprite greenRod1;
 Sprite greenRod2;
 int currentRod; //Œ»Ý“®‚©‚µ‚Ä‚¢‚é–_
 int currentX;
@@ -23,10 +24,11 @@ int rodSpeed;
 void initLoadEffect(void) {
 	currentRod = 0;
 	currentX = -WINDOW_WIDTH*2;
-	rodSpeed = 50;
+	rodSpeed = 30;
 	backImg = LoadGraph("images/loadeffect/back.png");
 	greenRod = initSprite("images/loadeffect/green.png", WINDOW_WIDTH , ROD_HEIGHT);
-	greenRod2 = initSprite("images/loadeffect/green1.png", WINDOW_WIDTH * 2, ROD_HEIGHT);
+	greenRod1 = initSprite("images/loadeffect/green1.png", WINDOW_WIDTH * 2, ROD_HEIGHT);
+	greenRod2 = initSprite("images/loadeffect/green3.png", WINDOW_WIDTH * 2, ROD_HEIGHT);
 	loadflag = NONE;
 	
 }
@@ -67,16 +69,18 @@ BOOL LoadEffect_Update(void) {
 			currentRod++;
 			if (currentRod > ROD_SIZE - 1) {
 				loadflag = MOVE;
+				currentX = -WINDOW_WIDTH;
+				currentRod = 0;
 				return loadflag;
 			}
 		}
 	}
 	else if(loadflag == WRITE){
-		currentX -= rodSpeed;
-		if (currentX <= -WINDOW_WIDTH) {
-			currentX = 0;
-			currentRod--;
-			if (currentRod < 0) {
+		currentX += rodSpeed;
+		if (currentX >= WINDOW_WIDTH) {
+			currentX = -WINDOW_WIDTH;
+			currentRod++;
+			if (currentRod > ROD_SIZE - 1) {
 				loadflag = NONE;
 				return loadflag;
 			}
@@ -86,14 +90,18 @@ BOOL LoadEffect_Update(void) {
 }
 void LoadEffect_Draw(void) {
 	if (loadflag == NONE) { return;}
-	for (int i = 0; i < currentRod; i++) {
-		drawSprite(0, i * ROD_HEIGHT, &greenRod, TRUE);
-	}
+
 	if (loadflag == ERASE) {
-		drawSprite(currentX, currentRod * ROD_HEIGHT, &greenRod2, TRUE);
+		for (int i = 0; i < currentRod; i++) {
+			drawSprite(0, i * ROD_HEIGHT, &greenRod, TRUE);
+		}
+		drawSprite(currentX, currentRod * ROD_HEIGHT, &greenRod1, TRUE);
 		DrawGraph(0, 0, backImg, TRUE);
 	}
 	else {
+		for (int i = currentRod + 1; i <= ROD_SIZE; i++) {
+			drawSprite(0, i * ROD_HEIGHT, &greenRod, TRUE);
+		}
 		drawSprite(currentX, currentRod * ROD_HEIGHT, &greenRod2, TRUE);
 		DrawGraph(0, 0, backImg, TRUE);
 	}
