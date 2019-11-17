@@ -1,5 +1,6 @@
 #pragma once
 #include "DxLib.h"
+#include "MyWindow.h"
 
 struct Sprite {
 	int imgHandler;
