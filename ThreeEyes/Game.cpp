@@ -3,6 +3,7 @@
 #include"SceneMgr.h"
 #include"Result.h"
 #include "Sprite.h"
+#include "LoadEffect.h"
 
 enum TURN {
 	PLAYER = 1,
@@ -18,7 +19,7 @@ struct Pos {
 	int x, y;
 };
 
-Sprite back;
+static Sprite backSprite;
 Sprite frame;
 Sprite maru;
 Sprite batu;
@@ -32,8 +33,7 @@ int gameResult;
 void Game_Initialize() {
 	nowTurn = PLAYER;
 	isGameClear = FALSE;
-	
-	back = initSprite("images/1blackboard.png", 640, 480);
+	backSprite = initSprite("images/1blackboard.png", 640, 480);
 	frame = initSprite("images/flame.png", 300, 300);
 	maru = initSprite("images/maru.png", 100, 100);
 	batu = initSprite("images/batsu.png", 100, 100);
@@ -44,6 +44,14 @@ void Game_Finalize() {
 }
 
 void Game_Update() {
+	if (getLoadFlag() > 0) {
+		if (isLoadEnd()) {
+			//シーン変更
+			SceneMgr_ChangeScene(SCENE_RESULT);
+			Result_Initialize(getGameResult());
+		}
+		return;
+	}
 	if (CheckHitKey(KEY_INPUT_R) == 1) {
 		SceneMgr_ChangeScene(SCENE_RESULT);
 		Result_Initialize(getGameResult());
@@ -51,9 +59,7 @@ void Game_Update() {
 
 	gameResult = isGameEnd();//ゲームが終わっているなら
 	if (gameResult > 0) {
-		//シーン変更
-		SceneMgr_ChangeScene(SCENE_RESULT);
-		Result_Initialize(getGameResult());
+		onLoadFlag();
 		return;
 	}
 
@@ -87,7 +93,7 @@ void Game_Update() {
 }
 
 void Game_Draw() {
-	drawAtSprite(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, &back, TRUE);
+	drawAtSprite(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, &backSprite, TRUE);
 	boardDraw();
 	DrawFormatString(50, 50, GetColor(0, 0, 0), "ゲーム画面です");
 }

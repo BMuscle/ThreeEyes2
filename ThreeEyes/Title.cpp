@@ -3,16 +3,18 @@
 #include"SceneMgr.h"
 #include"MyMouse.h"
 #include"MassageBox.h"
+#include "LoadEffect.h"
 
 int Title;					//タイトル用のハンドル
 int SEnter, SSelect;		//音用ハンドル
 int Mousex, Mousey;			//マウスのx,y座標
 int Font00;					//フォント指定用のハンドル
-
+static Sprite backSprite;
 MassageBox startGame;
 MassageBox endGame;
 
 void Title_Initialize() {
+	backSprite = initSprite("images/1blackboard.png", 640, 480);
 	Font00 = CreateFontToHandle("ゴシック", 16, 1, DX_FONTTYPE_ANTIALIASING_EDGE);
 	Title = LoadGraph("images/title.png");
 	SEnter = LoadSoundMem("music/enter1.wav");
@@ -26,12 +28,21 @@ void Title_Finalize() {
 }
 
 void Title_Update() {
+	if (getLoadFlag() > 0) {
+		if (isLoadEnd()) {
+			PlaySoundMem(SEnter, DX_PLAYTYPE_BACK);
+			Title_Finalize();
+			SceneMgr_ChangeScene(SCENE_GAME);
+		}
+		return;
+	}
 	GetMousePoint(&Mousex, &Mousey);
 	Title_StartMouseSelect();
 	Title_EndMouseSelect();
 }
 
 void Title_Draw() {
+	drawAtSprite(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, &backSprite, TRUE);
 	DrawGraph(50, 50, Title, FALSE);		//画像貼り付け
 	drawAtMassageBox(&startGame,TRUE);
 	drawAtMassageBox(&endGame, TRUE);
@@ -44,9 +55,7 @@ void Title_StartMouseSelect() {				//ゲーム開始の方の枠の色変える関数、黒→緑
 		&& Mousey >= startGame.mystr.y - startGame.sprite.height / 2 + 10 && Mousey <= startGame.mystr.y + startGame.sprite.height / 2 - 10) {//ゲーム開始の枠の色変更
 		startGame.mystr.color = 0xff0000;
 		if ( getLeftDown() != 0) {
-			PlaySoundMem(SEnter, DX_PLAYTYPE_BACK);
-			Title_Finalize();
-			SceneMgr_ChangeScene(SCENE_GAME);
+			onLoadFlag();
 		}
 	}
 	else {
