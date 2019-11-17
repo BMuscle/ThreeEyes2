@@ -32,6 +32,13 @@ int gameResult;
 void Game_Initialize() {
 	nowTurn = PLAYER;
 	isGameClear = FALSE;
+	gameResult = 0;
+
+	for (int y = 0; y < BOARD_SIZE; y++) {//board‰Šú‰»
+		for (int x = 0; x < BOARD_SIZE; x++) {
+			myBoard.board[y][x] = 0;
+		}
+	}
 	
 	back = initSprite("images/1blackboard.png", 640, 480);
 	frame = initSprite("images/flame.png", 300, 300);
@@ -40,7 +47,10 @@ void Game_Initialize() {
 }
 
 void Game_Finalize() {
-
+	deleteSprite(&back);
+	deleteSprite(&frame);
+	deleteSprite(&maru);
+	deleteSprite(&batu);
 }
 
 void Game_Update() {

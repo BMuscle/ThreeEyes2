@@ -4,24 +4,26 @@
 #include"MyMouse.h"
 #include"MassageBox.h"
 
-int Title;					//ƒ^ƒCƒgƒ‹—p‚Ìƒnƒ“ƒhƒ‹
-int SEnter, SSelect;		//‰¹—pƒnƒ“ƒhƒ‹
-int Mousex, Mousey;			//ƒ}ƒEƒX‚Ìx,yÀ•W
-int Font00;					//ƒtƒHƒ“ƒgŽw’è—p‚Ìƒnƒ“ƒhƒ‹
-static int startSelect, endSelect;		//ƒ}ƒEƒX‚Ì‘I‘ð”»’è—p
+int Title;					//ï¿½^ï¿½Cï¿½gï¿½ï¿½ï¿½pï¿½Ìƒnï¿½ï¿½ï¿½hï¿½ï¿½
+int SEnter, SSelect;		//ï¿½ï¿½ï¿½pï¿½nï¿½ï¿½ï¿½hï¿½ï¿½
+int Mousex, Mousey;			//ï¿½}ï¿½Eï¿½Xï¿½ï¿½x,yï¿½ï¿½ï¿½W
+int Font00;					//ï¿½tï¿½Hï¿½ï¿½ï¿½gï¿½wï¿½ï¿½pï¿½Ìƒnï¿½ï¿½ï¿½hï¿½ï¿½
+static int startSelect, endSelect;		//ï¿½}ï¿½Eï¿½Xï¿½Ì‘Iï¿½ð”»’ï¿½p
 
 MassageBox startGame;
 MassageBox endGame;
 
 void Title_Initialize() {
-	Font00 = CreateFontToHandle("ƒSƒVƒbƒN", 16, 1, DX_FONTTYPE_ANTIALIASING_EDGE);
+	Font00 = CreateFontToHandle("ï¿½Sï¿½Vï¿½bï¿½N", 15, 6, DX_FONTTYPE_ANTIALIASING);
 	Title = LoadGraph("images/title.png");
 	SEnter = LoadSoundMem("music/enter1.wav");
 	SSelect = LoadSoundMem("music/select1.wav");
-	startGame = initMassageBox("images/enpitu.png", "ƒQ[ƒ€ŠJŽn", GetColor(0, 0, 0), Font00, 180, 370, 170, 60);
-	endGame = initMassageBox("images/enpitu.png", "I—¹", GetColor(0, 0, 0), Font00, 480, 370, 170, 60);
+	startGame = initMassageBox("images/enpitu.png", "ï¿½Qï¿½[ï¿½ï¿½ï¿½Jï¿½n", GetColor(0, 0, 0), Font00, 180, 370, 170, 60);
+	endGame = initMassageBox("images/enpitu.png", "ï¿½Iï¿½ï¿½", GetColor(0, 0, 0), Font00, 480, 370, 170, 60);
 	startSelect = 0;
 	endSelect = 0;
+	startGame.mystr.alpha = 255 * 0.5;
+	endGame.mystr.alpha = 255 * 0.5;
 }
 
 void Title_Finalize() {
@@ -35,16 +37,16 @@ void Title_Update() {
 }
 
 void Title_Draw() {
-	DrawGraph(50, 50, Title, FALSE);		//‰æ‘œ“\‚è•t‚¯
+	DrawGraph(50, 50, Title, FALSE);		//ï¿½æ‘œï¿½\ï¿½ï¿½tï¿½ï¿½
 	drawAtMassageBox(&startGame,TRUE);
 	drawAtMassageBox(&endGame, TRUE);
 	
 }
 
 
-void Title_StartMouseSelect() {				//ƒQ[ƒ€ŠJŽn‚Ì•û‚Ì˜g‚ÌF•Ï‚¦‚éŠÖ”A•¨—Î
+void Title_StartMouseSelect() {				//ï¿½Qï¿½[ï¿½ï¿½ï¿½Jï¿½nï¿½Ì•ï¿½ï¿½Ì˜gï¿½ÌFï¿½Ï‚ï¿½ï¿½ï¿½Öï¿½ï¿½Aï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	if (Mousex >= startGame.mystr.x-startGame.sprite.width / 2 + 10&& Mousex <= startGame.mystr.x + startGame.sprite.width / 2 - 30
-		&& Mousey >= startGame.mystr.y - startGame.sprite.height / 2 + 10 && Mousey <= startGame.mystr.y + startGame.sprite.height / 2 - 10) {//ƒQ[ƒ€ŠJŽn‚Ì˜g‚ÌF•ÏX
+		&& Mousey >= startGame.mystr.y - startGame.sprite.height / 2 + 10 && Mousey <= startGame.mystr.y + startGame.sprite.height / 2 - 10) {//ï¿½Qï¿½[ï¿½ï¿½ï¿½Jï¿½nï¿½Ì˜gï¿½ÌFï¿½ÏX
 		startGame.mystr.color = 0xff0000;
 		if (startSelect == 0) {
 			PlaySoundMem(SSelect, DX_PLAYTYPE_BACK);
@@ -65,7 +67,7 @@ void Title_StartMouseSelect() {				//ƒQ[ƒ€ŠJŽn‚Ì•û‚Ì˜g‚ÌF•Ï‚¦‚éŠÖ”A•¨—Î
 
 void Title_EndMouseSelect() {
 	if (Mousex >= endGame.mystr.x - endGame.sprite.width / 2 + 10 && Mousex <= endGame.mystr.x + endGame.sprite.width / 2 - 30
-		&& Mousey >= endGame.mystr.y - endGame.sprite.height / 2 + 10 && Mousey <= endGame.mystr.y + endGame.sprite.height / 2 - 10) {//ƒQ[ƒ€ŠJŽn‚Ì˜g‚ÌF•ÏX
+		&& Mousey >= endGame.mystr.y - endGame.sprite.height / 2 + 10 && Mousey <= endGame.mystr.y + endGame.sprite.height / 2 - 10) {//ï¿½Qï¿½[ï¿½ï¿½ï¿½Jï¿½nï¿½Ì˜gï¿½ÌFï¿½ÏX
 		endGame.mystr.color = 0xff0000;
 		if (endSelect == 0) {
 			PlaySoundMem(SSelect, DX_PLAYTYPE_BACK);
@@ -73,7 +75,7 @@ void Title_EndMouseSelect() {
 		}
 		if ( getLeftDown() != 0) {
 			PlaySoundMem(SEnter, DX_PLAYTYPE_BACK);
-			/*‚±‚±‚ÉƒQ[ƒ€I—¹ˆ—‚ð•`‚­*/
+			/*ï¿½ï¿½ï¿½ï¿½ï¿½ÉƒQï¿½[ï¿½ï¿½ï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½`ï¿½ï¿½*/
 			DxLib_End();
 			
 		}
