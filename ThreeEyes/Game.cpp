@@ -20,14 +20,14 @@ struct Pos {
 };
 
 static Sprite backSprite;
-Sprite frame;
-Sprite maru;
-Sprite batu;
+static Sprite frame;
+static Sprite maru;
+static Sprite batu;
 
-Board myBoard;
-TURN nowTurn;
-BOOL isGameClear;
-int gameResult;
+static Board myBoard;
+static TURN nowTurn;
+static BOOL isGameClear;
+static int gameResult;
 
 
 void Game_Initialize() {
@@ -54,7 +54,7 @@ void Game_Finalize() {
 }
 
 void Game_Update() {
-	if (getLoadFlag() > 0) {
+	if (getCurrentLoadState() > 0) {
 		if (isLoadEnd()) {
 			//ƒV[ƒ“•ÏX
 			SceneMgr_ChangeScene(SCENE_RESULT);

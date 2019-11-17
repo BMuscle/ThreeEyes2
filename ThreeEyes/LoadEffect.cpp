@@ -11,15 +11,15 @@ enum LOAD_STATE {//現在のロード状態
 	ERASE = 3,//消去フェーズ
 };
 
-int backImg;
-LOAD_STATE currentLoadState;
+static int backImg;
+static LOAD_STATE currentLoadState;
 
-Sprite greenRod;
-Sprite greenRodErase;
-Sprite greenRodWrite;
-int currentRod; //現在動かしている棒
-int currentX;
-int rodSpeed;
+static Sprite greenRod;
+static Sprite greenRodErase;
+static Sprite greenRodWrite;
+static int currentRod; //現在動かしている棒
+static int currentX;
+static int rodSpeed;
 
 void initLoadEffect(void) {
 	currentRod = 0;

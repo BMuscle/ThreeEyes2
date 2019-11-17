@@ -2,7 +2,6 @@
 #include"DxLib.h"
 #include "MyWindow.h"
 #include "MyMouse.h"
-
 #define RECT_WIDTH 100
 #define RECT_HEIGHT 100
 #define BOARD_SIZE 3

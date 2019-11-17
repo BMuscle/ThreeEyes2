@@ -6,14 +6,14 @@
 #include "LoadEffect.h"
 
 static Sprite backSprite;
-int Title;					//タイトル用のハンドル
-int SEnter, SSelect;		//音用ハンドル
-int Mousex, Mousey;			//マウスのx,y座標
-int Font00;					//フォント指定用のハンドル
+static int Title;					//タイトル用のハンドル
+static int SEnter, SSelect;		//音用ハンドル
+static int Mousex, Mousey;			//マウスのx,y座標
+static int Font00;					//フォント指定用のハンドル
 static int startSelect, endSelect;		//SE管理用の変数
 
-MassageBox startGame;
-MassageBox endGame;
+static MassageBox startGame;
+static MassageBox endGame;
 
 void Title_Initialize() {
 	Font00 = CreateFontToHandle("ゴシック", 15, 6, DX_FONTTYPE_ANTIALIASING);

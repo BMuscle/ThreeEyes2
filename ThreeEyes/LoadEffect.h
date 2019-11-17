@@ -9,7 +9,7 @@ void initLoadEffect(void);
 void deleteLoadEffect(void);
 
 void onLoadFlag(void);
-int getLoadFlag(void);
+int getCurrentLoadState(void);
 BOOL isLoadEnd(void);
 BOOL isStart(void);
 void LoadEffect_Update(void);
