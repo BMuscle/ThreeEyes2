@@ -37,7 +37,6 @@ void Title_Finalize() {
 void Title_Update() {
 	if (getCurrentLoadState() > 0) {
 		if (isLoadEnd()) {
-			PlaySoundMem(SEnter, DX_PLAYTYPE_BACK);
 			Title_Finalize();
 			SceneMgr_ChangeScene(SCENE_GAME);
 		}
@@ -66,6 +65,7 @@ void Title_StartMouseSelect() {
 			startSelect = 1;
 		}
 		if ( getLeftDown() != 0) {
+			PlaySoundMem(SEnter, DX_PLAYTYPE_BACK);
 			onLoadFlag();
 		}
 	}

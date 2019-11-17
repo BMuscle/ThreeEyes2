@@ -64,8 +64,8 @@ void Game_Update() {//計算処理
 		}
 		return;	//ロード状態なので以降処理しない
 	}
-
-	if (gameResult = isGameEnd() > 0) {//ゲームが終わっているなら
+	gameResult = isGameEnd();
+	if (gameResult > 0) {//ゲームが終わっているなら
 		onLoadFlag();
 		return;
 	}
