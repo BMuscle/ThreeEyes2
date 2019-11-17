@@ -3,22 +3,24 @@
 #include"SceneMgr.h"
 #include"MyMouse.h"
 #include"MassageBox.h"
+#include "LoadEffect.h"
 
-int Title;					//ƒ^ƒCƒgƒ‹—p‚Ìƒnƒ“ƒhƒ‹
-int SEnter, SSelect;		//‰¹—pƒnƒ“ƒhƒ‹
-int Mousex, Mousey;			//ƒ}ƒEƒX‚Ìx,yÀ•W
-int Font00;					//ƒtƒHƒ“ƒgŽw’è—p‚Ìƒnƒ“ƒhƒ‹
-
+int Title;					//ã‚¿ã‚¤ãƒˆãƒ«ç”¨ã®ãƒãƒ³ãƒ‰ãƒ«
+int SEnter, SSelect;		//éŸ³ç”¨ãƒãƒ³ãƒ‰ãƒ«
+int Mousex, Mousey;			//ãƒžã‚¦ã‚¹ã®x,yåº§æ¨™
+int Font00;					//ãƒ•ã‚©ãƒ³ãƒˆæŒ‡å®šç”¨ã®ãƒãƒ³ãƒ‰ãƒ«
+static Sprite backSprite;
 MassageBox startGame;
 MassageBox endGame;
 
 void Title_Initialize() {
-	Font00 = CreateFontToHandle("ƒSƒVƒbƒN", 15, 6, DX_FONTTYPE_ANTIALIASING);
+	Font00 = CreateFontToHandle("ã‚´ã‚·ãƒƒã‚¯", 15, 6, DX_FONTTYPE_ANTIALIASING);
+	backSprite = initSprite("images/1blackboard.png", 640, 480);
 	Title = LoadGraph("images/title.png");
 	SEnter = LoadSoundMem("music/enter1.wav");
 	SSelect = LoadSoundMem("music/select1.wav");
-	startGame = initMassageBox("images/enpitu.png", "ƒQ[ƒ€ŠJŽn", GetColor(0, 0, 0), Font00, 180, 370, 170, 60);
-	endGame = initMassageBox("images/enpitu.png", "I—¹", GetColor(0, 0, 0), Font00, 480, 370, 170, 60);
+	startGame = initMassageBox("images/enpitu.png", "ã‚²ãƒ¼ãƒ é–‹å§‹", GetColor(0, 0, 0), Font00, 180, 370, 170, 60);
+	endGame = initMassageBox("images/enpitu.png", "çµ‚äº†", GetColor(0, 0, 0), Font00, 480, 370, 170, 60);
 	startGame.mystr.alpha = 255 * 0.5;
 	endGame.mystr.alpha = 255 * 0.5;
 }
@@ -28,27 +30,34 @@ void Title_Finalize() {
 }
 
 void Title_Update() {
+	if (getLoadFlag() > 0) {
+		if (isLoadEnd()) {
+			PlaySoundMem(SEnter, DX_PLAYTYPE_BACK);
+			Title_Finalize();
+			SceneMgr_ChangeScene(SCENE_GAME);
+		}
+		return;
+	}
 	GetMousePoint(&Mousex, &Mousey);
 	Title_StartMouseSelect();
 	Title_EndMouseSelect();
 }
 
 void Title_Draw() {
-	DrawGraph(50, 50, Title, FALSE);		//‰æ‘œ“\‚è•t‚¯
+	drawAtSprite(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, &backSprite, TRUE);
+	DrawGraph(50, 50, Title, FALSE);		//ç”»åƒè²¼ã‚Šä»˜ã‘
 	drawAtMassageBox(&startGame,TRUE);
 	drawAtMassageBox(&endGame, TRUE);
 	
 }
 
 
-void Title_StartMouseSelect() {				//ƒQ[ƒ€ŠJŽn‚Ì•û‚Ì˜g‚ÌF•Ï‚¦‚éŠÖ”A•¨—Î
+void Title_StartMouseSelect() {				//ã‚²ãƒ¼ãƒ é–‹å§‹ã®æ–¹ã®æž ã®è‰²å¤‰ãˆã‚‹é–¢æ•°ã€é»’â†’ç·‘
 	if (Mousex >= startGame.mystr.x-startGame.sprite.width / 2 + 10&& Mousex <= startGame.mystr.x + startGame.sprite.width / 2 - 30
-		&& Mousey >= startGame.mystr.y - startGame.sprite.height / 2 + 10 && Mousey <= startGame.mystr.y + startGame.sprite.height / 2 - 10) {//ƒQ[ƒ€ŠJŽn‚Ì˜g‚ÌF•ÏX
+		&& Mousey >= startGame.mystr.y - startGame.sprite.height / 2 + 10 && Mousey <= startGame.mystr.y + startGame.sprite.height / 2 - 10) {//ã‚²ãƒ¼ãƒ é–‹å§‹ã®æž ã®è‰²å¤‰æ›´
 		startGame.mystr.color = 0xff0000;
 		if ( getLeftDown() != 0) {
-			PlaySoundMem(SEnter, DX_PLAYTYPE_BACK);
-			Title_Finalize();
-			SceneMgr_ChangeScene(SCENE_GAME);
+			onLoadFlag();
 		}
 	}
 	else {
@@ -59,11 +68,11 @@ void Title_StartMouseSelect() {				//ƒQ[ƒ€ŠJŽn‚Ì•û‚Ì˜g‚ÌF•Ï‚¦‚éŠÖ”A•¨—Î
 
 void Title_EndMouseSelect() {
 	if (Mousex >= endGame.mystr.x - endGame.sprite.width / 2 + 10 && Mousex <= endGame.mystr.x + endGame.sprite.width / 2 - 30
-		&& Mousey >= endGame.mystr.y - endGame.sprite.height / 2 + 10 && Mousey <= endGame.mystr.y + endGame.sprite.height / 2 - 10) {//ƒQ[ƒ€ŠJŽn‚Ì˜g‚ÌF•ÏX
+		&& Mousey >= endGame.mystr.y - endGame.sprite.height / 2 + 10 && Mousey <= endGame.mystr.y + endGame.sprite.height / 2 - 10) {//ã‚²ãƒ¼ãƒ é–‹å§‹ã®æž ã®è‰²å¤‰æ›´
 		endGame.mystr.color = 0xff0000;
 		if ( getLeftDown() != 0) {
 			PlaySoundMem(SEnter, DX_PLAYTYPE_BACK);
-			/*‚±‚±‚ÉƒQ[ƒ€I—¹ˆ—‚ð•`‚­*/
+			/*ã“ã“ã«ã‚²ãƒ¼ãƒ çµ‚äº†å‡¦ç†ã‚’æã*/
 			
 		}
 	}

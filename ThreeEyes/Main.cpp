@@ -3,7 +3,7 @@
 #include"SceneMgr.h"
 #include "MyMouse.h"
 #include "MyWindow.h"
-#include "MassageBox.h"
+#include "LoadEffect.h"
 
 // プログラムは WinMain から始まります
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
@@ -19,18 +19,22 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			return -1;			// エラーが起きたら直ちに終了
 			}
 		SetMouseDispFlag(TRUE);
+		initLoadEffect();
 		SceneMgr_Initialize();			//初期化処理
+		
 
 		while (ScreenFlip() == 0 && ProcessMessage() == 0 && ClearDrawScreen() == 0) {//画面更新 & メッセージ処理 & 画面消去
-			
+				LoadEffect_Update();
 				//SetDrawScreen(DX_SCREEN_BACK);//描画先を裏画面に
 				Mouse_Update();
 				/* Mainに書くのはこの二つのみ*/
 				SceneMgr_Update();
 				SceneMgr_Draw();
+				LoadEffect_Draw();
+				
 		}
 
-
+		deleteLoadEffect();
 		WaitKey();				// キー入力待ち
 
 		DxLib_End();				// ＤＸライブラリ使用の終了処理

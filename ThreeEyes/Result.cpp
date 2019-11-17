@@ -1,8 +1,10 @@
 #include"DxLib.h"
 #include"Result.h"
 #include"SceneMgr.h"
+#include "Sprite.h"
+#include "MyWindow.h"
 
-
+static Sprite backSprite;
 int resultImg; //画像ハンドル値
 int coutinueBox_x1, coutinueBox_x2, coutinueBox_y1, coutinueBox_y2;	//coutinueボックス座標
 int endBox_x1, endBox_x2, endBox_y1, endBox_y2;						//endボックス座標
@@ -10,6 +12,7 @@ int string_y1, string_y2;
 int nextSelect = 0;		//次の画面をどうするかの数値を持つ
 
 void Result_Initialize(int winlose) {	//winloseが1なら勝ち、2なら負け、3なら引き分け
+	backSprite = initSprite("images/1blackboard.png", 640, 480);
 	if (winlose == 1) {
 		//勝ちの時の処理
 		resultImg = LoadGraph("images/win.png");
@@ -82,6 +85,7 @@ void Result_Select()
 }
 
 void Result_Draw() {
+	drawAtSprite(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, &backSprite, TRUE);
 	DrawGraph(200, 50, resultImg, FALSE);
 	DrawBox(coutinueBox_x1, coutinueBox_y1, coutinueBox_x2, coutinueBox_y2, GetColor(0, 0, 0), FALSE);
 	DrawBox(endBox_x1, endBox_y1, endBox_x2, endBox_y2, GetColor(0, 0, 0), FALSE);
