@@ -1,38 +1,47 @@
 #include"DxLib.h"
 #include"Result.h"
 #include"SceneMgr.h"
+#include "Sprite.h"
+#include "MyWindow.h"
 
+static Sprite backSprite;
+int resultImg; //ç”»åƒãƒãƒ³ãƒ‰ãƒ«å€¤
+int coutinueBox_x1, coutinueBox_x2, coutinueBox_y1, coutinueBox_y2;	//coutinueãƒœãƒƒã‚¯ã‚¹åº§æ¨™
+int endBox_x1, endBox_x2, endBox_y1, endBox_y2;						//endãƒœãƒƒã‚¯ã‚¹åº§æ¨™
+int string_y1, string_y2;
+int nextSelect = 0;		//æ¬¡ã®ç”»é¢ã‚’ã©ã†ã™ã‚‹ã‹ã®æ•°å€¤ã‚’æŒã¤
 
-int resultImg;					//‰æ‘œƒnƒ“ƒhƒ‹’l
-int nextSelect;					//ŽŸ‚Ì‰æ–Ê‚ð‚Ç‚¤‚·‚é‚©‚Ì”’l‚ðŽ‚Â
-int colorBox1, colorBox2;		//ƒ}ƒEƒXƒIƒ“Žž‚Éƒ{ƒbƒNƒX‚ÌF‚ð•ÏX‚·‚é
-int resultMousex, resultMousey;	//ƒ}ƒEƒXÀ•W‚ð“ü‚ê‚é•Ï”
-int resultMouseInput;			//ƒ}ƒEƒX‚Ì“ü—Íó‘Ô
-int coutinue_fclor, end_fcolor;	//ƒ{ƒbƒNƒX“à‚Ì•¶ŽšF
+int resultImg;					//ç”»åƒãƒãƒ³ãƒ‰ãƒ«å€¤
+int nextSelect;					//æ¬¡ã®ç”»é¢ã‚’ã©ã†ã™ã‚‹ã‹ã®æ•°å€¤ã‚’æŒã¤
+int colorBox1, colorBox2;		//ãƒžã‚¦ã‚¹ã‚ªãƒ³æ™‚ã«ãƒœãƒƒã‚¯ã‚¹ã®è‰²ã‚’å¤‰æ›´ã™ã‚‹
+int resultMousex, resultMousey;	//ãƒžã‚¦ã‚¹åº§æ¨™ã‚’å…¥ã‚Œã‚‹å¤‰æ•°
+int resultMouseInput;			//ãƒžã‚¦ã‚¹ã®å…¥åŠ›çŠ¶æ…‹
+int coutinue_fclor, end_fcolor;	//ãƒœãƒƒã‚¯ã‚¹å†…ã®æ–‡å­—è‰²
 
-void Result_Initialize(int winlose) {	//winlose‚ª1‚È‚çŸ‚¿A2‚È‚ç•‰‚¯A3‚È‚çˆø‚«•ª‚¯
+void Result_Initialize(int winlose) {	//winloseãŒ1ãªã‚‰å‹ã¡ã€2ãªã‚‰è² ã‘ã€3ãªã‚‰å¼•ãåˆ†ã‘
+	backSprite = initSprite("images/1blackboard.png", 640, 480);
 	if (winlose == 1) {
-		//Ÿ‚¿‚ÌŽž‚Ìˆ—
+		//å‹ã¡ã®æ™‚ã®å‡¦ç†
 		resultImg = LoadGraph("images/win.png");
 		winlose = 0;
 	}
 	else if (winlose == 2) {
-		//•‰‚¯‚ÌŽž‚Ìˆ—
+		//è² ã‘ã®æ™‚ã®å‡¦ç†
 		resultImg = LoadGraph("images/lose.png");
 		winlose = 0;
 	}
 	else {
-		//ˆø‚«•ª‚¯‚Ìˆ—
+		//å¼•ãåˆ†ã‘ã®å‡¦ç†
 		resultImg = LoadGraph("images/draw.png");
 		winlose = 0;
 	}
 
 
-	//‰‚ÌFÝ’è
+	//ç¸ã®è‰²è¨­å®š
 	colorBox1 = GetColor(0, 255, 0);
 	colorBox2 = GetColor(0, 0, 0);
 
-	//•¶ŽšFÝ’è
+	//æ–‡å­—è‰²è¨­å®š
 	coutinue_fclor = GetColor(0, 0, 0);
 	end_fcolor = GetColor(0, 0, 0);
 
@@ -51,12 +60,12 @@ void Result_Update() {
 	resultMouseInput = GetMouseInput();
 	if (CheckHitKey(KEY_INPUT_RETURN) == 1) {
 		if (nextSelect == SCENE_GAME) {
-			//ƒQ[ƒ€‰æ–Ê‚Ö
+			//ã‚²ãƒ¼ãƒ ç”»é¢ã¸
 			Result_Finalize();
 			SceneMgr_ChangeScene(SCENE_GAME);
 		}
 		else if (nextSelect == SCENE_TITLE) {
-			//ƒ^ƒCƒgƒ‹‰æ–Ê‚Ö
+			//ã‚¿ã‚¤ãƒˆãƒ«ç”»é¢ã¸
 			Result_Finalize();
 			SceneMgr_ChangeScene(SCENE_TITLE);
 		}
@@ -78,19 +87,20 @@ void Result_Select()
 }
 
 void Result_Draw() {
+	drawAtSprite(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, &backSprite, TRUE);
 	DrawGraph(200, 50, resultImg, FALSE);
 	DrawBox(90, 370, 190, 410, colorBox1, FALSE);
 	DrawBox(390, 370, 490, 410, colorBox2, FALSE);
-	DrawFormatString(115, 380, coutinue_fclor, "‘±‚¯‚é");
-	DrawFormatString(415, 380, end_fcolor, "‚â‚ß‚é");
+	DrawFormatString(115, 380, coutinue_fclor, "ç¶šã‘ã‚‹");
+	DrawFormatString(415, 380, end_fcolor, "ã‚„ã‚ã‚‹");
 	Result_EndMouseSelect();
 }
 
 void Result_EndMouseSelect()
 {
-	//¶‚Ìƒ{ƒbƒNƒX
+	//å·¦ã®ãƒœãƒƒã‚¯ã‚¹
 	if (resultMousex >= 90 && resultMousex <= 190 && resultMousey >= 370 && resultMousey <= 410) {
-		//F‚ð•Ï‚¦‚éˆ—
+		//è‰²ã‚’å¤‰ãˆã‚‹å‡¦ç†
 		colorBox1 = GetColor(0, 255, 0);
 		if ((resultMouseInput & MOUSE_INPUT_LEFT) != 0) {
 			Result_Finalize();
@@ -102,9 +112,9 @@ void Result_EndMouseSelect()
 
 	}
 
-	//‰E‚Ìƒ{ƒbƒNƒX
+	//å³ã®ãƒœãƒƒã‚¯ã‚¹
 	if (resultMousex >= 390 && resultMousex <= 490 && resultMousey >= 370 && resultMousey <= 410) {
-		//F‚ð•Ï‚¦‚éˆ—
+		//è‰²ã‚’å¤‰ãˆã‚‹å‡¦ç†
 		colorBox2 = GetColor(0, 255, 0);
 		if ((resultMouseInput & MOUSE_INPUT_LEFT) != 0) {
 			Result_Finalize();
