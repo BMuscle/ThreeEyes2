@@ -48,7 +48,7 @@ void Title_StartMouseSelect() {				//ゲーム開始の方の枠の色変える関数、黒→緑
 	if (Mousex >= startGame.mystr.x-startGame.sprite.width / 2 + 10&& Mousex <= startGame.mystr.x + startGame.sprite.width / 2 - 30
 		&& Mousey >= startGame.mystr.y - startGame.sprite.height / 2 + 10 && Mousey <= startGame.mystr.y + startGame.sprite.height / 2 - 10) {//ゲーム開始の枠の色変更
 		startGame.mystr.color = 0xff0000;
-		if (startSelect == 0) {
+		if (startSelect == 0) {			//SE管理用のIF文
 			PlaySoundMem(SSelect, DX_PLAYTYPE_BACK);
 			startSelect = 1;
 		}
