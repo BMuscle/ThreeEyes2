@@ -6,21 +6,21 @@
 #include "LoadEffect.h"
 
 static Sprite backSprite;
-int Title;					//タイトル用のハンドル
-int SEnter, SSelect;		//音用ハンドル
-int Mousex, Mousey;			//マウスのx,y座標
-int Font00;					//フォント指定用のハンドル
+static int Title;					//タイトル用のハンドル
+static int SEnter, SSelect;		//音用ハンドル
+static int Mousex, Mousey;			//マウスのx,y座標
+static int Font00;					//フォント指定用のハンドル
 static int startSelect, endSelect;		//SE管理用の変数
 
-MassageBox startGame;
-MassageBox endGame;
+static MassageBox startGame;
+static MassageBox endGame;
 
 void Title_Initialize() {
 	Font00 = CreateFontToHandle("ゴシック", 15, 6, DX_FONTTYPE_ANTIALIASING);
 	backSprite = initSprite("images/1blackboard.png", 640, 480);
 	Title = LoadGraph("images/title.png");
-	SEnter = LoadSoundMem("music/enter1.wav");
-	SSelect = LoadSoundMem("music/select1.wav");
+	SEnter = LoadSoundMem("musics/enter1.wav");
+	SSelect = LoadSoundMem("musics/select1.wav");
 
 	startGame = initMassageBox("images/enpitu.png", "ゲーム開始", GetColor(0, 0, 0), Font00, 180, 370, 170, 60);
 	endGame = initMassageBox("images/enpitu.png", "終了", GetColor(0, 0, 0), Font00, 480, 370, 170, 60);
@@ -35,7 +35,7 @@ void Title_Finalize() {
 }
 
 void Title_Update() {
-	if (getLoadFlag() > 0) {
+	if (getCurrentLoadState() > 0) {
 		if (isLoadEnd()) {
 			PlaySoundMem(SEnter, DX_PLAYTYPE_BACK);
 			Title_Finalize();
