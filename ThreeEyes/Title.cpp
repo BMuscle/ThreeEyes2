@@ -5,29 +5,25 @@
 #include"MassageBox.h"
 #include "LoadEffect.h"
 
-int Title;					//繧ｿ繧､繝医Ν逕ｨ縺ｮ繝上Φ繝峨Ν
-int SEnter, SSelect;		//髻ｳ逕ｨ繝上Φ繝峨Ν
-int Mousex, Mousey;			//繝槭え繧ｹ縺ｮx,y蠎ｧ讓
-int Font00;					//繝輔か繝ｳ繝域欠螳夂畑縺ｮ繝上Φ繝峨Ν
 static Sprite backSprite;
-int Title;					//タイトル用のハンドル
-int SEnter, SSelect;		//音用ハンドル
-int Mousex, Mousey;			//マウスのx,y座標
-int Font00;					//フォント指定用のハンドル
-static int startSelect, endSelect;		//SE管理用の変数
+int Title;					//�^�C�g���p�̃n���h��
+int SEnter, SSelect;		//���p�n���h��
+int Mousex, Mousey;			//�}�E�X��x,y���W
+int Font00;					//�t�H���g�w��p�̃n���h��
+static int startSelect, endSelect;		//SE�Ǘ��p�̕ϐ�
 
 MassageBox startGame;
 MassageBox endGame;
 
 void Title_Initialize() {
-	Font00 = CreateFontToHandle("繧ｴ繧ｷ繝�け", 15, 6, DX_FONTTYPE_ANTIALIASING);
+	Font00 = CreateFontToHandle("�S�V�b�N", 15, 6, DX_FONTTYPE_ANTIALIASING);
 	backSprite = initSprite("images/1blackboard.png", 640, 480);
 	Title = LoadGraph("images/title.png");
 	SEnter = LoadSoundMem("music/enter1.wav");
 	SSelect = LoadSoundMem("music/select1.wav");
 
-	startGame = initMassageBox("images/enpitu.png", "ゲーム開始", GetColor(0, 0, 0), Font00, 180, 370, 170, 60);
-	endGame = initMassageBox("images/enpitu.png", "終了", GetColor(0, 0, 0), Font00, 480, 370, 170, 60);
+	startGame = initMassageBox("images/enpitu.png", "�Q�[���J�n", GetColor(0, 0, 0), Font00, 180, 370, 170, 60);
+	endGame = initMassageBox("images/enpitu.png", "�I��", GetColor(0, 0, 0), Font00, 480, 370, 170, 60);
 	startSelect = 0;
 	endSelect = 0;
 	startGame.mystr.alpha = 255 * 0.5;
@@ -54,18 +50,18 @@ void Title_Update() {
 
 void Title_Draw() {
 	drawAtSprite(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, &backSprite, TRUE);
-	DrawGraph(50, 50, Title, FALSE);		//逕ｻ蜒剰ｲｼ繧贋ｻ倥￠
+	DrawGraph(50, 50, Title, FALSE);		
 	drawAtMassageBox(&startGame,TRUE);
 	drawAtMassageBox(&endGame, TRUE);
 	
 }
 
 
-void Title_StartMouseSelect() {				//繧ｲ繝ｼ繝髢句ｧ九�譁ｹ縺ｮ譫縺ｮ濶ｲ螟峨∴繧矩未謨ｰ縲�ｻ停�邱
+void Title_StartMouseSelect() {				
 	if (Mousex >= startGame.mystr.x-startGame.sprite.width / 2 + 10&& Mousex <= startGame.mystr.x + startGame.sprite.width / 2 - 30
-		&& Mousey >= startGame.mystr.y - startGame.sprite.height / 2 + 10 && Mousey <= startGame.mystr.y + startGame.sprite.height / 2 - 10) {//繧ｲ繝ｼ繝髢句ｧ九�譫縺ｮ濶ｲ螟画峩
+		&& Mousey >= startGame.mystr.y - startGame.sprite.height / 2 + 10 && Mousey <= startGame.mystr.y + startGame.sprite.height / 2 - 10) {
 		startGame.mystr.color = 0xff0000;
-		if (startSelect == 0) {			//SE管理用のIF文
+		if (startSelect == 0) {			//SE�Ǘ��p��IF��
 			PlaySoundMem(SSelect, DX_PLAYTYPE_BACK);
 			startSelect = 1;
 		}
@@ -82,22 +78,20 @@ void Title_StartMouseSelect() {				//繧ｲ繝ｼ繝髢句ｧ九�譁ｹ縺ｮ
 
 void Title_EndMouseSelect() {
 	if (Mousex >= endGame.mystr.x - endGame.sprite.width / 2 + 10 && Mousex <= endGame.mystr.x + endGame.sprite.width / 2 - 30
-		&& Mousey >= endGame.mystr.y - endGame.sprite.height / 2 + 10 && Mousey <= endGame.mystr.y + endGame.sprite.height / 2 - 10) {//繧ｲ繝ｼ繝髢句ｧ九�譫縺ｮ濶ｲ螟画峩
+		&& Mousey >= endGame.mystr.y - endGame.sprite.height / 2 + 10 && Mousey <= endGame.mystr.y + endGame.sprite.height / 2 - 10) {
 		endGame.mystr.color = 0xff0000;
 		if (endSelect == 0) {
 			PlaySoundMem(SSelect, DX_PLAYTYPE_BACK);
 			endSelect = 1;
 		}
-		if ( getLeftDown() != 0) {
+		if (getLeftDown() != 0) {
 			PlaySoundMem(SEnter, DX_PLAYTYPE_BACK);
-			/*ここに終了処理を描く*/
-			
+			/*�����ɏI��������`��*/
+
 		}
 	}
 	else {
 		endGame.mystr.color = 0x000000;
 		endSelect = 0;
 	}
-
 }
-

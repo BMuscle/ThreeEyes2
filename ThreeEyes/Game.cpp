@@ -35,7 +35,7 @@ void Game_Initialize() {
 	isGameClear = FALSE;
 	gameResult = 0;
 
-	for (int y = 0; y < BOARD_SIZE; y++) {//boardåˆæœŸåŒ–
+	for (int y = 0; y < BOARD_SIZE; y++) {//board‰Šú‰»
 		for (int x = 0; x < BOARD_SIZE; x++) {
 			myBoard.board[y][x] = 0;
 		}
@@ -47,7 +47,7 @@ void Game_Initialize() {
 }
 
 void Game_Finalize() {
-	deleteSprite(&back);
+	deleteSprite(&backSprite);
 	deleteSprite(&frame);
 	deleteSprite(&maru);
 	deleteSprite(&batu);
@@ -56,7 +56,7 @@ void Game_Finalize() {
 void Game_Update() {
 	if (getLoadFlag() > 0) {
 		if (isLoadEnd()) {
-			//ã‚·ãƒ¼ãƒ³å¤‰æ›´
+			//ƒV[ƒ“•ÏX
 			SceneMgr_ChangeScene(SCENE_RESULT);
 			Result_Initialize(getGameResult());
 		}
@@ -67,32 +67,32 @@ void Game_Update() {
 		Result_Initialize(getGameResult());
 	}
 
-	gameResult = isGameEnd();//ã‚²ãƒ¼ãƒ ãŒçµ‚ã‚ã£ã¦ã„ã‚‹ãªã‚‰
+	gameResult = isGameEnd();//ƒQ[ƒ€‚ªI‚í‚Á‚Ä‚¢‚é‚È‚ç
 	if (gameResult > 0) {
 		onLoadFlag();
 		return;
 	}
 
-	//ã‚²ãƒ¼ãƒ å‡¦ç†
-	BOOL isSet = FALSE;//çŸ³ã‚’ç½®ã„ãŸã‹ã©ã†ã‹ãƒ•ãƒ©ã‚°
+	//ƒQ[ƒ€ˆ—
+	BOOL isSet = FALSE;//Î‚ğ’u‚¢‚½‚©‚Ç‚¤‚©ƒtƒ‰ƒO
 
-	if (nowTurn == PLAYER) {//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®è¡Œå‹•
+	if (nowTurn == PLAYER) {//ƒvƒŒƒCƒ„[‚Ìs“®
 		Pos pos;
-		if (getLeftDown() == FALSE) { return; }//å…¥åŠ›ãƒã‚§ãƒƒã‚¯
-		if (getMousePos(&pos) == FALSE) { return; }//ãƒã‚¦ã‚¹å…¥åŠ› & ç¯„å›²ãƒã‚§ãƒƒã‚¯
+		if (getLeftDown() == FALSE) { return; }//“ü—Íƒ`ƒFƒbƒN
+		if (getMousePos(&pos) == FALSE) { return; }//ƒ}ƒEƒX“ü—Í & ”ÍˆÍƒ`ƒFƒbƒN
 
-		if (isSetStone(myBoard, pos.x, pos.y)) {//çŸ³ç½®ã‘ã‚‹ã‹ãƒã‚§ãƒƒã‚¯
-			myBoard.board[pos.y][pos.x] = nowTurn;//ç½®ã
+		if (isSetStone(myBoard, pos.x, pos.y)) {//Î’u‚¯‚é‚©ƒ`ƒFƒbƒN
+			myBoard.board[pos.y][pos.x] = nowTurn;//’u‚­
 			isSet = TRUE;
 		}
 	}
-	else if (nowTurn == COM) {//ã‚³ãƒ³ãƒ”ãƒ¥ãƒ¼ã‚¿ã®è¡Œå‹•
+	else if (nowTurn == COM) {//ƒRƒ“ƒsƒ…[ƒ^‚Ìs“®
 		Pos pos = cpuThink(myBoard, nowTurn);
 		myBoard.board[pos.y][pos.x] = nowTurn;
 		isSet = TRUE;
 	}
 
-	if (isSet) {	//çŸ³ç½®ã‹ã‚ŒãŸãªã‚‰ ã‚¨ãƒ³ãƒ‰ãƒã‚§ãƒƒã‚¯&ã‚¿ãƒ¼ãƒ³ãƒã‚§ãƒ³ã‚¸
+	if (isSet) {	//Î’u‚©‚ê‚½‚È‚ç ƒGƒ“ƒhƒ`ƒFƒbƒN&ƒ^[ƒ“ƒ`ƒFƒ“ƒW
 		if (isWin(myBoard, nowTurn)) {
 			isGameClear = TRUE;
 		}
@@ -105,7 +105,7 @@ void Game_Update() {
 void Game_Draw() {
 	drawAtSprite(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, &backSprite, TRUE);
 	boardDraw();
-	DrawFormatString(50, 50, GetColor(0, 0, 0), "ã‚²ãƒ¼ãƒ ç”»é¢ã§ã™");
+	DrawFormatString(50, 50, GetColor(0, 0, 0), "ƒQ[ƒ€‰æ–Ê‚Å‚·");
 }
 
 int getGameResult() {
@@ -117,7 +117,7 @@ TURN changeTurn(TURN turn) {
 	return (TURN)((turn % 2) + 1);
 }
 
-BOOL getKey(Pos *pos) {	//ã‚­ãƒ¼å…¥åŠ›ifæ–‡ã§å–ã‚‹
+BOOL getKey(Pos *pos) {	//ƒL[“ü—Íif•¶‚Åæ‚é
 	int number = -1;
 	switch (CheckHitKeyAll()) {
 	case KEY_INPUT_1:
@@ -150,7 +150,6 @@ BOOL getKey(Pos *pos) {	//ã‚­ãƒ¼å…¥åŠ›ifæ–‡ã§å–ã‚‹
 	}
 
 	if (number >= 0) {
-		Pos result;
 		pos->x = number % BOARD_SIZE;
 		pos->y = number / BOARD_SIZE;
 		return TRUE;
@@ -158,7 +157,7 @@ BOOL getKey(Pos *pos) {	//ã‚­ãƒ¼å…¥åŠ›ifæ–‡ã§å–ã‚‹
 	return FALSE;
 }
 
-void  boardDraw() {//ç›¤é¢æç”»
+void  boardDraw() {//”Õ–Ê•`‰æ
 	drawSprite(BOARD_OFFSET_X, BOARD_OFFSET_Y, &frame, TRUE);
 	int color;
 	for (int y = 0; y < BOARD_SIZE; y++) {
@@ -175,7 +174,7 @@ void  boardDraw() {//ç›¤é¢æç”»
 	}
 }
 
-void boardDrawString() {//ç›¤é¢æ–‡å­—æç”»
+void boardDrawString() {//”Õ–Ê•¶š•`‰æ
 #define OFFSET_BOARD 20
 	for (int y = 0; y < BOARD_SIZE; y++) {
 		for (int x = 0; x < BOARD_SIZE; x++) {
@@ -184,14 +183,14 @@ void boardDrawString() {//ç›¤é¢æ–‡å­—æç”»
 	}
 }
 
-BOOL getMousePos(Pos* pos) {//ãƒã‚¦ã‚¹ã®å…¥åŠ›åº§æ¨™å–å¾—
+BOOL getMousePos(Pos* pos) {//ƒ}ƒEƒX‚Ì“ü—ÍÀ•Wæ“¾
 	int x,y;
 	GetMousePoint(&x, &y);
 	x -= BOARD_OFFSET_X;
 	y -= BOARD_OFFSET_Y;
 	if (x >= 0 && x <= BOARD_WIDTH &&
 		y >= 0 && y <= BOARD_HEIGHT) {
-		//æ å†…ã«å…¥ã£ã¦ã„ã‚‹
+		//˜g“à‚É“ü‚Á‚Ä‚¢‚é
 		pos->x = x / RECT_WIDTH;
 		pos->y = y / RECT_HEIGHT;
 		return TRUE;
@@ -200,20 +199,20 @@ BOOL getMousePos(Pos* pos) {//ãƒã‚¦ã‚¹ã®å…¥åŠ›åº§æ¨™å–å¾—
 }
 
 
-BOOL isWin(Board board, TURN turn) {//ã‚¯ãƒªã‚¢ã—ã¦ã„ã‚‹ã‹ã©ã†ã‹
-	//ç¸¦ä¸¦ã³åˆ¤å®š
+BOOL isWin(Board board, TURN turn) {//ƒNƒŠƒA‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©
+	//c•À‚Ñ”»’è
 	for (int y = 0; y < BOARD_SIZE; y++) {
 		if (board.board[y][0] == turn && board.board[y][1] == turn && board.board[y][2] == turn) {
 			return true;
 		}
 	}
-	//æ¨ªä¸¦ã³åˆ¤å®š
+	//‰¡•À‚Ñ”»’è
 	for (int x = 0; x < BOARD_SIZE; x++) {
 		if (board.board[0][x] == turn && board.board[1][x] == turn && board.board[2][x] == turn) {
 			return true;
 		}
 	}
-	//æ–œã‚åˆ¤å®š
+	//Î‚ß”»’è
 	if (board.board[0][0] == turn && board.board[1][1] == turn && board.board[2][2] == turn) {
 		return true;
 	}
@@ -224,14 +223,14 @@ BOOL isWin(Board board, TURN turn) {//ã‚¯ãƒªã‚¢ã—ã¦ã„ã‚‹ã‹ã©ã†ã‹
 	return false;
 }
 
-BOOL isSetStone(Board board, int x, int y) { //ç½®ã‘ã‚‹ã‹ã©ã†ã‹
+BOOL isSetStone(Board board, int x, int y) { //’u‚¯‚é‚©‚Ç‚¤‚©
 	if (board.board[y][x] == 0) {
 		return TRUE;
 	}
 	return FALSE;
 }
 
-BOOL isDrow(Board board) {  //å¼•ãåˆ†ã‘åˆ¤å®š å¤‰æ›´æ¸ˆã¿ çŸ³ãŒç½®ã‘ã‚‹å ´æ‰€ã‚’ç™ºè¦‹ã—ãŸã‚‰returnã«å¤‰æ›´
+BOOL isDrow(Board board) {  //ˆø‚«•ª‚¯”»’è •ÏXÏ‚İ Î‚ª’u‚¯‚éêŠ‚ğ”­Œ©‚µ‚½‚çreturn‚É•ÏX
 	for (int y = 0; y < BOARD_SIZE; y++) {
 		for (int x = 0; x < BOARD_SIZE; x++) {
 			if (isSetStone(board, x, y) == TRUE) {
@@ -245,7 +244,7 @@ BOOL isDrow(Board board) {  //å¼•ãåˆ†ã‘åˆ¤å®š å¤‰æ›´æ¸ˆã¿ çŸ³ãŒç½®ã‘ã‚‹å ´
 
 Pos cpuThink(Board board, TURN turn) {
 	Pos pos;
-	for (int i = 0; i < 2; i++) {//ã‚ã¨ï¼‘ã¤ã§å‹ã¦ã‚‹ãƒ‘ã‚¿ãƒ¼ãƒ³æ¢ç´¢â†’ã‚ã¨ï¼‘ã¤ã§è² ã‘ã‚‹ãƒ‘ã‚¿ãƒ¼ãƒ³æ¢ç´¢
+	for (int i = 0; i < 2; i++) {//‚ ‚Æ‚P‚Â‚ÅŸ‚Ä‚éƒpƒ^[ƒ“’Tõ¨‚ ‚Æ‚P‚Â‚Å•‰‚¯‚éƒpƒ^[ƒ“’Tõ
 		for (int y = 0; y < BOARD_SIZE; y++) {
 			for (int x = 0; x < BOARD_SIZE; x++) {
 				if (isSetStone(board, x, y)) {
@@ -263,12 +262,12 @@ Pos cpuThink(Board board, TURN turn) {
 	}
 
 
-	if (isSetStone(board, 1, 1)) {//çœŸã‚“ä¸­
+	if (isSetStone(board, 1, 1)) {//^‚ñ’†
 		pos.x = 1;
 		pos.y = 1;
 		return pos;
 	}
-	if (isSetStone(board, 0, 0)) {//è§’
+	if (isSetStone(board, 0, 0)) {//Šp
 		pos.x = 0;
 		pos.y = 0;
 		return pos;
@@ -289,7 +288,7 @@ Pos cpuThink(Board board, TURN turn) {
 		return pos;
 	}
 
-	for (int i = 0; i < 2; i++) {//ã‚ã¨ï¼‘ã¤ã§å‹ã¦ã‚‹ãƒ‘ã‚¿ãƒ¼ãƒ³æ¢ç´¢â†’ã‚ã¨ï¼‘ã¤ã§è² ã‘ã‚‹ãƒ‘ã‚¿ãƒ¼ãƒ³æ¢ç´¢
+	for (int i = 0; i < 2; i++) {//‚ ‚Æ‚P‚Â‚ÅŸ‚Ä‚éƒpƒ^[ƒ“’Tõ¨‚ ‚Æ‚P‚Â‚Å•‰‚¯‚éƒpƒ^[ƒ“’Tõ
 		for (int y = 0; y < BOARD_SIZE; y++) {
 			for (int x = 0; x < BOARD_SIZE; x++) {
 				if (isSetStone(board, x, y)) {
@@ -303,17 +302,17 @@ Pos cpuThink(Board board, TURN turn) {
 }
 
 int isGameEnd() {
-	//ã‚²ãƒ¼ãƒ ãŒçµ‚ã‚ã£ã¦ã„ã‚‹ãªã‚‰ã°
+	//ƒQ[ƒ€‚ªI‚í‚Á‚Ä‚¢‚é‚È‚ç‚Î
 	if (isGameClear) {
 		if (nowTurn == PLAYER) {
-			return 1;//PLAYERã®å‹ã¡
+			return 1;//PLAYER‚ÌŸ‚¿
 		}
 		else if (nowTurn == COM) {
-			return 2;//COMã®å‹ã¡
+			return 2;//COM‚ÌŸ‚¿
 		}		
 	}
 
-	if (isDrow(myBoard)) {//å¼•ãåˆ†ã‘
+	if (isDrow(myBoard)) {//ˆø‚«•ª‚¯
 		return 3;
 	}
 	return 0;
