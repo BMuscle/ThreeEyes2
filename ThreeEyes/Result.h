@@ -7,3 +7,4 @@ void Result_Update();
 void Result_Draw();
 
 void Result_Select();
+void Result_EndMouseSelect();

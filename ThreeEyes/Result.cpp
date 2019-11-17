@@ -5,57 +5,67 @@
 #include "MyWindow.h"
 
 static Sprite backSprite;
-int resultImg; //‰æ‘œƒnƒ“ƒhƒ‹’l
-int coutinueBox_x1, coutinueBox_x2, coutinueBox_y1, coutinueBox_y2;	//coutinueƒ{ƒbƒNƒXÀ•W
-int endBox_x1, endBox_x2, endBox_y1, endBox_y2;						//endƒ{ƒbƒNƒXÀ•W
+int resultImg; //ç”»åƒãƒãƒ³ãƒ‰ãƒ«å€¤
+int coutinueBox_x1, coutinueBox_x2, coutinueBox_y1, coutinueBox_y2;	//coutinueãƒœãƒƒã‚¯ã‚¹åº§æ¨™
+int endBox_x1, endBox_x2, endBox_y1, endBox_y2;						//endãƒœãƒƒã‚¯ã‚¹åº§æ¨™
 int string_y1, string_y2;
-int nextSelect = 0;		//ŽŸ‚Ì‰æ–Ê‚ð‚Ç‚¤‚·‚é‚©‚Ì”’l‚ðŽ‚Â
+int nextSelect = 0;		//æ¬¡ã®ç”»é¢ã‚’ã©ã†ã™ã‚‹ã‹ã®æ•°å€¤ã‚’æŒã¤
 
-void Result_Initialize(int winlose) {	//winlose‚ª1‚È‚çŸ‚¿A2‚È‚ç•‰‚¯A3‚È‚çˆø‚«•ª‚¯
+int resultImg;					//ç”»åƒãƒãƒ³ãƒ‰ãƒ«å€¤
+int nextSelect;					//æ¬¡ã®ç”»é¢ã‚’ã©ã†ã™ã‚‹ã‹ã®æ•°å€¤ã‚’æŒã¤
+int colorBox1, colorBox2;		//ãƒžã‚¦ã‚¹ã‚ªãƒ³æ™‚ã«ãƒœãƒƒã‚¯ã‚¹ã®è‰²ã‚’å¤‰æ›´ã™ã‚‹
+int resultMousex, resultMousey;	//ãƒžã‚¦ã‚¹åº§æ¨™ã‚’å…¥ã‚Œã‚‹å¤‰æ•°
+int resultMouseInput;			//ãƒžã‚¦ã‚¹ã®å…¥åŠ›çŠ¶æ…‹
+int coutinue_fclor, end_fcolor;	//ãƒœãƒƒã‚¯ã‚¹å†…ã®æ–‡å­—è‰²
+
+void Result_Initialize(int winlose) {	//winloseãŒ1ãªã‚‰å‹ã¡ã€2ãªã‚‰è² ã‘ã€3ãªã‚‰å¼•ãåˆ†ã‘
 	backSprite = initSprite("images/1blackboard.png", 640, 480);
 	if (winlose == 1) {
-		//Ÿ‚¿‚ÌŽž‚Ìˆ—
+		//å‹ã¡ã®æ™‚ã®å‡¦ç†
 		resultImg = LoadGraph("images/win.png");
 		winlose = 0;
 	}
-	else if(winlose == 2){
-		//•‰‚¯‚ÌŽž‚Ìˆ—
+	else if (winlose == 2) {
+		//è² ã‘ã®æ™‚ã®å‡¦ç†
 		resultImg = LoadGraph("images/lose.png");
 		winlose = 0;
 	}
 	else {
-		//ˆø‚«•ª‚¯‚Ìˆ—
+		//å¼•ãåˆ†ã‘ã®å‡¦ç†
 		resultImg = LoadGraph("images/draw.png");
 		winlose = 0;
 	}
-	
-	//coutinueƒ{ƒbƒNƒX‰Šú’l
-	coutinueBox_x1 = 100; coutinueBox_x2 = 210;
-	coutinueBox_y1 = 350; coutinueBox_y2 = 390;
 
-	//endƒ{ƒbƒNƒX‰Šú’l
-	endBox_x1 = 400; endBox_x2 = 510;
-	endBox_y1 = 350; endBox_y2 = 390;
 
-	//•¶Žš—ñÀ•W‰Šú’l
-	string_y1 = string_y2 = 360;
+	//ç¸ã®è‰²è¨­å®š
+	colorBox1 = GetColor(0, 255, 0);
+	colorBox2 = GetColor(0, 0, 0);
+
+	//æ–‡å­—è‰²è¨­å®š
+	coutinue_fclor = GetColor(0, 0, 0);
+	end_fcolor = GetColor(0, 0, 0);
+
+	nextSelect = SCENE_NONE;
 }
 
 void Result_Finalize() {
 	DeleteGraph(resultImg);
 	nextSelect = 0;
+	resultMouseInput = 0;
 }
 
 void Result_Update() {
+	GetMousePoint(&resultMousex, &resultMousey);
 	Result_Select();
+	resultMouseInput = GetMouseInput();
 	if (CheckHitKey(KEY_INPUT_RETURN) == 1) {
-		if (nextSelect == 1) {
-			//ƒQ[ƒ€‰æ–Ê‚Ö
+		if (nextSelect == SCENE_GAME) {
+			//ã‚²ãƒ¼ãƒ ç”»é¢ã¸
 			Result_Finalize();
 			SceneMgr_ChangeScene(SCENE_GAME);
 		}
-		else if (nextSelect == 2) {
-			//ƒ^ƒCƒgƒ‹‰æ–Ê‚Ö
+		else if (nextSelect == SCENE_TITLE) {
+			//ã‚¿ã‚¤ãƒˆãƒ«ç”»é¢ã¸
 			Result_Finalize();
 			SceneMgr_ChangeScene(SCENE_TITLE);
 		}
@@ -65,30 +75,53 @@ void Result_Update() {
 void Result_Select()
 {
 	if (CheckHitKey(KEY_INPUT_RIGHT)) {
-		coutinueBox_y1 = 350;
-		coutinueBox_y2 = 390;
-		endBox_y1 = 330;
-		endBox_y2 = 370;
-		string_y1 = 360;
-		string_y2 = 340;
-		nextSelect = 2;
+		coutinue_fclor = GetColor(0, 0, 0);
+		end_fcolor = GetColor(255, 0, 0);
+		nextSelect = SCENE_TITLE;
 	}
 	if (CheckHitKey(KEY_INPUT_LEFT)) {
-		coutinueBox_y1 = 330;
-		coutinueBox_y2 = 370;
-		endBox_y1 = 350;
-		endBox_y2 = 390;
-		string_y1 = 340;
-		string_y2 = 360;
-		nextSelect = 1;
+		coutinue_fclor = GetColor(255, 0, 0);
+		end_fcolor = GetColor(0, 0, 0);
+		nextSelect = SCENE_GAME;
 	}
 }
 
 void Result_Draw() {
 	drawAtSprite(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, &backSprite, TRUE);
 	DrawGraph(200, 50, resultImg, FALSE);
-	DrawBox(coutinueBox_x1, coutinueBox_y1, coutinueBox_x2, coutinueBox_y2, GetColor(0, 0, 0), FALSE);
-	DrawBox(endBox_x1, endBox_y1, endBox_x2, endBox_y2, GetColor(0, 0, 0), FALSE);
-	DrawFormatString(130, string_y1, GetColor(0, 0, 0), "‘±‚¯‚é");
-	DrawFormatString(430, string_y2, GetColor(0, 0, 0), "‚â‚ß‚é");
+	DrawBox(90, 370, 190, 410, colorBox1, FALSE);
+	DrawBox(390, 370, 490, 410, colorBox2, FALSE);
+	DrawFormatString(115, 380, coutinue_fclor, "ç¶šã‘ã‚‹");
+	DrawFormatString(415, 380, end_fcolor, "ã‚„ã‚ã‚‹");
+	Result_EndMouseSelect();
+}
+
+void Result_EndMouseSelect()
+{
+	//å·¦ã®ãƒœãƒƒã‚¯ã‚¹
+	if (resultMousex >= 90 && resultMousex <= 190 && resultMousey >= 370 && resultMousey <= 410) {
+		//è‰²ã‚’å¤‰ãˆã‚‹å‡¦ç†
+		colorBox1 = GetColor(0, 255, 0);
+		if ((resultMouseInput & MOUSE_INPUT_LEFT) != 0) {
+			Result_Finalize();
+			SceneMgr_ChangeScene(SCENE_GAME);
+		}
+	}
+	else {
+		colorBox1 = GetColor(0, 0, 0);
+
+	}
+
+	//å³ã®ãƒœãƒƒã‚¯ã‚¹
+	if (resultMousex >= 390 && resultMousex <= 490 && resultMousey >= 370 && resultMousey <= 410) {
+		//è‰²ã‚’å¤‰ãˆã‚‹å‡¦ç†
+		colorBox2 = GetColor(0, 255, 0);
+		if ((resultMouseInput & MOUSE_INPUT_LEFT) != 0) {
+			Result_Finalize();
+			SceneMgr_ChangeScene(SCENE_TITLE);
+		}
+	}
+	else {
+		colorBox2 = GetColor(0, 0, 0);
+	}
 }
