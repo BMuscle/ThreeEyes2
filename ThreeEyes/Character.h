@@ -9,7 +9,7 @@ enum CHAR_TYPE {
 	CHAR_EASY,
 	CHAR_NORMAL,
 	CHAR_DIF,
-	CHAR_SIZE,
+	CHAR_SIZE = 3,
 };
 
 void initCharacter(void);

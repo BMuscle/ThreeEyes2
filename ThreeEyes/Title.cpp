@@ -38,7 +38,7 @@ void Title_Update() {
 	if (getCurrentLoadState() > 0) {
 		if (isLoadEnd()) {
 			Title_Finalize();
-			SceneMgr_ChangeScene(SCENE_GAME);
+			SceneMgr_ChangeScene(SCENE_DIFFICULTY);
 		}
 		return;
 	}
