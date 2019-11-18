@@ -4,6 +4,7 @@
 #include"Result.h"
 #include "Sprite.h"
 #include "LoadEffect.h"
+#include "Character.h"
 
 enum TURN {//ƒ^[ƒ“î•ñ
 	PLAYER = 1,

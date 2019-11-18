@@ -4,6 +4,7 @@
 #include "MyMouse.h"
 #include "MyWindow.h"
 #include "LoadEffect.h"
+#include "Character.h"
 
 // プログラムは WinMain から始まります
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
@@ -20,7 +21,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			}
 		SetMouseDispFlag(TRUE);
 		initLoadEffect();
+		initCharacter();
 		SceneMgr_Initialize();			//初期化処理
+		
 		
 
 		while (ScreenFlip() == 0 && ProcessMessage() == 0 && ClearDrawScreen() == 0) {//画面更新 & メッセージ処理 & 画面消去
@@ -31,9 +34,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 				SceneMgr_Update();
 				SceneMgr_Draw();
 				LoadEffect_Draw();
+				Character_Draw();
 				
 		}
-
+		deleteCharacter();
 		deleteLoadEffect();
 		WaitKey();				// キー入力待ち
 
