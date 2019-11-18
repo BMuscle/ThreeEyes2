@@ -5,13 +5,15 @@
 #include "MyWindow.h"
 #include "MyMouse.h"
 #include "MassageBox.h"
+#include"LoadEffect.h"
 
 static Sprite backSprite;
 int nextSelect = 0;		//次の画面をどうするかの数値を持つ
 
 static int resultImg;					//画像ハンドル値
 static int resultMousex, resultMousey;	//マウス座標を入れる変数
-
+static int SEnter, SSelect;				//SE用のハンドル
+static int startSelect, endSelect;		//SE管理用変数
 static int fontResult;		//フォント用ハンドル
 
 static MassageBox startGame;
@@ -40,7 +42,8 @@ void Result_Initialize(int winlose) {	//winloseが1なら勝ち、2なら負け、3なら引き
 	fontResult = CreateFontToHandle("ゴシック", 15, 6, DX_FONTTYPE_ANTIALIASING);
 	startGame = initMassageBox("images/enpitu.png", "続ける", GetColor(0, 0, 0), fontResult, 180, 370, 170, 60);
 	endGame = initMassageBox("images/enpitu.png", "終了", GetColor(0, 0, 0), fontResult, 480, 370, 170, 60);
-
+	startSelect = 0;
+	endSelect = 0;
 
 
 	nextSelect = SCENE_NONE;
@@ -55,6 +58,9 @@ void Result_Finalize() {
 
 void Result_Update() {
 	GetMousePoint(&resultMousex, &resultMousey);
+	Result_EndMouseSelect();
+	Result_StartMouseSelect();
+	/*ここにシーンチェンジとエフェクトを入れる*/
 }
 
 
@@ -63,28 +69,50 @@ void Result_Draw() {
 	DrawGraph(200, 50, resultImg, FALSE);
 	drawAtMassageBox(&startGame, TRUE);
 	drawAtMassageBox(&endGame, TRUE);
-	Result_EndMouseSelect();
 }
 
-void Result_StartMouseSelect()
+void Result_StartMouseSelect()			//マウスのカーソルを続けるに合わせると文字の色が変わる
 {
 	//左のボックス
-	if (resultMousex >= 90 && resultMousex <= 190 && resultMousey >= 370 && resultMousey <= 410) {
-		
+	if (resultMousex >= startGame.mystr.x - startGame.sprite.width / 2 + 10 && resultMousex <= startGame.mystr.x + startGame.sprite.width / 2 - 30
+		&& resultMousey >= startGame.mystr.y - startGame.sprite.height / 2 + 10 && resultMousey <= startGame.mystr.y + startGame.sprite.height / 2 - 10) {
+		startGame.mystr.color = 0xff0000;
+		if (startSelect == 0) {			//SE管理用のIF文
+			PlaySoundMem(SSelect, DX_PLAYTYPE_BACK);
+			startSelect = 1;
+		}
+		if (getLeftDown() != 0) {
+			PlaySoundMem(SEnter, DX_PLAYTYPE_BACK);
+			SceneMgr_ChangeScene(SCENE_TITLE);
+			/*ここに暗転のエフェクトを描く*/
+			//onLoadFlag();
+		}
 	}
 	else {
-
-
+		startGame.mystr.color = 0x000000;
+		startSelect = 0;
 	}
 }
 
-void Result_EndMouseSelect()
+void Result_EndMouseSelect()		//マウスのカーソルを終了に合わせると文字の色が変わる
 {
 	//右のボックス
-	if (resultMousex >= 390 && resultMousex <= 490 && resultMousey >= 370 && resultMousey <= 410) {
-		
+	if (resultMousex >= endGame.mystr.x - endGame.sprite.width / 2 + 10 && resultMousex <= endGame.mystr.x + endGame.sprite.width / 2 - 30
+		&& resultMousey >= endGame.mystr.y - endGame.sprite.height / 2 + 10 && resultMousey <= endGame.mystr.y + endGame.sprite.height / 2 - 10) {
+		endGame.mystr.color = 0xff0000;
+		if (endSelect == 0) {
+			PlaySoundMem(SSelect, DX_PLAYTYPE_BACK);
+			endSelect = 1;
+		}
+		if (getLeftDown() != 0) {
+			PlaySoundMem(SEnter, DX_PLAYTYPE_BACK);
+			/*ここに終了処理を描く*/
+
+		}
 	}
 	else {
-
+		endGame.mystr.color = 0x000000;
+		endSelect = 0;
 	}
+	
 }
