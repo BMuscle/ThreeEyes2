@@ -4,6 +4,7 @@
 #include"Result.h"
 #include "Sprite.h"
 #include "LoadEffect.h"
+#include "Character.h"
 
 enum TURN {//ターン情報
 	PLAYER = 1,
@@ -66,7 +67,7 @@ void Game_Update() {//計算処理
 	}
 	gameResult = isGameEnd();
 	if (gameResult > 0) {//ゲームが終わっているなら
-		onLoadFlag();
+		onLoadFlag(LOAD_ERASE);
 		return;
 	}
 
