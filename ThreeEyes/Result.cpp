@@ -8,7 +8,6 @@
 #include"LoadEffect.h"
 
 static Sprite backSprite;
-int nextSelect = 0;		//次の画面をどうするかの数値を持つ
 
 static int resultImg;					//画像ハンドル値
 static int resultMousex, resultMousey;	//マウス座標を入れる変数
@@ -46,14 +45,12 @@ void Result_Initialize(int winlose) {	//winloseが1なら勝ち、2なら負け、3なら引き
 	endSelect = 0;
 
 
-	nextSelect = SCENE_NONE;
 	startGame.mystr.alpha = 255 * 0.5;
 	endGame.mystr.alpha = 255 * 0.5;
 }
 
 void Result_Finalize() {
 	DeleteGraph(resultImg);
-	nextSelect = 0;
 }
 
 void Result_Update() {
