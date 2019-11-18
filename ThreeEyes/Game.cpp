@@ -67,7 +67,7 @@ void Game_Update() {//ŒvZˆ—
 	}
 	gameResult = isGameEnd();
 	if (gameResult > 0) {//ƒQ[ƒ€‚ªI‚í‚Á‚Ä‚¢‚é‚È‚ç
-		onLoadFlag();
+		onLoadFlag(LOAD_ERASE);
 		return;
 	}
 

@@ -66,7 +66,7 @@ void Title_StartMouseSelect() {
 		}
 		if ( getLeftDown() != 0) {
 			PlaySoundMem(SEnter, DX_PLAYTYPE_BACK);
-			onLoadFlag();
+			onLoadFlag(LOAD_FLUSH);
 		}
 	}
 	else {
