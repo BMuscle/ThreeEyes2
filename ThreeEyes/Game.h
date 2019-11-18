@@ -2,6 +2,8 @@
 #include"DxLib.h"
 #include "MyWindow.h"
 #include "MyMouse.h"
+#include "Lottery.h"
+
 #define RECT_WIDTH 100	//１マスの幅
 #define RECT_HEIGHT 100	//１マスの高さ
 #define BOARD_SIZE 3 //盤面の１方向のマスの数

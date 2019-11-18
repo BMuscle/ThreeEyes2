@@ -33,6 +33,7 @@ static int gameResult;		//ゲームの結果情報
 
 void Game_Initialize() {//初期化処理
 	nowTurn = PLAYER;			//最初のターンをプレイヤーに
+	initLottery(nowTurn);
 	isGameClear = FALSE;		//ゲームクリアフラグをOFF
 	gameResult = 0;				//ゲームの結果初期化
 
@@ -50,6 +51,7 @@ void Game_Initialize() {//初期化処理
 
 void Game_Finalize() {//終了処理
 	//画像の消去
+	deleteLottery();
 	deleteSprite(&backSprite);
 	deleteSprite(&frame);
 	deleteSprite(&maru);
@@ -65,6 +67,7 @@ void Game_Update() {//計算処理
 		}
 		return;	//ロード状態なので以降処理しない
 	}
+	updateLottery();
 	gameResult = isGameEnd();
 	if (gameResult > 0) {//ゲームが終わっているなら
 		onLoadFlag(LOAD_ERASE);
@@ -103,6 +106,7 @@ void Game_Update() {//計算処理
 void Game_Draw() {//描画処理
 	drawAtSprite(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, &backSprite, TRUE);//背景描画
 	boardDraw();//盤面情報描画
+	drawLottery();
 }
 
 int getGameResult() {//ゲームの結果を返す

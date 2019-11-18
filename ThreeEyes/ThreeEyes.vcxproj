@@ -160,6 +160,7 @@
     <ClCompile Include="Difficulty.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="LoadEffect.cpp" />
+    <ClCompile Include="Lottery.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MassageBox.cpp" />
     <ClCompile Include="MyDrawString.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="Difficulty.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="LoadEffect.h" />
+    <ClInclude Include="Lottery.h" />
     <ClInclude Include="MassageBox.h" />
     <ClInclude Include="MyDrawString.h" />
     <ClInclude Include="MyMouse.h" />
