@@ -52,7 +52,10 @@ void Result_Initialize(int winlose) {	//winlose‚ª1‚È‚çŸ‚¿A2‚È‚ç•‰‚¯A3‚È‚çˆø‚«
 }
 
 void Result_Finalize() {
-	DeleteGraph(resultImg);
+	DeleteGraph(resultImg);					//‰æ‘œ‚ÌŠJ•úˆ—
+	deleteMassageBox(&startGame);
+	deleteMassageBox(&endGame);
+	deleteSprite(&backSprite);
 	nextSelect = 0;
 }
 

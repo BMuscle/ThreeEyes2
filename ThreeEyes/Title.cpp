@@ -31,7 +31,10 @@ void Title_Initialize() {
 }
 
 void Title_Finalize() {
-	DeleteGraph(Title);
+	DeleteGraph(Title);						//‰æ‘œ‚ÌŠJ•úˆ—
+	deleteMassageBox(&startGame);
+	deleteMassageBox(&endGame);
+	deleteSprite(&backSprite);
 }
 
 void Title_Update() {
