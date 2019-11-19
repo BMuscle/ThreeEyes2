@@ -5,6 +5,7 @@
 #define ICON_INTERVAL_Y 130
 
 static Sprite backSprite;	//îwåiâÊëú
+static Sprite profile[CHAR_SIZE];
 static Sprite charIcon[CHAR_SIZE][2];
 static BOOL mouseOnFlag[CHAR_SIZE];
 static CHAR_TYPE holdChar;
@@ -13,6 +14,7 @@ static CHAR_TYPE holdChar;
 void Difficulty_Initialize() {
 	#define ICON_WIDTH 108
 	#define ICON_HEIGHT 108
+	backSprite = initSprite("images/difback.png", WINDOW_WIDTH, WINDOW_HEIGHT);
 	charIcon[0][0] = initSprite("images/characters/ê_ë„ôz/icon.png", ICON_WIDTH, ICON_HEIGHT);
 	charIcon[0][1] = initSprite("images/characters/ê_ë„ôz/iconon.png", ICON_WIDTH, ICON_HEIGHT);
 
@@ -22,7 +24,11 @@ void Difficulty_Initialize() {
 	charIcon[2][0] = initSprite("images/characters/íÜìàî¸â√/icon.png", ICON_WIDTH, ICON_HEIGHT);
 	charIcon[2][1] = initSprite("images/characters/íÜìàî¸â√/iconon.png", ICON_WIDTH, ICON_HEIGHT);
 
-	backSprite = initSprite("images/difback.png", WINDOW_WIDTH, WINDOW_HEIGHT);
+	#define PROF_WIDTH 385
+	#define PROF_HEIGHT 289
+	profile[0] = initSprite("images/characters/ê_ë„ôz/prof.png", PROF_WIDTH, PROF_HEIGHT);
+	profile[1] = initSprite("images/characters/ñ]åéÇ≠ÇÈÇ›/prof.png", PROF_WIDTH, PROF_HEIGHT);
+	profile[2] = initSprite("images/characters/íÜìàî¸â√/prof.png", PROF_WIDTH, PROF_HEIGHT);
 
 
 	for (int i = 0; i < CHAR_SIZE; i++) {
@@ -55,8 +61,8 @@ void Difficulty_Update() {
 
 		if(a * a + b * b <= r * r){
 			mouseOnFlag[i] = TRUE;
+			holdChar = (CHAR_TYPE)i;
 			if (getLeftDown()) {
-				holdChar = (CHAR_TYPE)i;
 				onLoadFlag(LOAD_FLUSH);
 				return;
 			}
@@ -76,6 +82,7 @@ void Difficulty_Draw() {
 		}
 		//SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
 		drawAtSprite(ICON_OFFSET_X, ICON_OFFSET_Y + i * ICON_INTERVAL_Y, &charIcon[i][mouseOnFlag[i]], TRUE);
+		drawAtSprite(WINDOW_WIDTH / 2 + 100, WINDOW_HEIGHT / 2, &profile[holdChar], TRUE);
 		//SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 		
 	} 
