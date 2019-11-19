@@ -57,6 +57,13 @@ void Result_Finalize() {
 }
 
 void Result_Update() {
+	if (getCurrentLoadState() > 0) {
+		if (isLoadEnd()) {
+			Result_Finalize();
+			SceneMgr_ChangeScene(SCENE_TITLE);
+		}
+		return;
+	}
 	GetMousePoint(&resultMousex, &resultMousey);
 	Result_EndMouseSelect();
 	Result_StartMouseSelect();
@@ -83,9 +90,7 @@ void Result_StartMouseSelect()			//ƒ}ƒEƒX‚ÌƒJ[ƒ\ƒ‹‚ğ‘±‚¯‚é‚É‡‚í‚¹‚é‚Æ•¶š‚ÌF‚
 		}
 		if (getLeftDown() != 0) {
 			PlaySoundMem(SEnter, DX_PLAYTYPE_BACK);
-			SceneMgr_ChangeScene(SCENE_TITLE);
-			/*‚±‚±‚ÉˆÃ“]‚ÌƒGƒtƒFƒNƒg‚ğ•`‚­*/
-			//onLoadFlag();
+			onLoadFlag(LOAD_FLUSH);
 		}
 	}
 	else {
