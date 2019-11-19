@@ -89,6 +89,7 @@ void Result_StartMouseSelect()			//ƒ}ƒEƒX‚ÌƒJ[ƒ\ƒ‹‚ğ‘±‚¯‚é‚É‡‚í‚¹‚é‚Æ•¶š‚ÌF‚
 			startSelect = 1;
 		}
 		if (getLeftDown() != 0) {
+			startGame.mystr.color = 0x00ff00;
 			PlaySoundMem(SEnter, DX_PLAYTYPE_BACK);
 			onLoadFlag(LOAD_FLUSH);
 		}
@@ -110,6 +111,7 @@ void Result_EndMouseSelect()		//ƒ}ƒEƒX‚ÌƒJ[ƒ\ƒ‹‚ğI—¹‚É‡‚í‚¹‚é‚Æ•¶š‚ÌF‚ª•Ï‚í
 			endSelect = 1;
 		}
 		if (getLeftDown() != 0) {
+			endGame.mystr.color = 0x00ff00;
 			PlaySoundMem(SEnter, DX_PLAYTYPE_BACK);
 			/*‚±‚±‚ÉI—¹ˆ—‚ğ•`‚­*/
 

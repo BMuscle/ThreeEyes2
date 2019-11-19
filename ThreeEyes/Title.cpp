@@ -65,6 +65,7 @@ void Title_StartMouseSelect() {
 			startSelect = 1;
 		}
 		if ( getLeftDown() != 0) {
+			startGame.mystr.color = 0x00ff00;
 			PlaySoundMem(SEnter, DX_PLAYTYPE_BACK);
 			onLoadFlag(LOAD_FLUSH);
 		}
@@ -86,6 +87,7 @@ void Title_EndMouseSelect() {
 		}
 		if (getLeftDown() != 0) {
 			PlaySoundMem(SEnter, DX_PLAYTYPE_BACK);
+			endGame.mystr.color = 0x00ff00;
 			/*Ç±Ç±Ç…èIóπèàóùÇï`Ç≠*/
 
 		}
