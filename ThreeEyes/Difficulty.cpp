@@ -36,7 +36,7 @@ void Difficulty_Update() {
 		if (mouseX >= WINDOW_WIDTH / 2 + (i - 1) * 150 - charname[i].width / 2 && mouseX <= WINDOW_WIDTH / 2 + (i - 1) * 150 + charname[i].width / 2
 			&& mouseY >= WINDOW_HEIGHT * 0.4 - charname[i].height / 2 && mouseY <= WINDOW_HEIGHT * 0.4 + charname[i].height / 2) {
 			mouseOnFlag[i] = TRUE;
-			setCharacter((CHAR_TYPE)(i + 1));
+			setCharacter((CHAR_TYPE)(i + 1),CHAR_EX_NORMAL);
 			if (getLeftDown()) {
 				onLoadFlag(LOAD_ERASE);
 				return;
