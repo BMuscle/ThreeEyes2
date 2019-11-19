@@ -90,12 +90,19 @@ void Game_Update() {//計算処理
 	else if (nowTurn == COM) {//コンピュータの行動
 		Pos pos = cpuThink(myBoard, nowTurn);//コンピュータの手を計算し格納
 		myBoard.board[pos.y][pos.x] = nowTurn;//手通りに盤面に格納
+		cpuUpdate();
 		isSet = TRUE;
 	}
 
 	if (isSet) {//石置かれたなら エンドチェック&ターンチェンジ
 		if (isWin(myBoard, nowTurn)) {//勝っている
 			isGameClear = TRUE;//勝利フラグON
+			if (nowTurn == PLAYER) {
+				setCharacterExpression(CHAR_EX_LOSE);
+			}
+			else {
+				setCharacterExpression(CHAR_EX_WIN);
+			}
 		}
 		else {
 			nowTurn = changeTurn(nowTurn);//ターンチェンジ
@@ -317,4 +324,40 @@ int isGameEnd() {
 		return 3;
 	}
 	return 0;
+}
+
+
+void cpuUpdate() {
+	int ex = 0;//表情　勝ち1　負け2　優先は負け
+	TURN turn = nowTurn;
+	for (int i = 0; i < 2; i++) {//あと１つで勝てるパターン探索→あと１つで負けるパターン探索
+		for (int y = 0; y < BOARD_SIZE; y++) {
+			for (int x = 0; x < BOARD_SIZE; x++) {
+				if (isSetStone(myBoard, x, y)) {
+					Board tmp =myBoard;
+					tmp.board[y][x] = turn;
+					if (isWin(tmp, turn)) {
+						ex = i + 1;//更新
+					}
+				}
+			}
+		}
+		turn = changeTurn(turn);
+	}
+
+	switch (ex) {
+	case 0:
+		setCharacterExpression(CHAR_EX_NORMAL);
+		//メッセージ変更
+		break;
+	case 1:
+		setCharacterExpression(CHAR_EX_WINNING);
+		//メッセージ変更
+		break;
+	case 2:
+		setCharacterExpression(CHAR_EX_LOSING);
+		//メッセージ変更
+		break;
+	}
+
 }
