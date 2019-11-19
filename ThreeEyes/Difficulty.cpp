@@ -14,7 +14,6 @@ void Difficulty_Initialize() {
 	for (int i = 0; i < CHAR_SIZE; i++) {
 		mouseOnFlag[i] = 0;
 	}
-
 }
 void Difficulty_Finalize() {
 	deleteSprite(&backSprite);
