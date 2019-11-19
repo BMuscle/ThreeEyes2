@@ -238,6 +238,7 @@ BOOL isDrow(Board board) {  //引き分け判定 変更済み 石が置ける場所を発見したらre
 
 
 Pos cpuThink(Board board, TURN turn) {//CPU手思考
+	timeCnt();
 	Pos pos{ -1, -1 };//範囲外エラー出るよう初期化
 	for (int i = 0; i < 2; i++) {//あと１つで勝てるパターン探索→あと１つで負けるパターン探索
 		for (int y = 0; y < BOARD_SIZE; y++) {
@@ -312,4 +313,17 @@ int isGameEnd() {
 		return 3;
 	}
 	return 0;
+}
+
+void timeCnt() {
+
+	int startTime, randTime;
+	
+	startTime = GetNowCount();
+
+	randTime = rand() % 4 + 1;
+
+	while (GetNowCount() - startTime < (randTime * 1000)) {
+
+	}
 }
