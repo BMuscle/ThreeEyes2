@@ -19,10 +19,10 @@ void initLottery(int turn) {
 	isRun = FALSE;
 	currentTurn = turn - 1;//ƒQ[ƒ€‚Ìƒ^[ƒ“‚Í‚Pn‚Ü‚è‚Ì‚½‚ß‚Pˆø‚­	
 	frameCount = 0;
-	countLimit = 10;
+	countLimit = 7;
 	nowTurn = 0;
 	times = 0;
-	limitTimes = GetRand(5) + 5;
+	limitTimes = GetRand(2) + 5;
 
 	lottery[0] = initSprite("images/senkou1.png", 274, 318);
 	lottery[1] = initSprite("images/koukou1.png", 274, 318);
@@ -47,7 +47,7 @@ void updateLottery() {
 		if (frameCount % countLimit == 0) {
 			frameCount = 0;
 			nowTurn = (nowTurn + 1) % 2 ;
-			countLimit *= 1.3;
+			countLimit *= 1.4;
 			times++;
 			if (limitTimes < times && nowTurn != currentTurn) {
 				isEnd = TRUE;
