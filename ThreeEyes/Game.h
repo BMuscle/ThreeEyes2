@@ -39,4 +39,4 @@ int getGameResult(void);//ゲームの勝ち負け引き分けの結果を受け取る
 int isGameEnd(void);	//ゲームが終わっているか判定
 TURN changeTurn(TURN turn);//ターンを交代する
 
-void timeCnt(void);  //cpuの思考時間
+BOOL timeCnt(void);  //cpuの思考時間

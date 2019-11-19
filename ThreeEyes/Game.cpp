@@ -29,9 +29,11 @@ static TURN nowTurn;		//現在のターン情報
 static BOOL isGameClear;	//ゲームがクリアされているかどうか
 static int gameResult;		//ゲームの結果情報
 
+static int startTime;
+
 
 void Game_Initialize() {//初期化処理
-	nowTurn = PLAYER;			//最初のターンをプレイヤーに
+	nowTurn = (TURN)(GetRand(1) + 1);
 	isGameClear = FALSE;		//ゲームクリアフラグをOFF
 	gameResult = 0;				//ゲームの結果初期化
 
@@ -81,9 +83,10 @@ void Game_Update() {//計算処理
 		if (isSetStone(myBoard, pos.x, pos.y)) {	//石置けるかチェック
 			myBoard.board[pos.y][pos.x] = nowTurn;	//置く
 			isSet = TRUE;
+			startTime = GetNowCount();//ディレイのカウンタリセット
 		}
 	}
-	else if (nowTurn == COM) {//コンピュータの行動
+	else if (nowTurn == COM && timeCnt()) {//コンピュータの行動
 		Pos pos = cpuThink(myBoard, nowTurn);//コンピュータの手を計算し格納
 		myBoard.board[pos.y][pos.x] = nowTurn;//手通りに盤面に格納
 		isSet = TRUE;
@@ -315,15 +318,14 @@ int isGameEnd() {
 	return 0;
 }
 
-void timeCnt() {
+BOOL timeCnt() {
 
-	int startTime, randTime;
+	static int randTime = (rand() % 4) * 200+ 300;
 	
-	startTime = GetNowCount();
-
-	randTime = rand() % 4 + 1;
-
-	while (GetNowCount() - startTime < (randTime * 1000)) {
-
+	if (GetNowCount() - startTime > (randTime)) {
+		startTime = GetNowCount();
+		randTime = (rand() % 4) * 200 + 300;
+		return TRUE;
 	}
+	return FALSE;
 }
