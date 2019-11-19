@@ -71,3 +71,7 @@ void drawLottery() {
 		mydrawAtString(&message);
 	}
 }
+
+BOOL isLotteryEnd() {
+	return isEnd;
+}

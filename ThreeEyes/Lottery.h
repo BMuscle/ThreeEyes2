@@ -8,3 +8,5 @@ void initLottery(int turn);
 void deleteLottery(void);
 void updateLottery(void);
 void drawLottery(void);
+
+BOOL isLotteryEnd(void);
