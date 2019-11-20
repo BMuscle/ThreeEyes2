@@ -87,7 +87,7 @@ void Game_Update() {//計算処理
 		}
 	}
 	else if (nowTurn == COM && timeCnt()) {//コンピュータの行動
-		Pos pos = cpuThink(myBoard, nowTurn);//コンピュータの手を計算し格納
+		Pos pos = cpuThink2(myBoard, nowTurn);//コンピュータの手を計算し格納
 		myBoard.board[pos.y][pos.x] = nowTurn;//手通りに盤面に格納
 		isSet = TRUE;
 	}
@@ -241,7 +241,6 @@ BOOL isDrow(Board board) {  //引き分け判定 変更済み 石が置ける場所を発見したらre
 
 
 Pos cpuThink(Board board, TURN turn) {//CPU手思考
-	timeCnt();
 	Pos pos{ -1, -1 };//範囲外エラー出るよう初期化
 	for (int i = 0; i < 2; i++) {//あと１つで勝てるパターン探索→あと１つで負けるパターン探索
 		for (int y = 0; y < BOARD_SIZE; y++) {
@@ -300,6 +299,96 @@ Pos cpuThink(Board board, TURN turn) {//CPU手思考
 	}
 	return pos;
 }
+
+Pos cpuThink2(Board board, TURN turn) {//CPU手思考
+	Pos pos{ -1, -1 };//範囲外エラー出るよう初期化
+	int rx = GetRand(2), ry = GetRand(2);
+	if (isSetStone(board, rx, ry)) {
+		pos.x = rx;
+		pos.y = ry;
+		return pos;
+	}
+	rx = GetRand(2), ry = GetRand(2);
+	if (isSetStone(board, rx, ry)) {
+		pos.x = rx;
+		pos.y = ry;
+		return pos;
+	}
+
+
+	for (int i = 0; i < 2; i++) {//あと１つで勝てるパターン探索→あと１つで負けるパターン探索
+		for (int y = 0; y < BOARD_SIZE; y++) {
+			for (int x = 0; x < BOARD_SIZE; x++) {
+				if (isSetStone(board, x, y)) {
+					pos.x = x;
+					pos.y = y;
+				}
+			}
+		}
+	}
+	return pos;
+}
+
+
+Pos cpuThink3(Board board, TURN turn) {//CPU手思考
+	Pos pos{ -1, -1 };//範囲外エラー出るよう初期化
+	for (int y = 0; y < BOARD_SIZE; y++) {
+		for (int x = 0; x < BOARD_SIZE; x++) {
+			if (isSetStone(board, x, y)) {
+				Board tmp = board;
+				tmp.board[y][x] = turn;
+				if (isWin(tmp, turn)) {
+					pos.x = x;
+					pos.y = y;
+					return pos;
+				}
+			}
+		}
+	}
+
+	if (isSetStone(board, 1, 1)) {//真ん中
+		pos.x = 1;
+		pos.y = 1;
+		return pos;
+	}
+	if (isSetStone(board, 0, 0)) {//角
+		pos.x = 0;
+		pos.y = 0;
+		return pos;
+	}
+	if (isSetStone(board, 2, 2)) {
+		pos.x = 2;
+		pos.y = 2;
+		return pos;
+	}
+	if (isSetStone(board, 2, 0)) {
+		pos.x = 2;
+		pos.y = 0;
+		return pos;
+	}
+	if (isSetStone(board, 0, 2)) {
+		pos.x = 0;
+		pos.y = 2;
+		return pos;
+	}
+
+
+
+	for (int i = 0; i < 2; i++) {
+		for (int y = 0; y < BOARD_SIZE; y++) {
+			for (int x = 0; x < BOARD_SIZE; x++) {
+				if (isSetStone(board, x, y)) {
+					pos.x = x;
+					pos.y = y;
+				}
+			}
+		}
+	}
+	return pos;
+}
+
+
+
 
 int isGameEnd() {
 	//ゲームが終わっているならば

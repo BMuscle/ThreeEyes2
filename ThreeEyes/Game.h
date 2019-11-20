@@ -34,6 +34,8 @@ BOOL isWin(Board board, TURN turn);//勝っている？
 BOOL isDrow(Board board);//引き分け？
 
 Pos cpuThink(Board board, TURN turn);//CPUの手　計算
+Pos cpuThink2(Board board, TURN turn);//CPUの手　計算
+Pos cpuThink3(Board board, TURN turn);//CPUの手　計算
 
 int getGameResult(void);//ゲームの勝ち負け引き分けの結果を受け取る
 int isGameEnd(void);	//ゲームが終わっているか判定
