@@ -6,51 +6,53 @@
 #include "LoadEffect.h"
 #include "Character.h"
 
-enum TURN {//ƒ^[ƒ“î•ñ
+enum TURN {//ã‚¿ãƒ¼ãƒ³æƒ…å ±
 	PLAYER = 1,
 	COM = 2,
 };
 
-struct Board//”Õ–Êî•ñ
+struct Board//ç›¤é¢æƒ…å ±
 {
 	int board[BOARD_SIZE][BOARD_SIZE];
 };
 
-struct Pos {//”Õ–Ê‚ÌÀ•Wî•ñ
+struct Pos {//ç›¤é¢ã®åº§æ¨™æƒ…å ±
 	int x, y;
 };
 
-static Sprite backSprite;	//”wŒi‰æ‘œ
-static Sprite frame;		//˜g‚Ì‰æ‘œ
-static Sprite maru;			//ŠÛ‚Ì‰æ‘œ
-static Sprite batu;			//”±‚Ì‰æ‘œ
+static Sprite backSprite;	//èƒŒæ™¯ç”»åƒ
+static Sprite frame;		//æ ã®ç”»åƒ
+static Sprite maru;			//ä¸¸ã®ç”»åƒ
+static Sprite batu;			//ç½°ã®ç”»åƒ
 
-static Board myBoard;		//”Õ–Êî•ñ
-static TURN nowTurn;		//Œ»İ‚Ìƒ^[ƒ“î•ñ
-static BOOL isGameClear;	//ƒQ[ƒ€‚ªƒNƒŠƒA‚³‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©
-static int gameResult;		//ƒQ[ƒ€‚ÌŒ‹‰Êî•ñ
+static Board myBoard;		//ç›¤é¢æƒ…å ±
+static TURN nowTurn;		//ç¾åœ¨ã®ã‚¿ãƒ¼ãƒ³æƒ…å ±
+static BOOL isGameClear;	//ã‚²ãƒ¼ãƒ ãŒã‚¯ãƒªã‚¢ã•ã‚Œã¦ã„ã‚‹ã‹ã©ã†ã‹
+static int gameResult;		//ã‚²ãƒ¼ãƒ ã®çµæœæƒ…å ±
+
+static int startTime;
 
 
-void Game_Initialize() {//‰Šú‰»ˆ—
-	nowTurn = PLAYER;			//Å‰‚Ìƒ^[ƒ“‚ğƒvƒŒƒCƒ„[‚É
+void Game_Initialize() {//åˆæœŸåŒ–å‡¦ç†
+	nowTurn = (TURN)(GetRand(1) + 1);
 	initLottery(nowTurn);
-	isGameClear = FALSE;		//ƒQ[ƒ€ƒNƒŠƒAƒtƒ‰ƒO‚ğOFF
-	gameResult = 0;				//ƒQ[ƒ€‚ÌŒ‹‰Ê‰Šú‰»
+	isGameClear = FALSE;		//ã‚²ãƒ¼ãƒ ã‚¯ãƒªã‚¢ãƒ•ãƒ©ã‚°ã‚’OFF
+	gameResult = 0;				//ã‚²ãƒ¼ãƒ ã®çµæœåˆæœŸåŒ–
 
-	for (int y = 0; y < BOARD_SIZE; y++) {//board‰Šú‰»
+	for (int y = 0; y < BOARD_SIZE; y++) {//boardåˆæœŸåŒ–
 		for (int x = 0; x < BOARD_SIZE; x++) {
 			myBoard.board[y][x] = 0;
 		}
 	}
-	//‰æ‘œ‚Ì‰Šú‰»
+	//ç”»åƒã®åˆæœŸåŒ–
 	backSprite = initSprite("images/1blackboard.png", 640, 480);
 	frame = initSprite("images/flame.png", 300, 300);
 	maru = initSprite("images/maru.png", 100, 100);
 	batu = initSprite("images/batsu.png", 100, 100);
 }
 
-void Game_Finalize() {//I—¹ˆ—
-	//‰æ‘œ‚ÌÁ‹
+void Game_Finalize() {//çµ‚äº†å‡¦ç†
+	//ç”»åƒã®æ¶ˆå»
 	deleteLottery();
 	deleteSprite(&backSprite);
 	deleteSprite(&frame);
@@ -58,14 +60,14 @@ void Game_Finalize() {//I—¹ˆ—
 	deleteSprite(&batu);
 }
 
-void Game_Update() {//ŒvZˆ—
-	if (getCurrentLoadState() > 0) {//ƒ[ƒhó‘Ô‚È‚ç‚Î
-		if (isLoadEnd()) {//ƒ[ƒh‚ªI‚í‚èŸ‚ÌƒV[ƒ“‚Ö‚ÌˆÚs€”õ‚ª®‚Á‚½‚È‚ç‚Î
-			//ƒV[ƒ“•ÏX
+void Game_Update() {//è¨ˆç®—å‡¦ç†
+	if (getCurrentLoadState() > 0) {//ãƒ­ãƒ¼ãƒ‰çŠ¶æ…‹ãªã‚‰ã°
+		if (isLoadEnd()) {//ãƒ­ãƒ¼ãƒ‰ãŒçµ‚ã‚ã‚Šæ¬¡ã®ã‚·ãƒ¼ãƒ³ã¸ã®ç§»è¡Œæº–å‚™ãŒæ•´ã£ãŸãªã‚‰ã°
+			//ã‚·ãƒ¼ãƒ³å¤‰æ›´
 			SceneMgr_ChangeScene(SCENE_RESULT);
 			Result_Initialize(getGameResult());
 		}
-		return;	//ƒ[ƒhó‘Ô‚È‚Ì‚ÅˆÈ~ˆ—‚µ‚È‚¢
+		return;	//ãƒ­ãƒ¼ãƒ‰çŠ¶æ…‹ãªã®ã§ä»¥é™å‡¦ç†ã—ãªã„
 	}
 	updateLottery();
 	if (isLotteryEnd() == FALSE) {
@@ -73,34 +75,35 @@ void Game_Update() {//ŒvZˆ—
 		return;
 	}
 	gameResult = isGameEnd();
-	if (gameResult > 0) {//ƒQ[ƒ€‚ªI‚í‚Á‚Ä‚¢‚é‚È‚ç
+	if (gameResult > 0) {//ã‚²ãƒ¼ãƒ ãŒçµ‚ã‚ã£ã¦ã„ã‚‹ãªã‚‰
 		onLoadFlag(LOAD_ERASE);
 		return;
 	}
 
-	//ƒQ[ƒ€ˆ—
-	BOOL isSet = FALSE;//Î‚ğ’u‚¢‚½‚©‚Ç‚¤‚©ƒtƒ‰ƒO
+	//ã‚²ãƒ¼ãƒ å‡¦ç†
+	BOOL isSet = FALSE;//çŸ³ã‚’ç½®ã„ãŸã‹ã©ã†ã‹ãƒ•ãƒ©ã‚°
 
-	if (nowTurn == PLAYER) {//ƒvƒŒƒCƒ„[‚Ìs“®
+	if (nowTurn == PLAYER) {//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®è¡Œå‹•
 		Pos pos;
-		if (getLeftDown() == FALSE) { return; }		//“ü—Íƒ`ƒFƒbƒN
-		if (getMousePos(&pos) == FALSE) { return; }	//ƒ}ƒEƒX“ü—Í & ”ÍˆÍƒ`ƒFƒbƒN
+		if (getLeftDown() == FALSE) { return; }		//å…¥åŠ›ãƒã‚§ãƒƒã‚¯
+		if (getMousePos(&pos) == FALSE) { return; }	//ãƒã‚¦ã‚¹å…¥åŠ› & ç¯„å›²ãƒã‚§ãƒƒã‚¯
 
-		if (isSetStone(myBoard, pos.x, pos.y)) {	//Î’u‚¯‚é‚©ƒ`ƒFƒbƒN
-			myBoard.board[pos.y][pos.x] = nowTurn;	//’u‚­
+		if (isSetStone(myBoard, pos.x, pos.y)) {	//çŸ³ç½®ã‘ã‚‹ã‹ãƒã‚§ãƒƒã‚¯
+			myBoard.board[pos.y][pos.x] = nowTurn;	//ç½®ã
 			isSet = TRUE;
+			startTime = GetNowCount();//ãƒ‡ã‚£ãƒ¬ã‚¤ã®ã‚«ã‚¦ãƒ³ã‚¿ãƒªã‚»ãƒƒãƒˆ
 		}
 	}
-	else if (nowTurn == COM) {//ƒRƒ“ƒsƒ…[ƒ^‚Ìs“®
-		Pos pos = cpuThink(myBoard, nowTurn);//ƒRƒ“ƒsƒ…[ƒ^‚Ìè‚ğŒvZ‚µŠi”[
-		myBoard.board[pos.y][pos.x] = nowTurn;//è’Ê‚è‚É”Õ–Ê‚ÉŠi”[
+	else if (nowTurn == COM && timeCnt()) {//ã‚³ãƒ³ãƒ”ãƒ¥ãƒ¼ã‚¿ã®è¡Œå‹•
+		Pos pos = cpuThink2(myBoard, nowTurn);//ã‚³ãƒ³ãƒ”ãƒ¥ãƒ¼ã‚¿ã®æ‰‹ã‚’è¨ˆç®—ã—æ ¼ç´
+		myBoard.board[pos.y][pos.x] = nowTurn;//æ‰‹é€šã‚Šã«ç›¤é¢ã«æ ¼ç´
 		cpuUpdate();
 		isSet = TRUE;
 	}
 
-	if (isSet) {//Î’u‚©‚ê‚½‚È‚ç ƒGƒ“ƒhƒ`ƒFƒbƒN&ƒ^[ƒ“ƒ`ƒFƒ“ƒW
-		if (isWin(myBoard, nowTurn)) {//Ÿ‚Á‚Ä‚¢‚é
-			isGameClear = TRUE;//Ÿ—˜ƒtƒ‰ƒOON
+	if (isSet) {//çŸ³ç½®ã‹ã‚ŒãŸãªã‚‰ ã‚¨ãƒ³ãƒ‰ãƒã‚§ãƒƒã‚¯&ã‚¿ãƒ¼ãƒ³ãƒã‚§ãƒ³ã‚¸
+		if (isWin(myBoard, nowTurn)) {//å‹ã£ã¦ã„ã‚‹
+			isGameClear = TRUE;//å‹åˆ©ãƒ•ãƒ©ã‚°ON
 			if (nowTurn == PLAYER) {
 				setCharacterExpression(CHAR_EX_LOSE);
 			}
@@ -109,27 +112,27 @@ void Game_Update() {//ŒvZˆ—
 			}
 		}
 		else {
-			nowTurn = changeTurn(nowTurn);//ƒ^[ƒ“ƒ`ƒFƒ“ƒW
+			nowTurn = changeTurn(nowTurn);//ã‚¿ãƒ¼ãƒ³ãƒã‚§ãƒ³ã‚¸
 		}
 	}
 }
 
-void Game_Draw() {//•`‰æˆ—
-	drawAtSprite(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, &backSprite, TRUE);//”wŒi•`‰æ
-	boardDraw();//”Õ–Êî•ñ•`‰æ
+void Game_Draw() {//æç”»å‡¦ç†
+	drawAtSprite(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, &backSprite, TRUE);//èƒŒæ™¯æç”»
+	boardDraw();//ç›¤é¢æƒ…å ±æç”»
 	drawLottery();
 }
 
-int getGameResult() {//ƒQ[ƒ€‚ÌŒ‹‰Ê‚ğ•Ô‚·
+int getGameResult() {//ã‚²ãƒ¼ãƒ ã®çµæœã‚’è¿”ã™
 	return gameResult;
 }
 
 
-TURN changeTurn(TURN turn) {//ƒ^[ƒ“ƒ`ƒFƒ“ƒW
+TURN changeTurn(TURN turn) {//ã‚¿ãƒ¼ãƒ³ãƒã‚§ãƒ³ã‚¸
 	return (TURN)((turn % 2) + 1);
 }
 
-BOOL getKey(Pos *pos) {	//ƒL[“ü—Íif•¶‚Åæ‚é@Œ»İg—p‚µ‚Ä‚¢‚È‚¢
+BOOL getKey(Pos *pos) {	//ã‚­ãƒ¼å…¥åŠ›ifæ–‡ã§å–ã‚‹ã€€ç¾åœ¨ä½¿ç”¨ã—ã¦ã„ãªã„
 	int number = -1;
 	switch (CheckHitKeyAll()) {
 	case KEY_INPUT_1:
@@ -169,15 +172,15 @@ BOOL getKey(Pos *pos) {	//ƒL[“ü—Íif•¶‚Åæ‚é@Œ»İg—p‚µ‚Ä‚¢‚È‚¢
 	return FALSE;
 }
 
-void  boardDraw() {//”Õ–Ê•`‰æ
-	drawSprite(BOARD_OFFSET_X, BOARD_OFFSET_Y, &frame, TRUE);//˜g•`‰æ
+void  boardDraw() {//ç›¤é¢æç”»
+	drawSprite(BOARD_OFFSET_X, BOARD_OFFSET_Y, &frame, TRUE);//æ æç”»
 	for (int y = 0; y < BOARD_SIZE; y++) {
 		for (int x = 0; x < BOARD_SIZE; x++) {
 			switch (myBoard.board[y][x]) {
-			case 1://Z•`‰æ
+			case 1://ã€‡æç”»
 				drawSprite(BOARD_OFFSET_X + x * RECT_WIDTH, BOARD_OFFSET_Y + y * RECT_HEIGHT, &maru, TRUE);
 				break;
-			case 2://~•`‰æ
+			case 2://Ã—æç”»
 				drawSprite(BOARD_OFFSET_X + x * RECT_WIDTH, BOARD_OFFSET_Y + y * RECT_HEIGHT, &batu, TRUE);
 				break;
 			}
@@ -185,7 +188,7 @@ void  boardDraw() {//”Õ–Ê•`‰æ
 	}
 }
 
-void boardDrawString() {//”Õ–Ê•¶š•`‰æ@ƒfƒoƒbƒO—p
+void boardDrawString() {//ç›¤é¢æ–‡å­—æç”»ã€€ãƒ‡ãƒãƒƒã‚°ç”¨
 #define OFFSET_BOARD 20
 	for (int y = 0; y < BOARD_SIZE; y++) {
 		for (int x = 0; x < BOARD_SIZE; x++) {
@@ -194,36 +197,36 @@ void boardDrawString() {//”Õ–Ê•¶š•`‰æ@ƒfƒoƒbƒO—p
 	}
 }
 
-BOOL getMousePos(Pos* pos) {//ƒ}ƒEƒX‚Ì“ü—ÍÀ•Wæ“¾
+BOOL getMousePos(Pos* pos) {//ãƒã‚¦ã‚¹ã®å…¥åŠ›åº§æ¨™å–å¾—
 	int x,y;
-	GetMousePoint(&x, &y);//ƒ}ƒEƒX‚ÌÀ•Wæ“¾
-	x -= BOARD_OFFSET_X;//ŒvZ‚µ‚â‚·‚¢‚æ‚¤ƒ}ƒEƒX‚ÌŠî€‚ğ¶ã0‚É
-	y -= BOARD_OFFSET_Y;//“¯ã
+	GetMousePoint(&x, &y);//ãƒã‚¦ã‚¹ã®åº§æ¨™å–å¾—
+	x -= BOARD_OFFSET_X;//è¨ˆç®—ã—ã‚„ã™ã„ã‚ˆã†ãƒã‚¦ã‚¹ã®åŸºæº–ã‚’å·¦ä¸Š0ã«
+	y -= BOARD_OFFSET_Y;//åŒä¸Š
 	if (x >= 0 && x <= BOARD_WIDTH &&
 		y >= 0 && y <= BOARD_HEIGHT) {
-		//˜g“à‚É“ü‚Á‚Ä‚¢‚é
+		//æ å†…ã«å…¥ã£ã¦ã„ã‚‹
 		pos->x = x / RECT_WIDTH;
 		pos->y = y / RECT_HEIGHT;
-		return TRUE;//³‚µ‚­“ü—Í‚³‚ê‚½
+		return TRUE;//æ­£ã—ãå…¥åŠ›ã•ã‚ŒãŸ
 	}
-	return FALSE;//“ü—Í¸”s
+	return FALSE;//å…¥åŠ›å¤±æ•—
 }
 
 
-BOOL isWin(Board board, TURN turn) {//ƒNƒŠƒA‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©
-	//c•À‚Ñ”»’è
+BOOL isWin(Board board, TURN turn) {//ã‚¯ãƒªã‚¢ã—ã¦ã„ã‚‹ã‹ã©ã†ã‹
+	//ç¸¦ä¸¦ã³åˆ¤å®š
 	for (int y = 0; y < BOARD_SIZE; y++) {
 		if (board.board[y][0] == turn && board.board[y][1] == turn && board.board[y][2] == turn) {
 			return TRUE;
 		}
 	}
-	//‰¡•À‚Ñ”»’è
+	//æ¨ªä¸¦ã³åˆ¤å®š
 	for (int x = 0; x < BOARD_SIZE; x++) {
 		if (board.board[0][x] == turn && board.board[1][x] == turn && board.board[2][x] == turn) {
 			return TRUE;
 		}
 	}
-	//Î‚ß”»’è
+	//æ–œã‚åˆ¤å®š
 	if (board.board[0][0] == turn && board.board[1][1] == turn && board.board[2][2] == turn) {
 		return TRUE;
 	}
@@ -234,17 +237,17 @@ BOOL isWin(Board board, TURN turn) {//ƒNƒŠƒA‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©
 	return FALSE;
 }
 
-BOOL isSetStone(Board board, int x, int y) { //’u‚¯‚é‚©‚Ç‚¤‚©
-	if (board.board[y][x] == 0) {//Î‚ª–³‚¢‚È‚ç
+BOOL isSetStone(Board board, int x, int y) { //ç½®ã‘ã‚‹ã‹ã©ã†ã‹
+	if (board.board[y][x] == 0) {//çŸ³ãŒç„¡ã„ãªã‚‰
 		return TRUE;
 	}
 	return FALSE;
 }
 
-BOOL isDrow(Board board) {  //ˆø‚«•ª‚¯”»’è •ÏXÏ‚İ Î‚ª’u‚¯‚éêŠ‚ğ”­Œ©‚µ‚½‚çreturn‚É•ÏX
+BOOL isDrow(Board board) {  //å¼•ãåˆ†ã‘åˆ¤å®š å¤‰æ›´æ¸ˆã¿ çŸ³ãŒç½®ã‘ã‚‹å ´æ‰€ã‚’ç™ºè¦‹ã—ãŸã‚‰returnã«å¤‰æ›´
 	for (int y = 0; y < BOARD_SIZE; y++) {
 		for (int x = 0; x < BOARD_SIZE; x++) {
-			if (isSetStone(board, x, y) == TRUE) {//Î‚ª’u‚¯‚éêŠ‚ª‚ ‚Á‚½
+			if (isSetStone(board, x, y) == TRUE) {//çŸ³ãŒç½®ã‘ã‚‹å ´æ‰€ãŒã‚ã£ãŸ
 				return FALSE;
 			}
 		}
@@ -253,9 +256,9 @@ BOOL isDrow(Board board) {  //ˆø‚«•ª‚¯”»’è •ÏXÏ‚İ Î‚ª’u‚¯‚éêŠ‚ğ”­Œ©‚µ‚½‚çre
 }
 
 
-Pos cpuThink(Board board, TURN turn) {//CPUèvl
-	Pos pos{ -1, -1 };//”ÍˆÍŠOƒGƒ‰[o‚é‚æ‚¤‰Šú‰»
-	for (int i = 0; i < 2; i++) {//‚ ‚Æ‚P‚Â‚ÅŸ‚Ä‚éƒpƒ^[ƒ“’Tõ¨‚ ‚Æ‚P‚Â‚Å•‰‚¯‚éƒpƒ^[ƒ“’Tõ
+Pos cpuThink(Board board, TURN turn) {//CPUæ‰‹æ€è€ƒ
+	Pos pos{ -1, -1 };//ç¯„å›²å¤–ã‚¨ãƒ©ãƒ¼å‡ºã‚‹ã‚ˆã†åˆæœŸåŒ–
+	for (int i = 0; i < 2; i++) {//ã‚ã¨ï¼‘ã¤ã§å‹ã¦ã‚‹ãƒ‘ã‚¿ãƒ¼ãƒ³æ¢ç´¢â†’ã‚ã¨ï¼‘ã¤ã§è² ã‘ã‚‹ãƒ‘ã‚¿ãƒ¼ãƒ³æ¢ç´¢
 		for (int y = 0; y < BOARD_SIZE; y++) {
 			for (int x = 0; x < BOARD_SIZE; x++) {
 				if (isSetStone(board, x, y)) {
@@ -272,14 +275,14 @@ Pos cpuThink(Board board, TURN turn) {//CPUèvl
 		turn = changeTurn(turn);
 	}
 
-	//ã‚ÌğŒ‚É“–‚Ä‚Í‚Ü‚ç‚È‚¢ê‡@’†‰›¨Šp¨•Ó‚Ì—Dæ‡ˆÊ‚Åè‚ğ‘Å‚ÂB
+	//ä¸Šã®æ¡ä»¶ã«å½“ã¦ã¯ã¾ã‚‰ãªã„å ´åˆã€€ä¸­å¤®â†’è§’â†’è¾ºã®å„ªå…ˆé †ä½ã§æ‰‹ã‚’æ‰“ã¤ã€‚
 
-	if (isSetStone(board, 1, 1)) {//^‚ñ’†
+	if (isSetStone(board, 1, 1)) {//çœŸã‚“ä¸­
 		pos.x = 1;
 		pos.y = 1;
 		return pos;
 	}
-	if (isSetStone(board, 0, 0)) {//Šp
+	if (isSetStone(board, 0, 0)) {//è§’
 		pos.x = 0;
 		pos.y = 0;
 		return pos;
@@ -300,7 +303,7 @@ Pos cpuThink(Board board, TURN turn) {//CPUèvl
 		return pos;
 	}
 
-	for (int i = 0; i < 2; i++) {//‚ ‚Æ‚P‚Â‚ÅŸ‚Ä‚éƒpƒ^[ƒ“’Tõ¨‚ ‚Æ‚P‚Â‚Å•‰‚¯‚éƒpƒ^[ƒ“’Tõ
+	for (int i = 0; i < 2; i++) {//ã‚ã¨ï¼‘ã¤ã§å‹ã¦ã‚‹ãƒ‘ã‚¿ãƒ¼ãƒ³æ¢ç´¢â†’ã‚ã¨ï¼‘ã¤ã§è² ã‘ã‚‹ãƒ‘ã‚¿ãƒ¼ãƒ³æ¢ç´¢
 		for (int y = 0; y < BOARD_SIZE; y++) {
 			for (int x = 0; x < BOARD_SIZE; x++) {
 				if (isSetStone(board, x, y)) {
@@ -313,35 +316,135 @@ Pos cpuThink(Board board, TURN turn) {//CPUèvl
 	return pos;
 }
 
+Pos cpuThink2(Board board, TURN turn) {//CPUæ‰‹æ€è€ƒ
+	Pos pos{ -1, -1 };//ç¯„å›²å¤–ã‚¨ãƒ©ãƒ¼å‡ºã‚‹ã‚ˆã†åˆæœŸåŒ–
+	int rx = GetRand(2), ry = GetRand(2);
+	if (isSetStone(board, rx, ry)) {
+		pos.x = rx;
+		pos.y = ry;
+		return pos;
+	}
+	rx = GetRand(2), ry = GetRand(2);
+	if (isSetStone(board, rx, ry)) {
+		pos.x = rx;
+		pos.y = ry;
+		return pos;
+	}
+
+
+	for (int i = 0; i < 2; i++) {//ã‚ã¨ï¼‘ã¤ã§å‹ã¦ã‚‹ãƒ‘ã‚¿ãƒ¼ãƒ³æ¢ç´¢â†’ã‚ã¨ï¼‘ã¤ã§è² ã‘ã‚‹ãƒ‘ã‚¿ãƒ¼ãƒ³æ¢ç´¢
+		for (int y = 0; y < BOARD_SIZE; y++) {
+			for (int x = 0; x < BOARD_SIZE; x++) {
+				if (isSetStone(board, x, y)) {
+					pos.x = x;
+					pos.y = y;
+				}
+			}
+		}
+	}
+	return pos;
+}
+
+
+Pos cpuThink3(Board board, TURN turn) {//CPUæ‰‹æ€è€ƒ
+	Pos pos{ -1, -1 };//ç¯„å›²å¤–ã‚¨ãƒ©ãƒ¼å‡ºã‚‹ã‚ˆã†åˆæœŸåŒ–
+	for (int y = 0; y < BOARD_SIZE; y++) {
+		for (int x = 0; x < BOARD_SIZE; x++) {
+			if (isSetStone(board, x, y)) {
+				Board tmp = board;
+				tmp.board[y][x] = turn;
+				if (isWin(tmp, turn)) {
+					pos.x = x;
+					pos.y = y;
+					return pos;
+				}
+			}
+		}
+	}
+
+	if (isSetStone(board, 1, 1)) {//çœŸã‚“ä¸­
+		pos.x = 1;
+		pos.y = 1;
+		return pos;
+	}
+	if (isSetStone(board, 0, 0)) {//è§’
+		pos.x = 0;
+		pos.y = 0;
+		return pos;
+	}
+	if (isSetStone(board, 2, 2)) {
+		pos.x = 2;
+		pos.y = 2;
+		return pos;
+	}
+	if (isSetStone(board, 2, 0)) {
+		pos.x = 2;
+		pos.y = 0;
+		return pos;
+	}
+	if (isSetStone(board, 0, 2)) {
+		pos.x = 0;
+		pos.y = 2;
+		return pos;
+	}
+
+
+
+	for (int i = 0; i < 2; i++) {
+		for (int y = 0; y < BOARD_SIZE; y++) {
+			for (int x = 0; x < BOARD_SIZE; x++) {
+				if (isSetStone(board, x, y)) {
+					pos.x = x;
+					pos.y = y;
+				}
+			}
+		}
+	}
+	return pos;
+}
+
+
+
+
 int isGameEnd() {
-	//ƒQ[ƒ€‚ªI‚í‚Á‚Ä‚¢‚é‚È‚ç‚Î
+	//ã‚²ãƒ¼ãƒ ãŒçµ‚ã‚ã£ã¦ã„ã‚‹ãªã‚‰ã°
 	if (isGameClear) {
 		if (nowTurn == PLAYER) {
-			return 1;//PLAYER‚ÌŸ‚¿
+			return 1;//PLAYERã®å‹ã¡
 		}
 		else if (nowTurn == COM) {
-			return 2;//COM‚ÌŸ‚¿
+			return 2;//COMã®å‹ã¡
 		}		
 	}
 
-	if (isDrow(myBoard)) {//ˆø‚«•ª‚¯
+	if (isDrow(myBoard)) {//å¼•ãåˆ†ã‘
 		return 3;
 	}
 	return 0;
 }
 
+BOOL timeCnt() {
 
+	static int randTime = (rand() % 4) * 200+ 300;
+	
+	if (GetNowCount() - startTime > (randTime)) {
+		startTime = GetNowCount();
+		randTime = (rand() % 4) * 200 + 300;
+		return TRUE;
+	}
+	return FALSE;
+}
 void cpuUpdate() {
-	int ex = 0;//•\î@Ÿ‚¿1@•‰‚¯2@—Dæ‚Í•‰‚¯
+	int ex = 0;//è¡¨æƒ…ã€€å‹ã¡1ã€€è² ã‘2ã€€å„ªå…ˆã¯è² ã‘
 	TURN turn = nowTurn;
-	for (int i = 0; i < 2; i++) {//‚ ‚Æ‚P‚Â‚ÅŸ‚Ä‚éƒpƒ^[ƒ“’Tõ¨‚ ‚Æ‚P‚Â‚Å•‰‚¯‚éƒpƒ^[ƒ“’Tõ
+	for (int i = 0; i < 2; i++) {//ã‚ã¨ï¼‘ã¤ã§å‹ã¦ã‚‹ãƒ‘ã‚¿ãƒ¼ãƒ³æ¢ç´¢â†’ã‚ã¨ï¼‘ã¤ã§è² ã‘ã‚‹ãƒ‘ã‚¿ãƒ¼ãƒ³æ¢ç´¢
 		for (int y = 0; y < BOARD_SIZE; y++) {
 			for (int x = 0; x < BOARD_SIZE; x++) {
 				if (isSetStone(myBoard, x, y)) {
 					Board tmp =myBoard;
 					tmp.board[y][x] = turn;
 					if (isWin(tmp, turn)) {
-						ex = i + 1;//XV
+						ex = i + 1;//æ›´æ–°
 					}
 				}
 			}
@@ -352,16 +455,15 @@ void cpuUpdate() {
 	switch (ex) {
 	case 0:
 		setCharacterExpression(CHAR_EX_NORMAL);
-		//ƒƒbƒZ[ƒW•ÏX
+		//ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å¤‰æ›´
 		break;
 	case 1:
 		setCharacterExpression(CHAR_EX_WINNING);
-		//ƒƒbƒZ[ƒW•ÏX
+		//ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å¤‰æ›´
 		break;
 	case 2:
 		setCharacterExpression(CHAR_EX_LOSING);
-		//ƒƒbƒZ[ƒW•ÏX
+		//ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å¤‰æ›´
 		break;
 	}
-
 }
