@@ -19,8 +19,8 @@ void Title_Initialize() {
 	Font00 = CreateFontToHandle("ゴシック", 15, 6, DX_FONTTYPE_ANTIALIASING);
 	backSprite = initSprite("images/titleback.png", 640, 480);
 	Title = LoadGraph("images/title.png");
-	SEnter = LoadSoundMem("musics/enter1.wav");
-	SSelect = LoadSoundMem("musics/select1.wav");
+	SEnter = LoadSoundMem("musics/enter4.wav");
+	SSelect = LoadSoundMem("musics/select_or_enter.wav");
 
 	startGame = initMassageBox("images/enpitu.png", "ゲーム開始", GetColor(0, 0, 0), Font00, 180, 370, 170, 60);
 	endGame = initMassageBox("images/enpitu.png", "終了", GetColor(0, 0, 0), Font00, 480, 370, 170, 60);
@@ -31,7 +31,10 @@ void Title_Initialize() {
 }
 
 void Title_Finalize() {
-	DeleteGraph(Title);
+	DeleteGraph(Title);						//画像の開放処理
+	deleteMassageBox(&startGame);
+	deleteMassageBox(&endGame);
+	deleteSprite(&backSprite);
 }
 
 void Title_Update() {
@@ -65,6 +68,7 @@ void Title_StartMouseSelect() {
 			startSelect = 1;
 		}
 		if ( getLeftDown() != 0) {
+			startGame.mystr.color = 0x00ff00;
 			PlaySoundMem(SEnter, DX_PLAYTYPE_BACK);
 			onLoadFlag(LOAD_FLUSH);
 		}
@@ -86,6 +90,7 @@ void Title_EndMouseSelect() {
 		}
 		if (getLeftDown() != 0) {
 			PlaySoundMem(SEnter, DX_PLAYTYPE_BACK);
+			endGame.mystr.color = 0x00ff00;
 			/*ここに終了処理を描く*/
 
 		}
