@@ -2,39 +2,46 @@
 #include"DxLib.h"
 #include "MyWindow.h"
 #include "MyMouse.h"
-#define RECT_WIDTH 100	//‚Pƒ}ƒX‚Ì•
-#define RECT_HEIGHT 100	//‚Pƒ}ƒX‚Ì‚‚³
-#define BOARD_SIZE 3 //”Õ–Ê‚Ì‚P•ûŒü‚Ìƒ}ƒX‚Ì”
+#include "Lottery.h"
 
-#define BOARD_WIDTH (RECT_WIDTH * BOARD_SIZE)	//”Õ–Ê‚Ì•
-#define BOARD_HEIGHT (RECT_HEIGHT * BOARD_SIZE) //”Õ–Ê‚Ì‚‚³
+#define RECT_WIDTH 100	//ï¼‘ãƒã‚¹ã®å¹…
+#define RECT_HEIGHT 100	//ï¼‘ãƒã‚¹ã®é«˜ã•
+#define BOARD_SIZE 3 //ç›¤é¢ã®ï¼‘æ–¹å‘ã®ãƒã‚¹ã®æ•°
 
-#define BOARD_OFFSET_X ((WINDOW_WIDTH / 2) - (RECT_WIDTH * BOARD_SIZE / 2)) //”Õ–Ê‚Ì¶ã‹N“_X
-#define BOARD_OFFSET_Y ((WINDOW_HEIGHT / 2) - (RECT_HEIGHT * BOARD_SIZE /2))//”Õ–Ê‚Ì¶ã‹N“_Y
+#define BOARD_WIDTH (RECT_WIDTH * BOARD_SIZE)	//ç›¤é¢ã®å¹…
+#define BOARD_HEIGHT (RECT_HEIGHT * BOARD_SIZE) //ç›¤é¢ã®é«˜ã•
 
-struct Board;	//”Õ–Êî•ñ‚Ì\‘¢‘Ì	
-struct Pos;		//”Õ–Ê‚ÌÀ•Wî•ñ‚Ì\‘¢‘Ì
-enum TURN;		//ƒ^[ƒ“î•ñ‚Ì—ñ‹“Œ^
+#define BOARD_OFFSET_X ((WINDOW_WIDTH / 2) - (RECT_WIDTH * BOARD_SIZE / 2)) //ç›¤é¢ã®å·¦ä¸Šèµ·ç‚¹X
+#define BOARD_OFFSET_Y ((WINDOW_HEIGHT / 2) - (RECT_HEIGHT * BOARD_SIZE /2))//ç›¤é¢ã®å·¦ä¸Šèµ·ç‚¹Y
 
-void Game_Initialize(void);	//ƒQ[ƒ€‚Ì‰Šú‰»ˆ—
-void Game_Finalize(void);	//ƒQ[ƒ€‚ÌI—¹ˆ—
-void Game_Update(void);		//ƒQ[ƒ€‚ÌŒvZˆ—
-void Game_Draw(void);		//ƒQ[ƒ€‚Ì•`‰æˆ—
+struct Board;	//ç›¤é¢æƒ…å ±ã®æ§‹é€ ä½“	
+struct Pos;		//ç›¤é¢ã®åº§æ¨™æƒ…å ±ã®æ§‹é€ ä½“
+enum TURN;		//ã‚¿ãƒ¼ãƒ³æƒ…å ±ã®åˆ—æŒ™å‹
+
+void Game_Initialize(void);	//ã‚²ãƒ¼ãƒ ã®åˆæœŸåŒ–å‡¦ç†
+void Game_Finalize(void);	//ã‚²ãƒ¼ãƒ ã®çµ‚äº†å‡¦ç†
+void Game_Update(void);		//ã‚²ãƒ¼ãƒ ã®è¨ˆç®—å‡¦ç†
+void Game_Draw(void);		//ã‚²ãƒ¼ãƒ ã®æç”»å‡¦ç†
 
 
 
-void boardDraw(void);//‰æ‘œ‚Å”Õ–Ê•`‰æ
-void boardDrawString(void);//•¶š‚Å”Õ–Ê•`‰æ
+void boardDraw(void);//ç”»åƒã§ç›¤é¢æç”»
+void boardDrawString(void);//æ–‡å­—ã§ç›¤é¢æç”»
 
-BOOL getKey(Pos *pos);//ƒ{[ƒhã‚ÌÀ•Wæ“¾@—vC³
-BOOL getMousePos(Pos *pos);//ƒ{[ƒhãƒ}ƒEƒXÀ•Wæ“¾
+BOOL getKey(Pos *pos);//ãƒœãƒ¼ãƒ‰ä¸Šã®åº§æ¨™å–å¾—ã€€è¦ä¿®æ­£
+BOOL getMousePos(Pos *pos);//ãƒœãƒ¼ãƒ‰ä¸Šãƒã‚¦ã‚¹åº§æ¨™å–å¾—
 
-BOOL isSetStone(Board board, int x, int y);//Î‚ª’u‚¯‚é‚©H
-BOOL isWin(Board board, TURN turn);//Ÿ‚Á‚Ä‚¢‚éH
-BOOL isDrow(Board board);//ˆø‚«•ª‚¯H
+BOOL isSetStone(Board board, int x, int y);//çŸ³ãŒç½®ã‘ã‚‹ã‹ï¼Ÿ
+BOOL isWin(Board board, TURN turn);//å‹ã£ã¦ã„ã‚‹ï¼Ÿ
+BOOL isDrow(Board board);//å¼•ãåˆ†ã‘ï¼Ÿ
 
-Pos cpuThink(Board board, TURN turn);//CPU‚Ìè@ŒvZ
+Pos cpuThink1(Board board, TURN turn);//CPUã®æ‰‹ã€€è¨ˆç®—
+Pos cpuThink2(Board board, TURN turn);//CPUã®æ‰‹ã€€è¨ˆç®—
+Pos cpuThink3(Board board, TURN turn);//CPUã®æ‰‹ã€€è¨ˆç®—
+void cpuUpdate(void);//è¡¨æƒ…ã®æ›´æ–°ã€€ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®æ›´æ–°
 
-int getGameResult(void);//ƒQ[ƒ€‚ÌŸ‚¿•‰‚¯ˆø‚«•ª‚¯‚ÌŒ‹‰Ê‚ğó‚¯æ‚é
-int isGameEnd(void);	//ƒQ[ƒ€‚ªI‚í‚Á‚Ä‚¢‚é‚©”»’è
-TURN changeTurn(TURN turn);//ƒ^[ƒ“‚ğŒğ‘ã‚·‚é
+int getGameResult(void);//ã‚²ãƒ¼ãƒ ã®å‹ã¡è² ã‘å¼•ãåˆ†ã‘ã®çµæœã‚’å—ã‘å–ã‚‹
+int isGameEnd(void);	//ã‚²ãƒ¼ãƒ ãŒçµ‚ã‚ã£ã¦ã„ã‚‹ã‹åˆ¤å®š
+TURN changeTurn(TURN turn);//ã‚¿ãƒ¼ãƒ³ã‚’äº¤ä»£ã™ã‚‹
+
+BOOL timeCnt(void);  //cpuã®æ€è€ƒæ™‚é–“

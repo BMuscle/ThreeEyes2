@@ -4,6 +4,7 @@
 #include"Result.h"
 #include"SceneMgr.h"
 #include"stdio.h"
+#include "Difficulty.h"
 
 static void(*funcUpdate)();		//Updateの関数ポインタ
 static void(*funcDraw)();		//Drawの関数ポインタ
@@ -43,6 +44,11 @@ void SceneMgr_ChangeScene(scene nextscene) {
 			Title_Initialize();
 			funcUpdate = Title_Update;
 			funcDraw = Title_Draw;
+			break;
+		case SCENE_DIFFICULTY:
+			Difficulty_Initialize();
+			funcUpdate = Difficulty_Update;
+			funcDraw = Difficulty_Draw;
 			break;
 		case SCENE_GAME:
 			Game_Initialize();

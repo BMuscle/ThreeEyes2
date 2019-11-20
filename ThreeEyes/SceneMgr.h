@@ -4,8 +4,9 @@
 
 typedef enum {				//列挙型、各シーンに番号を付ける
 	SCENE_TITLE,		// 0
-	SCENE_GAME,			// 1
-	SCENE_RESULT,		// 2
+	SCENE_DIFFICULTY,	// 1
+	SCENE_GAME,			// 2
+	SCENE_RESULT,		// 3
 	SCENE_NONE,
 }scene;
 
