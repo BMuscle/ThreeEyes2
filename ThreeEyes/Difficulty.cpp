@@ -12,8 +12,8 @@ static CHAR_TYPE holdChar;
 
 
 void Difficulty_Initialize() {
-	#define ICON_WIDTH 108
-	#define ICON_HEIGHT 108
+	#define ICON_WIDTH 100
+	#define ICON_HEIGHT 100
 	backSprite = initSprite("images/difback.png", WINDOW_WIDTH, WINDOW_HEIGHT);
 	charIcon[0][0] = initSprite("images/characters/ê_ë„ôz/icon.png", ICON_WIDTH, ICON_HEIGHT);
 	charIcon[0][1] = initSprite("images/characters/ê_ë„ôz/iconon.png", ICON_WIDTH, ICON_HEIGHT);

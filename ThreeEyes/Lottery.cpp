@@ -28,10 +28,10 @@ void initLottery(int turn) {
 	lottery[1] = initSprite("images/koukou1.png", 274, 318);
 	font = CreateFontToHandle("ÉSÉVÉbÉN", 30, 6, DX_FONTTYPE_ANTIALIASING);
 	if (turn == 1) {
-		message = initMyString("Ç†Ç»ÇΩÇÕêÊçUÇ≈Ç∑ÅB",0xFFFFFF,font, WINDOW_WIDTH/2, 30);
+		message = initMyString("Ç†Ç»ÇΩÇÕêÊçUÇ≈Ç∑ÅB",0xFFFFFF,font, WINDOW_WIDTH/2, WINDOW_HEIGHT * 0.5);
 	}
 	else {
-		message = initMyString("Ç†Ç»ÇΩÇÕå„çUÇ≈Ç∑ÅB", 0xFFFFFF, font, WINDOW_WIDTH / 2, 30);
+		message = initMyString("Ç†Ç»ÇΩÇÕå„çUÇ≈Ç∑ÅB", 0xFFFFFF, font, WINDOW_WIDTH / 2, WINDOW_HEIGHT * 0.5);
 	}
 	message.alpha = 0;
 }
@@ -57,7 +57,7 @@ void updateLottery() {
 		}
 	}
 	else {
-		message.alpha -= 2;
+		message.alpha -= 3;
 		if (message.alpha < 0) {
 			message.alpha = 0;
 		}

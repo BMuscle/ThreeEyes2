@@ -35,7 +35,7 @@ BOOL isSetStone(Board board, int x, int y);//石が置けるか？
 BOOL isWin(Board board, TURN turn);//勝っている？
 BOOL isDrow(Board board);//引き分け？
 
-Pos cpuThink(Board board, TURN turn);//CPUの手　計算
+Pos cpuThink1(Board board, TURN turn);//CPUの手　計算
 Pos cpuThink2(Board board, TURN turn);//CPUの手　計算
 Pos cpuThink3(Board board, TURN turn);//CPUの手　計算
 void cpuUpdate(void);//表情の更新　メッセージの更新

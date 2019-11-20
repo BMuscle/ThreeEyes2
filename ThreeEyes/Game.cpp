@@ -38,6 +38,8 @@ void Game_Initialize() {//初期化処理
 	initLottery(nowTurn);
 	isGameClear = FALSE;		//ゲームクリアフラグをOFF
 	gameResult = 0;				//ゲームの結果初期化
+	setCharacterMessage(CHAR_MG_START);
+	setMessageFlag(TRUE);//メッセージ表示フラグON
 
 	for (int y = 0; y < BOARD_SIZE; y++) {//board初期化
 		for (int x = 0; x < BOARD_SIZE; x++) {
@@ -71,12 +73,13 @@ void Game_Update() {//計算処理
 	}
 	updateLottery();
 	if (isLotteryEnd() == FALSE) {
-	
+		startTime = GetNowCount();//ディレイのカウンタリセット		
 		return;
 	}
 	gameResult = isGameEnd();
 	if (gameResult > 0) {//ゲームが終わっているなら
 		onLoadFlag(LOAD_ERASE);
+		setMessageFlag(FALSE);//メッセージ表示フラグON
 		return;
 	}
 
@@ -95,7 +98,19 @@ void Game_Update() {//計算処理
 		}
 	}
 	else if (nowTurn == COM && timeCnt()) {//コンピュータの行動
-		Pos pos = cpuThink2(myBoard, nowTurn);//コンピュータの手を計算し格納
+		Pos pos;
+		switch (getCharacterType()) {
+		case CHAR_EASY:
+			pos = cpuThink1(myBoard, nowTurn);//コンピュータの手を計算し格納
+			break;
+		case CHAR_NORMAL:
+			pos = cpuThink2(myBoard, nowTurn);//コンピュータの手を計算し格納
+			break;
+		case CHAR_DIF:
+			pos = cpuThink3(myBoard, nowTurn);//コンピュータの手を計算し格納
+			break;
+		}
+		
 		myBoard.board[pos.y][pos.x] = nowTurn;//手通りに盤面に格納
 		cpuUpdate();
 		isSet = TRUE;
@@ -256,7 +271,7 @@ BOOL isDrow(Board board) {  //引き分け判定 変更済み 石が置ける場
 }
 
 
-Pos cpuThink(Board board, TURN turn) {//CPU手思考
+Pos cpuThink1(Board board, TURN turn) {//CPU手思考
 	Pos pos{ -1, -1 };//範囲外エラー出るよう初期化
 	for (int i = 0; i < 2; i++) {//あと１つで勝てるパターン探索→あと１つで負けるパターン探索
 		for (int y = 0; y < BOARD_SIZE; y++) {
@@ -316,37 +331,8 @@ Pos cpuThink(Board board, TURN turn) {//CPU手思考
 	return pos;
 }
 
+
 Pos cpuThink2(Board board, TURN turn) {//CPU手思考
-	Pos pos{ -1, -1 };//範囲外エラー出るよう初期化
-	int rx = GetRand(2), ry = GetRand(2);
-	if (isSetStone(board, rx, ry)) {
-		pos.x = rx;
-		pos.y = ry;
-		return pos;
-	}
-	rx = GetRand(2), ry = GetRand(2);
-	if (isSetStone(board, rx, ry)) {
-		pos.x = rx;
-		pos.y = ry;
-		return pos;
-	}
-
-
-	for (int i = 0; i < 2; i++) {//あと１つで勝てるパターン探索→あと１つで負けるパターン探索
-		for (int y = 0; y < BOARD_SIZE; y++) {
-			for (int x = 0; x < BOARD_SIZE; x++) {
-				if (isSetStone(board, x, y)) {
-					pos.x = x;
-					pos.y = y;
-				}
-			}
-		}
-	}
-	return pos;
-}
-
-
-Pos cpuThink3(Board board, TURN turn) {//CPU手思考
 	Pos pos{ -1, -1 };//範囲外エラー出るよう初期化
 	for (int y = 0; y < BOARD_SIZE; y++) {
 		for (int x = 0; x < BOARD_SIZE; x++) {
@@ -403,6 +389,37 @@ Pos cpuThink3(Board board, TURN turn) {//CPU手思考
 	return pos;
 }
 
+Pos cpuThink3(Board board, TURN turn) {//CPU手思考
+	Pos pos{ -1, -1 };//範囲外エラー出るよう初期化
+	int rx = GetRand(2), ry = GetRand(2);
+	if (isSetStone(board, rx, ry)) {
+		pos.x = rx;
+		pos.y = ry;
+		return pos;
+	}
+	rx = GetRand(2), ry = GetRand(2);
+	if (isSetStone(board, rx, ry)) {
+		pos.x = rx;
+		pos.y = ry;
+		return pos;
+	}
+
+
+	for (int i = 0; i < 2; i++) {//あと１つで勝てるパターン探索→あと１つで負けるパターン探索
+		for (int y = 0; y < BOARD_SIZE; y++) {
+			for (int x = 0; x < BOARD_SIZE; x++) {
+				if (isSetStone(board, x, y)) {
+					pos.x = x;
+					pos.y = y;
+				}
+			}
+		}
+	}
+	return pos;
+}
+
+
+
 
 
 
@@ -410,22 +427,27 @@ int isGameEnd() {
 	//ゲームが終わっているならば
 	if (isGameClear) {
 		if (nowTurn == PLAYER) {
+			setCharacterExpression(CHAR_EX_LOSE);
+			setCharacterMessage(CHAR_MG_LOSE);//メッセージ変更
 			return 1;//PLAYERの勝ち
 		}
 		else if (nowTurn == COM) {
+			setCharacterExpression(CHAR_EX_WIN);
+			setCharacterMessage(CHAR_MG_WIN);//メッセージ変更
 			return 2;//COMの勝ち
 		}		
 	}
 
 	if (isDrow(myBoard)) {//引き分け
+		setCharacterExpression(CHAR_EX_NORMAL);
+		setCharacterMessage(CHAR_MG_DRAW);//メッセージ変更
 		return 3;
 	}
 	return 0;
 }
 
 BOOL timeCnt() {
-
-	static int randTime = (rand() % 4) * 200+ 300;
+	static int randTime = 1500;
 	
 	if (GetNowCount() - startTime > (randTime)) {
 		startTime = GetNowCount();
@@ -455,15 +477,15 @@ void cpuUpdate() {
 	switch (ex) {
 	case 0:
 		setCharacterExpression(CHAR_EX_NORMAL);
-		//メッセージ変更
+		setCharacterMessage(CHAR_MG_NORMAL);//メッセージ変更
 		break;
 	case 1:
 		setCharacterExpression(CHAR_EX_WINNING);
-		//メッセージ変更
+		setCharacterMessage(CHAR_MG_WINNING);//メッセージ変更
 		break;
 	case 2:
 		setCharacterExpression(CHAR_EX_LOSING);
-		//メッセージ変更
+		setCharacterMessage(CHAR_MG_LOSING);//メッセージ変更
 		break;
 	}
 }

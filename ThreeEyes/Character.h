@@ -30,13 +30,15 @@ enum CHAR_MESSAGE {
 	CHAR_MG_WIN,
 	CHAR_MG_LOSE,
 	CHAR_MG_START,
+	CHAR_MG_DRAW,
 	CHAR_MG_SIZE,
 };
 
 void initCharacter(void);
 void deleteCharacter(void);
 
-void Character_Draw();
+void Character_Draw(void);
+CHAR_TYPE getCharacterType(void);
 
 void setCharacter(CHAR_TYPE type, CHAR_EXPRESSION charEx);
 void setCharacterExpression(CHAR_EXPRESSION charEx);
