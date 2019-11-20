@@ -9,6 +9,8 @@ static Sprite profile[CHAR_SIZE];
 static Sprite charIcon[CHAR_SIZE][2];
 static BOOL mouseOnFlag[CHAR_SIZE];
 static CHAR_TYPE holdChar;
+static int dif_enter_SE, dif_select_SE;			//音用ハンドル
+static int dif_bgm;								//bgm用ハンドル
 
 
 void Difficulty_Initialize() {
@@ -30,6 +32,11 @@ void Difficulty_Initialize() {
 	profile[1] = initSprite("images/characters/望月くるみ/prof.png", PROF_WIDTH, PROF_HEIGHT);
 	profile[2] = initSprite("images/characters/中嶋美嘉/prof.png", PROF_WIDTH, PROF_HEIGHT);
 
+	dif_enter_SE = LoadSoundMem("musics/enter4.wav");
+	dif_select_SE = LoadSoundMem("musics/select_or_enter.wav");
+	dif_bgm = LoadSoundMem("musics/bgm_game.wav");
+	ChangeVolumeSoundMem(255 * 40 / 100, dif_bgm);
+	PlaySoundMem(dif_bgm, DX_PLAYTYPE_LOOP);
 
 	for (int i = 0; i < CHAR_SIZE; i++) {
 		mouseOnFlag[i] = 0;
@@ -58,11 +65,14 @@ void Difficulty_Update() {
 		int a = mouseX - ICON_OFFSET_X;
 		int b = mouseY - (ICON_OFFSET_Y + i * ICON_INTERVAL_Y);
 		int r = charIcon[i][0].width / 2;
-
 		if(a * a + b * b <= r * r){
+			if (mouseOnFlag[i] == FALSE) {
+				PlaySoundMem(dif_select_SE, DX_PLAYTYPE_BACK);
+			}
 			mouseOnFlag[i] = TRUE;
 			holdChar = (CHAR_TYPE)i;
 			if (getLeftDown()) {
+				PlaySoundMem(dif_enter_SE, DX_PLAYTYPE_BACK);
 				onLoadFlag(LOAD_FLUSH);
 				return;
 			}
@@ -86,4 +96,8 @@ void Difficulty_Draw() {
 		//SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 		
 	} 
+}
+
+void Difficulty_SoundDelete() {
+	DeleteSoundMem(dif_bgm);
 }

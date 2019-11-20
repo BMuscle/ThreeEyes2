@@ -11,3 +11,5 @@ void Difficulty_Initialize();
 void Difficulty_Finalize();
 void Difficulty_Update();
 void Difficulty_Draw();
+
+void Difficulty_SoundDelete();

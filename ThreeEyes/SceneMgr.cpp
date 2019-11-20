@@ -10,7 +10,6 @@ static void(*funcUpdate)();		//Updateの関数ポインタ
 static void(*funcDraw)();		//Drawの関数ポインタ
 static scene nowscene;			//今のシーン変数
 static scene nextscene;			//次のシーン変数
-static int bgm;
 
 void SceneMgr_Initialize() {
 	Title_Initialize();
@@ -18,9 +17,6 @@ void SceneMgr_Initialize() {
 	nextscene = SCENE_TITLE;
 	funcUpdate = Title_Update;
 	funcDraw = Title_Draw;
-	bgm = LoadSoundMem("musics/bgm2.wav");
-	ChangeVolumeSoundMem(255 * 40 / 100, bgm);
-	PlaySoundMem(bgm, DX_PLAYTYPE_LOOP);
 }
 
 void SceneMgr_Finalize() {
@@ -56,6 +52,7 @@ void SceneMgr_ChangeScene(scene nextscene) {
 			funcDraw = Game_Draw;
 			break;
 		case SCENE_RESULT:
+			Difficulty_SoundDelete();
 			funcUpdate = Result_Update;
 			funcDraw = Result_Draw;
 			break;

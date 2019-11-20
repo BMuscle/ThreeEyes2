@@ -13,6 +13,7 @@ int nextSelect = 0;		//次の画面をどうするかの数値を持つ
 static int resultImg;					//画像ハンドル値
 static int resultMousex, resultMousey;	//マウス座標を入れる変数
 static int SEnter, SSelect;				//SE用のハンドル
+static int result_bgm;					//bgm用ハンドル
 static int startSelect, endSelect;		//SE管理用変数
 static int fontResult;		//フォント用ハンドル
 
@@ -40,10 +41,15 @@ void Result_Initialize(int winlose) {	//winloseが1なら勝ち、2なら負け、3なら引き
 	}
 
 	fontResult = CreateFontToHandle("ゴシック", 15, 6, DX_FONTTYPE_ANTIALIASING);
-	startGame = initMassageBox("images/enpitu.png", "続ける", GetColor(0, 0, 0), fontResult, 180, 370, 170, 60);
+	startGame = initMassageBox("images/enpitu.png", "続ける", GetColor(0, 0, 0), fontResult, 480, 220, 170, 60);
 	endGame = initMassageBox("images/enpitu.png", "終了", GetColor(0, 0, 0), fontResult, 480, 370, 170, 60);
 	startSelect = 0;
 	endSelect = 0;
+	SEnter = LoadSoundMem("musics/enter_ou.wav");
+	SSelect = LoadSoundMem("musics/select_or_enter.wav");
+	result_bgm = LoadSoundMem("musics/bgm2.wav");
+	ChangeVolumeSoundMem(255 * 40 / 100, result_bgm);
+	PlaySoundMem(result_bgm, DX_PLAYTYPE_LOOP);
 
 
 	nextSelect = SCENE_NONE;
@@ -57,6 +63,7 @@ void Result_Finalize() {
 	deleteMassageBox(&endGame);
 	deleteSprite(&backSprite);
 	nextSelect = 0;
+	DeleteSoundMem(result_bgm);
 }
 
 void Result_Update() {
