@@ -17,7 +17,7 @@ static MassageBox endGame;
 
 void Title_Initialize() {
 	Font00 = CreateFontToHandle("ƒSƒVƒbƒN", 15, 6, DX_FONTTYPE_ANTIALIASING);
-	backSprite = initSprite("images/1blackboard.png", 640, 480);
+	backSprite = initSprite("images/titleback.png", 640, 480);
 	Title = LoadGraph("images/title.png");
 	SEnter = LoadSoundMem("musics/enter1.wav");
 	SSelect = LoadSoundMem("musics/select1.wav");
@@ -38,7 +38,7 @@ void Title_Update() {
 	if (getCurrentLoadState() > 0) {
 		if (isLoadEnd()) {
 			Title_Finalize();
-			SceneMgr_ChangeScene(SCENE_GAME);
+			SceneMgr_ChangeScene(SCENE_DIFFICULTY);
 		}
 		return;
 	}
@@ -66,7 +66,7 @@ void Title_StartMouseSelect() {
 		}
 		if ( getLeftDown() != 0) {
 			PlaySoundMem(SEnter, DX_PLAYTYPE_BACK);
-			onLoadFlag();
+			onLoadFlag(LOAD_FLUSH);
 		}
 	}
 	else {
