@@ -117,7 +117,7 @@ void setMessageFlag(BOOL flag) {
 }
 
 void clearCharacter() {
-	currentChar = NONE;
+	//currentChar = NONE;
 	drawFlag = FALSE;
 	messageFlag = FALSE;
 }
