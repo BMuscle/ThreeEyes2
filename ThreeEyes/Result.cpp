@@ -110,8 +110,12 @@ void Result_Update() {
 	for (int i = 0; i < BUTTON_SIZE; i++) {
 		if (mouseX >= BUTTON_OFFSET_X  + 10 && mouseX <= BUTTON_OFFSET_X + button[i][0].width
 			&& mouseY >= BUTTON_OFFSET_Y + BUTTON_INTERVAL_Y * i + button[i][0].height * i && mouseY <= BUTTON_OFFSET_Y + BUTTON_INTERVAL_Y * i + button[i][0].height * (i + 1)) {
+			if (mouseOnFlag[i] == FALSE) {
+				PlaySoundMem(SSelect, DX_PLAYTYPE_BACK);
+			}
 			mouseOnFlag[i] = TRUE;
 			if (getLeftDown()) {
+				PlaySoundMem(SEnter, DX_PLAYTYPE_BACK);
 				switch (i) {
 				case 0:
 					holdType = BUTTON_GAME;
