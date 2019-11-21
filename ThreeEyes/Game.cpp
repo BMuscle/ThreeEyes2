@@ -96,13 +96,13 @@ void Game_Update() {//計算処理
 		Pos pos;
 		switch (getCharacterType()) {
 		case CHAR_EASY:
-			pos = cpuThink1(myBoard, nowTurn);//コンピュータの手を計算し格納
+			pos = cpuThink3(myBoard, nowTurn);//コンピュータの手を計算し格納
 			break;
 		case CHAR_NORMAL:
 			pos = cpuThink2(myBoard, nowTurn);//コンピュータの手を計算し格納
 			break;
 		case CHAR_DIF:
-			pos = cpuThink3(myBoard, nowTurn);//コンピュータの手を計算し格納
+			pos = cpuThink1(myBoard, nowTurn);//コンピュータの手を計算し格納
 			break;
 		}
 		
