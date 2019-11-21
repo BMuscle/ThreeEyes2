@@ -28,6 +28,7 @@ static int gameResult;		//ゲームの結果情報
 static int startTime;
 
 
+
 void Game_Initialize() {//初期化処理
 	nowTurn = (TURN)(GetRand(1) + 1);
 	initLottery(nowTurn);

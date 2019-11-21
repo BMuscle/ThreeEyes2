@@ -10,8 +10,8 @@
 
 
 #define BUTTON_OFFSET_X 200
-#define BUTTON_OFFSET_Y 130
-#define BUTTON_INTERVAL_Y 30
+#define BUTTON_OFFSET_Y 230
+#define BUTTON_INTERVAL_Y 10
 #define BUTTON_WIDTH 300
 #define BUTTON_HEIGHT 60
 
@@ -33,6 +33,7 @@ static int fontResult;//フォント用ハンドル
 static Sprite button[BUTTON_SIZE][2];
 static BOOL mouseOnFlag[BUTTON_SIZE];
 static Sprite meter;
+static Sprite judge;
 static BUTTON_TYPE holdType;
 
 void Result_Initialize(int winlose) {	//winloseが1なら勝ち、2なら負け、3なら引き分け
@@ -55,10 +56,15 @@ void Result_Initialize(int winlose) {	//winloseが1なら勝ち、2なら負け�
 
 	switch(winlose) {
 	case 1:
+		judge = initSprite("images/win.png", 300, 100);
 		meter = initSprite("images/meter1.png", 70, 300);
+		break;
 	case 2:
+		judge = initSprite("images/lose.png", 300, 100);
 		meter = initSprite("images/meter2.png", 70, 300);
+		break;
 	case 3:
+		judge = initSprite("images/draw.png", 300, 100);
 		meter = initSprite("images/meter3.png", 70, 300);
 		break;
 	}
@@ -136,4 +142,5 @@ void Result_Draw() {
 		drawSprite(BUTTON_OFFSET_X, BUTTON_OFFSET_Y + BUTTON_INTERVAL_Y * i + button[i][0].height * i, &button[i][mouseOnFlag[i]], TRUE);
 	}
 	drawAtSprite(METER_X, METER_Y, &meter, TRUE);
+	drawAtSprite(WINDOW_WIDTH * 0.55, WINDOW_HEIGHT * 0.3, &judge, TRUE);
 }

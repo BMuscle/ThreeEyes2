@@ -1,14 +1,14 @@
 #include "Difficulty.h"
 
-#define ICON_OFFSET_X 100
-#define ICON_OFFSET_Y 100
-#define ICON_INTERVAL_Y 130
+#define ICON_OFFSET_X 55
+#define ICON_OFFSET_Y 55
+#define ICON_INTERVAL_Y 110
 
 #define ICON_WIDTH 100
 #define ICON_HEIGHT 100
 
-#define PROF_WIDTH 385
-#define PROF_HEIGHT 289
+#define PROF_WIDTH 640
+#define PROF_HEIGHT 480
 
 static Sprite backSprite;	//”wŒi‰æ‘œ
 static Sprite profile[CHAR_SIZE];
@@ -89,6 +89,8 @@ void Difficulty_Update() {
 }
 void Difficulty_Draw() {
 	drawAtSprite(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, &backSprite, TRUE);//”wŒi•`‰æ
+
+	drawAtSprite(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, &profile[holdChar], TRUE);
 	for (int i = 0; i < CHAR_SIZE; i++) {
 		int alpha = 170;
 		if (mouseOnFlag[i] == TRUE) {
@@ -96,7 +98,6 @@ void Difficulty_Draw() {
 		}
 		//SetDrawBlendMode(DX_BLENDMODE_ALPHA, alpha);
 		drawAtSprite(ICON_OFFSET_X, ICON_OFFSET_Y + i * ICON_INTERVAL_Y, &charIcon[i][mouseOnFlag[i]], TRUE);
-		drawAtSprite(WINDOW_WIDTH / 2 + 100, WINDOW_HEIGHT / 2, &profile[holdChar], TRUE);
 		//SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 		
 	} 
