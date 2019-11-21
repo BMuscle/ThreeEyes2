@@ -22,19 +22,19 @@ static int dif_bgm;								//bgm—pƒnƒ“ƒhƒ‹
 void Difficulty_Initialize() {
 
 	backSprite = initSprite("images/difback.png", WINDOW_WIDTH, WINDOW_HEIGHT);
-	charIcon[0][0] = initSprite("images/characters/_‘ã™z/icon.png", ICON_WIDTH, ICON_HEIGHT);
-	charIcon[0][1] = initSprite("images/characters/_‘ã™z/iconon.png", ICON_WIDTH, ICON_HEIGHT);
+	charIcon[0][0] = initSprite("images/characters/’·’Jì”ü‰Ã/icon.png", ICON_WIDTH, ICON_HEIGHT);
+	charIcon[0][1] = initSprite("images/characters/’·’Jì”ü‰Ã/iconon.png", ICON_WIDTH, ICON_HEIGHT);
 
-	charIcon[1][0] = initSprite("images/characters/–]Œ‚­‚é‚İ/icon.png", ICON_WIDTH, ICON_HEIGHT);
-	charIcon[1][1] = initSprite("images/characters/–]Œ‚­‚é‚İ/iconon.png", ICON_WIDTH, ICON_HEIGHT);
+	charIcon[1][0] = initSprite("images/characters/_‘ã™z/icon.png", ICON_WIDTH, ICON_HEIGHT);
+	charIcon[1][1] = initSprite("images/characters/_‘ã™z/iconon.png", ICON_WIDTH, ICON_HEIGHT);
 
-	charIcon[2][0] = initSprite("images/characters/’†“ˆ”ü‰Ã/icon.png", ICON_WIDTH, ICON_HEIGHT);
-	charIcon[2][1] = initSprite("images/characters/’†“ˆ”ü‰Ã/iconon.png", ICON_WIDTH, ICON_HEIGHT);
+	charIcon[2][0] = initSprite("images/characters/–]Œ‚­‚é‚İ/icon.png", ICON_WIDTH, ICON_HEIGHT);
+	charIcon[2][1] = initSprite("images/characters/–]Œ‚­‚é‚İ/iconon.png", ICON_WIDTH, ICON_HEIGHT);
 
 
-	profile[0] = initSprite("images/characters/_‘ã™z/prof.png", PROF_WIDTH, PROF_HEIGHT);
-	profile[1] = initSprite("images/characters/–]Œ‚­‚é‚İ/prof.png", PROF_WIDTH, PROF_HEIGHT);
-	profile[2] = initSprite("images/characters/’†“ˆ”ü‰Ã/prof.png", PROF_WIDTH, PROF_HEIGHT);
+	profile[0] = initSprite("images/characters/’·’Jì”ü‰Ã/prof.png", PROF_WIDTH, PROF_HEIGHT);
+	profile[1] = initSprite("images/characters/_‘ã™z/prof.png", PROF_WIDTH, PROF_HEIGHT);
+	profile[2] = initSprite("images/characters/–]Œ‚­‚é‚İ/prof.png", PROF_WIDTH, PROF_HEIGHT);
 
 	dif_enter_SE = LoadSoundMem("musics/enter4.wav");
 	dif_select_SE = LoadSoundMem("musics/select_or_enter.wav");

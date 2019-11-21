@@ -21,26 +21,26 @@ void initCharacter(void) {
 	drawFlag = FALSE;
 	//‰æ‘œƒTƒCƒY—v•ÏX
 		
-	character[0][CHAR_EX_NORMAL] = initSprite("images/characters/_‘ã™z/normal.png", CHAR_WIDTH, CHAR_HEIGHT);
-	character[0][CHAR_EX_THINK] = initSprite("images/characters/_‘ã™z/think.png", CHAR_WIDTH, CHAR_HEIGHT);
-	character[0][CHAR_EX_LOSING] = initSprite("images/characters/_‘ã™z/losing.png", CHAR_WIDTH, CHAR_HEIGHT);
-	character[0][CHAR_EX_WINNING] = initSprite("images/characters/_‘ã™z/winning.png", CHAR_WIDTH, CHAR_HEIGHT);
-	character[0][CHAR_EX_WIN] = initSprite("images/characters/_‘ã™z/win.png", CHAR_WIDTH, CHAR_HEIGHT);
-	character[0][CHAR_EX_LOSE] = initSprite("images/characters/_‘ã™z/lose.png", CHAR_WIDTH, CHAR_HEIGHT);
+	character[0][CHAR_EX_NORMAL] = initSprite("images/characters/’·’Jì”ü‰Ã/normal.png", CHAR_WIDTH, CHAR_HEIGHT);
+	character[0][CHAR_EX_THINK] = initSprite("images/characters/’·’Jì”ü‰Ã/think.png", CHAR_WIDTH, CHAR_HEIGHT);
+	character[0][CHAR_EX_LOSING] = initSprite("images/characters/’·’Jì”ü‰Ã/losing.png", CHAR_WIDTH, CHAR_HEIGHT);
+	character[0][CHAR_EX_WINNING] = initSprite("images/characters/’·’Jì”ü‰Ã/winning.png", CHAR_WIDTH, CHAR_HEIGHT);
+	character[0][CHAR_EX_WIN] = initSprite("images/characters/’·’Jì”ü‰Ã/win.png", CHAR_WIDTH, CHAR_HEIGHT);
+	character[0][CHAR_EX_LOSE] = initSprite("images/characters/’·’Jì”ü‰Ã/lose.png", CHAR_WIDTH, CHAR_HEIGHT);
 
-	character[1][CHAR_EX_NORMAL] = initSprite("images/characters/–]Œ‚­‚é‚İ/normal.png", CHAR_WIDTH, CHAR_HEIGHT);
-	character[1][CHAR_EX_THINK] = initSprite("images/characters/–]Œ‚­‚é‚İ/think.png", CHAR_WIDTH, CHAR_HEIGHT);
-	character[1][CHAR_EX_LOSING] = initSprite("images/characters/–]Œ‚­‚é‚İ/losing.png", CHAR_WIDTH, CHAR_HEIGHT);
-	character[1][CHAR_EX_WINNING] = initSprite("images/characters/–]Œ‚­‚é‚İ/winning.png", CHAR_WIDTH, CHAR_HEIGHT);
-	character[1][CHAR_EX_WIN] = initSprite("images/characters/–]Œ‚­‚é‚İ/win.png", CHAR_WIDTH, CHAR_HEIGHT);
-	character[1][CHAR_EX_LOSE] = initSprite("images/characters/–]Œ‚­‚é‚İ/lose.png", CHAR_WIDTH, CHAR_HEIGHT);
+	character[1][CHAR_EX_NORMAL] = initSprite("images/characters/_‘ã™z/normal.png", CHAR_WIDTH, CHAR_HEIGHT);
+	character[1][CHAR_EX_THINK] = initSprite("images/characters/_‘ã™z/think.png", CHAR_WIDTH, CHAR_HEIGHT);
+	character[1][CHAR_EX_LOSING] = initSprite("images/characters/_‘ã™z/losing.png", CHAR_WIDTH, CHAR_HEIGHT);
+	character[1][CHAR_EX_WINNING] = initSprite("images/characters/_‘ã™z/winning.png", CHAR_WIDTH, CHAR_HEIGHT);
+	character[1][CHAR_EX_WIN] = initSprite("images/characters/_‘ã™z/win.png", CHAR_WIDTH, CHAR_HEIGHT);
+	character[1][CHAR_EX_LOSE] = initSprite("images/characters/_‘ã™z/lose.png", CHAR_WIDTH, CHAR_HEIGHT);
 
-	character[2][CHAR_EX_NORMAL] = initSprite("images/characters/’†“ˆ”ü‰Ã/normal.png", CHAR_WIDTH, CHAR_HEIGHT);
-	character[2][CHAR_EX_THINK] = initSprite("images/characters/’†“ˆ”ü‰Ã/think.png", CHAR_WIDTH, CHAR_HEIGHT);
-	character[2][CHAR_EX_LOSING] = initSprite("images/characters/’†“ˆ”ü‰Ã/losing.png", CHAR_WIDTH, CHAR_HEIGHT);
-	character[2][CHAR_EX_WINNING] = initSprite("images/characters/’†“ˆ”ü‰Ã/winning.png", CHAR_WIDTH, CHAR_HEIGHT);
-	character[2][CHAR_EX_WIN] = initSprite("images/characters/’†“ˆ”ü‰Ã/win.png", CHAR_WIDTH, CHAR_HEIGHT);
-	character[2][CHAR_EX_LOSE] = initSprite("images/characters/’†“ˆ”ü‰Ã/lose.png", CHAR_WIDTH, CHAR_HEIGHT);
+	character[2][CHAR_EX_NORMAL] = initSprite("images/characters/–]Œ‚­‚é‚İ/normal.png", CHAR_WIDTH, CHAR_HEIGHT);
+	character[2][CHAR_EX_THINK] = initSprite("images/characters/–]Œ‚­‚é‚İ/think.png", CHAR_WIDTH, CHAR_HEIGHT);
+	character[2][CHAR_EX_LOSING] = initSprite("images/characters/–]Œ‚­‚é‚İ/losing.png", CHAR_WIDTH, CHAR_HEIGHT);
+	character[2][CHAR_EX_WINNING] = initSprite("images/characters/–]Œ‚­‚é‚İ/winning.png", CHAR_WIDTH, CHAR_HEIGHT);
+	character[2][CHAR_EX_WIN] = initSprite("images/characters/–]Œ‚­‚é‚İ/win.png", CHAR_WIDTH, CHAR_HEIGHT);
+	character[2][CHAR_EX_LOSE] = initSprite("images/characters/–]Œ‚­‚é‚İ/lose.png", CHAR_WIDTH, CHAR_HEIGHT);
 
 }
 void deleteCharacter(void) {
@@ -68,6 +68,16 @@ void setCharacter(CHAR_TYPE type, CHAR_EXPRESSION charEx) {
 	currentChar = type;
 	switch (type) {
 	case CHAR_EASY:
+		message[CHAR_MG_NORMAL] = initSprite("images/characters/’·’Jì”ü‰Ã/messages/normal.png", MESSAGE_WIDTH, MESSAGE_HEIGHT);
+		message[CHAR_MG_THINK] = initSprite("images/characters/’·’Jì”ü‰Ã/messages/think.png", MESSAGE_WIDTH, MESSAGE_HEIGHT);
+		message[CHAR_MG_LOSING] = initSprite("images/characters/’·’Jì”ü‰Ã/messages/losing.png", MESSAGE_WIDTH, MESSAGE_HEIGHT);
+		message[CHAR_MG_WINNING] = initSprite("images/characters/’·’Jì”ü‰Ã/messages/winning.png", MESSAGE_WIDTH, MESSAGE_HEIGHT);
+		message[CHAR_MG_WIN] = initSprite("images/characters/’·’Jì”ü‰Ã/messages/win.png", MESSAGE_WIDTH, MESSAGE_HEIGHT);
+		message[CHAR_MG_LOSE] = initSprite("images/characters/’·’Jì”ü‰Ã/messages/lose.png", MESSAGE_WIDTH, MESSAGE_HEIGHT);
+		message[CHAR_MG_START] = initSprite("images/characters/’·’Jì”ü‰Ã/messages/start.png", MESSAGE_WIDTH, MESSAGE_HEIGHT);
+		message[CHAR_MG_DRAW] = initSprite("images/characters/’·’Jì”ü‰Ã/messages/draw.png", MESSAGE_WIDTH, MESSAGE_HEIGHT);
+		break;
+	case CHAR_NORMAL:
 		message[CHAR_MG_NORMAL] = initSprite("images/characters/_‘ã™z/messages/normal.png", MESSAGE_WIDTH, MESSAGE_HEIGHT);
 		message[CHAR_MG_THINK] = initSprite("images/characters/_‘ã™z/messages/think.png", MESSAGE_WIDTH, MESSAGE_HEIGHT);
 		message[CHAR_MG_LOSING] = initSprite("images/characters/_‘ã™z/messages/losing.png", MESSAGE_WIDTH, MESSAGE_HEIGHT);
@@ -77,7 +87,7 @@ void setCharacter(CHAR_TYPE type, CHAR_EXPRESSION charEx) {
 		message[CHAR_MG_START] = initSprite("images/characters/_‘ã™z/messages/start.png", MESSAGE_WIDTH, MESSAGE_HEIGHT);
 		message[CHAR_MG_DRAW] = initSprite("images/characters/_‘ã™z/messages/draw.png", MESSAGE_WIDTH, MESSAGE_HEIGHT);
 		break;
-	case CHAR_NORMAL:
+	case CHAR_DIF:
 		message[CHAR_MG_NORMAL] = initSprite("images/characters/–]Œ‚­‚é‚İ/messages/normal.png", MESSAGE_WIDTH, MESSAGE_HEIGHT);
 		message[CHAR_MG_THINK] = initSprite("images/characters/–]Œ‚­‚é‚İ/messages/think.png", MESSAGE_WIDTH, MESSAGE_HEIGHT);
 		message[CHAR_MG_LOSING] = initSprite("images/characters/–]Œ‚­‚é‚İ/messages/losing.png", MESSAGE_WIDTH, MESSAGE_HEIGHT);
@@ -86,16 +96,6 @@ void setCharacter(CHAR_TYPE type, CHAR_EXPRESSION charEx) {
 		message[CHAR_MG_LOSE] = initSprite("images/characters/–]Œ‚­‚é‚İ/messages/lose.png", MESSAGE_WIDTH, MESSAGE_HEIGHT);
 		message[CHAR_MG_START] = initSprite("images/characters/–]Œ‚­‚é‚İ/messages/start.png", MESSAGE_WIDTH, MESSAGE_HEIGHT);
 		message[CHAR_MG_DRAW] = initSprite("images/characters/–]Œ‚­‚é‚İ/messages/draw.png", MESSAGE_WIDTH, MESSAGE_HEIGHT);
-		break;
-	case CHAR_DIF:
-		message[CHAR_MG_NORMAL] = initSprite("images/characters/’†“ˆ”ü‰Ã/messages/normal.png", MESSAGE_WIDTH, MESSAGE_HEIGHT);
-		message[CHAR_MG_THINK] = initSprite("images/characters/’†“ˆ”ü‰Ã/messages/think.png", MESSAGE_WIDTH, MESSAGE_HEIGHT);
-		message[CHAR_MG_LOSING] = initSprite("images/characters/’†“ˆ”ü‰Ã/messages/losing.png", MESSAGE_WIDTH, MESSAGE_HEIGHT);
-		message[CHAR_MG_WINNING] = initSprite("images/characters/’†“ˆ”ü‰Ã/messages/winning.png", MESSAGE_WIDTH, MESSAGE_HEIGHT);
-		message[CHAR_MG_WIN] = initSprite("images/characters/’†“ˆ”ü‰Ã/messages/win.png", MESSAGE_WIDTH, MESSAGE_HEIGHT);
-		message[CHAR_MG_LOSE] = initSprite("images/characters/’†“ˆ”ü‰Ã/messages/lose.png", MESSAGE_WIDTH, MESSAGE_HEIGHT);
-		message[CHAR_MG_START] = initSprite("images/characters/’†“ˆ”ü‰Ã/messages/start.png", MESSAGE_WIDTH, MESSAGE_HEIGHT);
-		message[CHAR_MG_DRAW] = initSprite("images/characters/’†“ˆ”ü‰Ã/messages/draw.png", MESSAGE_WIDTH, MESSAGE_HEIGHT);
 		break;
 
 
