@@ -6,43 +6,51 @@
 #include "MyMouse.h"
 #include "MassageBox.h"
 #include"LoadEffect.h"
+#include "Character.h"
+
+#define BUTTON_OFFSET_X 200
+#define BUTTON_OFFSET_Y 130
+#define BUTTON_INTERVAL_Y 30
+#define BUTTON_WIDTH 300
+#define BUTTON_HEIGHT 60
+
+#define METER_X (WINDOW_WIDTH * 0.85)
+#define METER_Y	(WINDOW_HEIGHT * 0.6)
 
 static Sprite backSprite;
-int nextSelect = 0;		//Ÿ‚Ì‰æ–Ê‚ğ‚Ç‚¤‚·‚é‚©‚Ì”’l‚ğ‚Â
+int nextSelect = 0;		//æ¬¡ã®ç”»é¢ã‚’ã©ã†ã™ã‚‹ã‹ã®æ•°å€¤ã‚’æŒã¤
 
-static int resultImg;					//‰æ‘œƒnƒ“ƒhƒ‹’l
-static int resultMousex, resultMousey;	//ƒ}ƒEƒXÀ•W‚ğ“ü‚ê‚é•Ï”
-static int SEnter, SSelect;				//SE—p‚Ìƒnƒ“ƒhƒ‹
-static int result_bgm;					//bgm—pƒnƒ“ƒhƒ‹
-static int startSelect, endSelect;		//SEŠÇ——p•Ï”
-static int fontResult;		//ƒtƒHƒ“ƒg—pƒnƒ“ƒhƒ‹
+static int SEnter, SSelect;				//SEç”¨ã®ãƒãƒ³ãƒ‰ãƒ«
+static int result_bgm;					//bgmç”¨ãƒãƒ³ãƒ‰ãƒ«
+static int startSelect, endSelect;		//SEç®¡ç†ç”¨å¤‰æ•°
+static int fontResult;//ãƒ•ã‚©ãƒ³ãƒˆç”¨ãƒãƒ³ãƒ‰ãƒ«
 
-static MassageBox startGame;
-static MassageBox endGame;
+enum BUTTON_TYPE {
+	BUTTON_GAME,
+	BUTTON_DIF,
+	BUTTON_EXIT,
+	BUTTON_SIZE,
+};
+
+static Sprite button[BUTTON_SIZE][2];
+static BOOL mouseOnFlag[BUTTON_SIZE];
+
+static Sprite meter;
+
+static BUTTON_TYPE holdType;
 
 
 
-void Result_Initialize(int winlose) {	//winlose‚ª1‚È‚çŸ‚¿A2‚È‚ç•‰‚¯A3‚È‚çˆø‚«•ª‚¯
-	backSprite = initSprite("images/1blackboard.png", 640, 480);
-	if (winlose == 1) {
-		//Ÿ‚¿‚Ì‚Ìˆ—
-		resultImg = LoadGraph("images/win.png");
-		winlose = 0;
-	}
-	else if (winlose == 2) {
-		//•‰‚¯‚Ì‚Ìˆ—
-		resultImg = LoadGraph("images/lose.png");
-		winlose = 0;
-	}
-	else {
-		//ˆø‚«•ª‚¯‚Ìˆ—
-		resultImg = LoadGraph("images/draw.png");
-		winlose = 0;
-	}
+void Result_Initialize(int winlose) {	//winloseãŒ1ãªã‚‰å‹ã¡ã€2ãªã‚‰è² ã‘ã€3ãªã‚‰å¼•ãåˆ†ã‘
+	backSprite = initSprite("images/resultback.png", 640, 480);
+	button[0][0] = initSprite("images/button/Result_To_Game.png", BUTTON_WIDTH, BUTTON_HEIGHT);
+	button[0][1] = initSprite("images/button/Result_To_Gameon.png", BUTTON_WIDTH, BUTTON_HEIGHT);
+	button[1][0] = initSprite("images/button/Result_To_Select.png", BUTTON_WIDTH, BUTTON_HEIGHT);
+	button[1][1] = initSprite("images/button/Result_To_Selecton.png", BUTTON_WIDTH, BUTTON_HEIGHT);
+	button[2][0] = initSprite("images/button/Result_To_Finish.png", BUTTON_WIDTH, BUTTON_HEIGHT);
+	button[2][1] = initSprite("images/button/Result_To_Finishon.png", BUTTON_WIDTH, BUTTON_HEIGHT);
 
-	fontResult = CreateFontToHandle("ƒSƒVƒbƒN", 15, 6, DX_FONTTYPE_ANTIALIASING);
-	startGame = initMassageBox("images/enpitu.png", "‘±‚¯‚é", GetColor(0, 0, 0), fontResult, 480, 220, 170, 60);
-	endGame = initMassageBox("images/enpitu.png", "I—¹", GetColor(0, 0, 0), fontResult, 480, 370, 170, 60);
+	fontResult = CreateFontToHandle("ã‚´ã‚·ãƒƒã‚¯", 15, 6, DX_FONTTYPE_ANTIALIASING);
 	startSelect = 0;
 	endSelect = 0;
 	SEnter = LoadSoundMem("musics/enter_ou.wav");
@@ -51,85 +59,85 @@ void Result_Initialize(int winlose) {	//winlose‚ª1‚È‚çŸ‚¿A2‚È‚ç•‰‚¯A3‚È‚çˆø‚«
 	ChangeVolumeSoundMem(255 * 40 / 100, result_bgm);
 	PlaySoundMem(result_bgm, DX_PLAYTYPE_LOOP);
 
+	switch(winlose) {
+	case 1:
+		meter = initSprite("images/meter1.png", 70, 300);
+	case 2:
+		meter = initSprite("images/meter2.png", 70, 300);
+	case 3:
+		meter = initSprite("images/meter3.png", 70, 300);
+		break;
+	}
 
 	nextSelect = SCENE_NONE;
-	startGame.mystr.alpha = 255 * 0.5;
-	endGame.mystr.alpha = 255 * 0.5;
 }
 
 void Result_Finalize() {
-	DeleteGraph(resultImg);					//‰æ‘œ‚ÌŠJ•úˆ—
-	deleteMassageBox(&startGame);
-	deleteMassageBox(&endGame);
 	deleteSprite(&backSprite);
 	nextSelect = 0;
+
 	DeleteSoundMem(result_bgm);
+
 }
 
 void Result_Update() {
 	if (getCurrentLoadState() > 0) {
 		if (isLoadEnd()) {
 			Result_Finalize();
-			SceneMgr_ChangeScene(SCENE_TITLE);
+			switch (holdType) {
+			case BUTTON_GAME:
+				SceneMgr_ChangeScene(SCENE_GAME);
+				break;
+			case BUTTON_DIF:
+				SceneMgr_ChangeScene(SCENE_DIFFICULTY);
+				clearCharacter();
+				break;
+			case BUTTON_EXIT:
+				//ã‚²ãƒ¼ãƒ çµ‚äº†å‡¦ç†ã‹ã
+				break;
+				
+			}
 		}
 		return;
 	}
-	GetMousePoint(&resultMousex, &resultMousey);
-	Result_EndMouseSelect();
-	Result_StartMouseSelect();
-	/*‚±‚±‚ÉƒV[ƒ“ƒ`ƒFƒ“ƒW‚ÆƒGƒtƒFƒNƒg‚ğ“ü‚ê‚é*/
+	setMessageFlag(TRUE);
+	//é¸æŠè‚¢ï¼“ã¤åˆ†
+	int mouseX, mouseY;
+	GetMousePoint(&mouseX, &mouseY);
+
+	
+	
+	for (int i = 0; i < BUTTON_SIZE; i++) {
+		if (mouseX >= BUTTON_OFFSET_X  + 10 && mouseX <= BUTTON_OFFSET_X + button[i][0].width
+			&& mouseY >= BUTTON_OFFSET_Y + BUTTON_INTERVAL_Y * i + button[i][0].height * i && mouseY <= BUTTON_OFFSET_Y + BUTTON_INTERVAL_Y * i + button[i][0].height * (i + 1)) {
+			mouseOnFlag[i] = TRUE;
+			if (getLeftDown()) {
+				switch (i) {
+				case 0:
+					holdType = BUTTON_GAME;
+					break;
+				case 1:
+					holdType = BUTTON_DIF;
+					break;
+				case 2:
+					holdType = BUTTON_EXIT;
+				}
+				onLoadFlag(LOAD_FLUSH);
+				return;
+			}
+		}
+		else {
+			mouseOnFlag[i] = FALSE;
+		}
+	}
+	
 }
 
 
 void Result_Draw() {
 	drawAtSprite(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, &backSprite, TRUE);
-	DrawGraph(200, 50, resultImg, FALSE);
-	drawAtMassageBox(&startGame, TRUE);
-	drawAtMassageBox(&endGame, TRUE);
-}
-
-void Result_StartMouseSelect()			//ƒ}ƒEƒX‚ÌƒJ[ƒ\ƒ‹‚ğ‘±‚¯‚é‚É‡‚í‚¹‚é‚Æ•¶š‚ÌF‚ª•Ï‚í‚é
-{
-	//¶‚Ìƒ{ƒbƒNƒX
-	if (resultMousex >= startGame.mystr.x - startGame.sprite.width / 2 + 10 && resultMousex <= startGame.mystr.x + startGame.sprite.width / 2 - 30
-		&& resultMousey >= startGame.mystr.y - startGame.sprite.height / 2 + 10 && resultMousey <= startGame.mystr.y + startGame.sprite.height / 2 - 10) {
-		startGame.mystr.color = 0xff0000;
-		if (startSelect == 0) {			//SEŠÇ——p‚ÌIF•¶
-			PlaySoundMem(SSelect, DX_PLAYTYPE_BACK);
-			startSelect = 1;
-		}
-		if (getLeftDown() != 0) {
-			startGame.mystr.color = 0x00ff00;
-			PlaySoundMem(SEnter, DX_PLAYTYPE_BACK);
-			onLoadFlag(LOAD_FLUSH);
-		}
+	for (int i = 0; i < BUTTON_SIZE; i++) {
+		drawSprite(BUTTON_OFFSET_X, BUTTON_OFFSET_Y + BUTTON_INTERVAL_Y * i + button[i][0].height * i, &button[i][mouseOnFlag[i]], TRUE);
 	}
-	else {
-		startGame.mystr.color = 0x000000;
-		startSelect = 0;
-	}
-}
-
-void Result_EndMouseSelect()		//ƒ}ƒEƒX‚ÌƒJ[ƒ\ƒ‹‚ğI—¹‚É‡‚í‚¹‚é‚Æ•¶š‚ÌF‚ª•Ï‚í‚é
-{
-	//‰E‚Ìƒ{ƒbƒNƒX
-	if (resultMousex >= endGame.mystr.x - endGame.sprite.width / 2 + 10 && resultMousex <= endGame.mystr.x + endGame.sprite.width / 2 - 30
-		&& resultMousey >= endGame.mystr.y - endGame.sprite.height / 2 + 10 && resultMousey <= endGame.mystr.y + endGame.sprite.height / 2 - 10) {
-		endGame.mystr.color = 0xff0000;
-		if (endSelect == 0) {
-			PlaySoundMem(SSelect, DX_PLAYTYPE_BACK);
-			endSelect = 1;
-		}
-		if (getLeftDown() != 0) {
-			endGame.mystr.color = 0x00ff00;
-			PlaySoundMem(SEnter, DX_PLAYTYPE_BACK);
-			/*‚±‚±‚ÉI—¹ˆ—‚ğ•`‚­*/
-
-		}
-	}
-	else {
-		endGame.mystr.color = 0x000000;
-		endSelect = 0;
-	}
-	
+	drawAtSprite(METER_X, METER_Y, &meter, TRUE);
 }

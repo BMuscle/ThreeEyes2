@@ -53,7 +53,7 @@ void deleteCharacter(void) {
 
 
 void Character_Draw() {
-	if (currentChar != NONE) {
+	if (drawFlag) {
 		drawAtSprite(100, WINDOW_HEIGHT * 0.7, &character[currentChar - 1][currentCharEx], TRUE);
 	}
 	if (messageFlag) {
@@ -112,12 +112,15 @@ void setCharacterMessage(CHAR_MESSAGE charMsg) {
 	currentMessage = charMsg;
 }
 
+void setCharDrawFlag(BOOL flag) {
+	drawFlag = flag;
+}
 void setMessageFlag(BOOL flag) {
 	messageFlag = flag;
 }
 
 void clearCharacter() {
-	currentChar = NONE;
+	//currentChar = NONE;
 	drawFlag = FALSE;
 	messageFlag = FALSE;
 }
