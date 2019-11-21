@@ -6,123 +6,130 @@
 #include "MyMouse.h"
 #include "MassageBox.h"
 #include"LoadEffect.h"
+#include "Character.h"
+
+#define BUTTON_OFFSET_X 200
+#define BUTTON_OFFSET_Y 130
+#define BUTTON_INTERVAL_Y 30
+#define BUTTON_WIDTH 300
+#define BUTTON_HEIGHT 60
+
+#define METER_X (WINDOW_WIDTH * 0.85)
+#define METER_Y	(WINDOW_HEIGHT * 0.6)
 
 static Sprite backSprite;
 int nextSelect = 0;		//次の画面をどうするかの数値を持つ
 
-static int resultImg;					//画像ハンドル値
-static int resultMousex, resultMousey;	//マウス座標を入れる変数
 static int SEnter, SSelect;				//SE用のハンドル
 static int startSelect, endSelect;		//SE管理用変数
-static int fontResult;		//フォント用ハンドル
+static int fontResult;//フォント用ハンドル
 
-static MassageBox startGame;
-static MassageBox endGame;
+enum BUTTON_TYPE {
+	BUTTON_GAME,
+	BUTTON_DIF,
+	BUTTON_EXIT,
+	BUTTON_SIZE,
+};
+
+static Sprite button[BUTTON_SIZE][2];
+static BOOL mouseOnFlag[BUTTON_SIZE];
+
+static Sprite meter;
+
+static BUTTON_TYPE holdType;
 
 
 
 void Result_Initialize(int winlose) {	//winloseが1なら勝ち、2なら負け、3なら引き分け
-	backSprite = initSprite("images/1blackboard.png", 640, 480);
-	if (winlose == 1) {
-		//勝ちの時の処理
-		resultImg = LoadGraph("images/win.png");
-		winlose = 0;
-	}
-	else if (winlose == 2) {
-		//負けの時の処理
-		resultImg = LoadGraph("images/lose.png");
-		winlose = 0;
-	}
-	else {
-		//引き分けの処理
-		resultImg = LoadGraph("images/draw.png");
-		winlose = 0;
-	}
+	backSprite = initSprite("images/resultback.png", 640, 480);
+	button[0][0] = initSprite("images/button/Result_To_Game.png", BUTTON_WIDTH, BUTTON_HEIGHT);
+	button[0][1] = initSprite("images/button/Result_To_Gameon.png", BUTTON_WIDTH, BUTTON_HEIGHT);
+	button[1][0] = initSprite("images/button/Result_To_Select.png", BUTTON_WIDTH, BUTTON_HEIGHT);
+	button[1][1] = initSprite("images/button/Result_To_Selecton.png", BUTTON_WIDTH, BUTTON_HEIGHT);
+	button[2][0] = initSprite("images/button/Result_To_Finish.png", BUTTON_WIDTH, BUTTON_HEIGHT);
+	button[2][1] = initSprite("images/button/Result_To_Finishon.png", BUTTON_WIDTH, BUTTON_HEIGHT);
 
 	fontResult = CreateFontToHandle("ゴシック", 15, 6, DX_FONTTYPE_ANTIALIASING);
-	startGame = initMassageBox("images/enpitu.png", "続ける", GetColor(0, 0, 0), fontResult, 180, 370, 170, 60);
-	endGame = initMassageBox("images/enpitu.png", "終了", GetColor(0, 0, 0), fontResult, 480, 370, 170, 60);
 	startSelect = 0;
 	endSelect = 0;
 
+	switch(winlose) {
+	case 1:
+		meter = initSprite("images/meter1.png", 70, 300);
+	case 2:
+		meter = initSprite("images/meter2.png", 70, 300);
+	case 3:
+		meter = initSprite("images/meter3.png", 70, 300);
+		break;
+	}
 
 	nextSelect = SCENE_NONE;
-	startGame.mystr.alpha = 255 * 0.5;
-	endGame.mystr.alpha = 255 * 0.5;
 }
 
 void Result_Finalize() {
-	DeleteGraph(resultImg);					//画像の開放処理
-	deleteMassageBox(&startGame);
-	deleteMassageBox(&endGame);
 	deleteSprite(&backSprite);
 	nextSelect = 0;
+	
 }
 
 void Result_Update() {
 	if (getCurrentLoadState() > 0) {
 		if (isLoadEnd()) {
 			Result_Finalize();
-			SceneMgr_ChangeScene(SCENE_TITLE);
+			switch (holdType) {
+			case BUTTON_GAME:
+				SceneMgr_ChangeScene(SCENE_GAME);
+				break;
+			case BUTTON_DIF:
+				SceneMgr_ChangeScene(SCENE_DIFFICULTY);
+				clearCharacter();
+				break;
+			case BUTTON_EXIT:
+				//ゲーム終了処理かく
+				break;
+				
+			}
 		}
 		return;
 	}
-	GetMousePoint(&resultMousex, &resultMousey);
-	Result_EndMouseSelect();
-	Result_StartMouseSelect();
-	/*ここにシーンチェンジとエフェクトを入れる*/
+	setMessageFlag(TRUE);
+	//選択肢３つ分
+	int mouseX, mouseY;
+	GetMousePoint(&mouseX, &mouseY);
+
+	
+	
+	for (int i = 0; i < BUTTON_SIZE; i++) {
+		if (mouseX >= BUTTON_OFFSET_X  + 10 && mouseX <= BUTTON_OFFSET_X + button[i][0].width
+			&& mouseY >= BUTTON_OFFSET_Y + BUTTON_INTERVAL_Y * i + button[i][0].height * i && mouseY <= BUTTON_OFFSET_Y + BUTTON_INTERVAL_Y * i + button[i][0].height * (i + 1)) {
+			mouseOnFlag[i] = TRUE;
+			if (getLeftDown()) {
+				switch (i) {
+				case 0:
+					holdType = BUTTON_GAME;
+					break;
+				case 1:
+					holdType = BUTTON_DIF;
+					break;
+				case 2:
+					holdType = BUTTON_EXIT;
+				}
+				onLoadFlag(LOAD_FLUSH);
+				return;
+			}
+		}
+		else {
+			mouseOnFlag[i] = FALSE;
+		}
+	}
+	
 }
 
 
 void Result_Draw() {
 	drawAtSprite(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, &backSprite, TRUE);
-	DrawGraph(200, 50, resultImg, FALSE);
-	drawAtMassageBox(&startGame, TRUE);
-	drawAtMassageBox(&endGame, TRUE);
-}
-
-void Result_StartMouseSelect()			//マウスのカーソルを続けるに合わせると文字の色が変わる
-{
-	//左のボックス
-	if (resultMousex >= startGame.mystr.x - startGame.sprite.width / 2 + 10 && resultMousex <= startGame.mystr.x + startGame.sprite.width / 2 - 30
-		&& resultMousey >= startGame.mystr.y - startGame.sprite.height / 2 + 10 && resultMousey <= startGame.mystr.y + startGame.sprite.height / 2 - 10) {
-		startGame.mystr.color = 0xff0000;
-		if (startSelect == 0) {			//SE管理用のIF文
-			PlaySoundMem(SSelect, DX_PLAYTYPE_BACK);
-			startSelect = 1;
-		}
-		if (getLeftDown() != 0) {
-			startGame.mystr.color = 0x00ff00;
-			PlaySoundMem(SEnter, DX_PLAYTYPE_BACK);
-			onLoadFlag(LOAD_FLUSH);
-		}
+	for (int i = 0; i < BUTTON_SIZE; i++) {
+		drawSprite(BUTTON_OFFSET_X, BUTTON_OFFSET_Y + BUTTON_INTERVAL_Y * i + button[i][0].height * i, &button[i][mouseOnFlag[i]], TRUE);
 	}
-	else {
-		startGame.mystr.color = 0x000000;
-		startSelect = 0;
-	}
-}
-
-void Result_EndMouseSelect()		//マウスのカーソルを終了に合わせると文字の色が変わる
-{
-	//右のボックス
-	if (resultMousex >= endGame.mystr.x - endGame.sprite.width / 2 + 10 && resultMousex <= endGame.mystr.x + endGame.sprite.width / 2 - 30
-		&& resultMousey >= endGame.mystr.y - endGame.sprite.height / 2 + 10 && resultMousey <= endGame.mystr.y + endGame.sprite.height / 2 - 10) {
-		endGame.mystr.color = 0xff0000;
-		if (endSelect == 0) {
-			PlaySoundMem(SSelect, DX_PLAYTYPE_BACK);
-			endSelect = 1;
-		}
-		if (getLeftDown() != 0) {
-			endGame.mystr.color = 0x00ff00;
-			PlaySoundMem(SEnter, DX_PLAYTYPE_BACK);
-			/*ここに終了処理を描く*/
-
-		}
-	}
-	else {
-		endGame.mystr.color = 0x000000;
-		endSelect = 0;
-	}
-	
+	drawAtSprite(METER_X, METER_Y, &meter, TRUE);
 }

@@ -45,3 +45,4 @@ void setCharacterExpression(CHAR_EXPRESSION charEx);
 void setCharacterMessage(CHAR_MESSAGE charMsg);
 void setMessageFlag(BOOL flag);
 void clearCharacter();
+void setCharDrawFlag(BOOL flag);

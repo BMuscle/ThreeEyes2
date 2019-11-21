@@ -9,6 +9,7 @@ enum LOAD_STATE {//現在のロード状態
 	WRITE = 1,//表示フェーズ
 	MOVE = 2,//移行フェーズ
 	ERASE = 3,//消去フェーズ
+	BLACKERASE = 4,//黒板消しで消すフェーズ
 };
 
 void eraseUpdate();
@@ -18,7 +19,6 @@ void flushDraw();
 void empty() {};
 
 static void(*funcUpdate)();		//Updateの関数ポインタ
-static void(*funcDraw)();		//Drawの関数ポインタ
 
 static LOAD_STATE currentLoadState;
 //LOAD_ERASE用
@@ -34,8 +34,6 @@ static int alpha;
 
 void initLoadEffect(void) {
 	funcUpdate = empty;
-	funcDraw = empty;
-
 	currentRod = 0;
 	currentX = -WINDOW_WIDTH*2;
 	rodSpeed = 30;
@@ -53,18 +51,18 @@ void deleteLoadEffect(void) {
 }
 
 void onLoadFlag(LOAD_TYPE type) {
-	currentLoadState = ERASE;
+	currentRod = 0;
+	alpha = 0;
 	switch (type) {
 	case LOAD_ERASE:
+		currentLoadState = BLACKERASE;
 		funcUpdate = eraseUpdate;
-		funcDraw = eraseDraw;
 		currentX = -WINDOW_WIDTH * 2;
-		currentRod = 0;
+
 		break;
 	case LOAD_FLUSH:
+		currentLoadState = ERASE;
 		funcUpdate = flushUpdate;
-		funcDraw = flushDraw;
-		alpha = 0;
 		break;
 	}
 
@@ -90,43 +88,10 @@ BOOL isStart() {
 void LoadEffect_Update(void) {
 	(*funcUpdate)();
 }
-void LoadEffect_Draw(void) {
-	(*funcDraw)();
-}
-
-
-void eraseUpdate() {
-	if (currentLoadState == NONE) { return; }
-	if (currentLoadState == ERASE) {
-		currentX += rodSpeed;
-		if (currentX >= 0) {
-			currentX = -WINDOW_WIDTH * 2;
-			currentRod++;
-			if (currentRod > ROD_SIZE - 1) {
-				currentLoadState = MOVE;
-				currentX = -WINDOW_WIDTH;
-				currentRod = 0;
-				return;
-			}
-		}
-	}
-	else if (currentLoadState == WRITE) {
-		currentX += rodSpeed;
-		if (currentX >= WINDOW_WIDTH) {
-			currentX = -WINDOW_WIDTH;
-			currentRod++;
-			if (currentRod > ROD_SIZE - 1) {
-				currentLoadState = NONE;
-				return;
-			}
-		}
-	}
-	return;
-}
-void eraseDraw() {
+void boardEraseDraw(void) {
 	if (currentLoadState == NONE) { return; }
 
-	if (currentLoadState == ERASE) {
+	if (currentLoadState == BLACKERASE) {
 		for (int i = 0; i < currentRod; i++) {
 			drawSprite(0, i * ROD_HEIGHT, &greenRod, TRUE);
 		}
@@ -134,12 +99,47 @@ void eraseDraw() {
 		DrawGraph(0, 0, eraseBackImg, TRUE);
 	}
 	else {
-		for (int i = currentRod + 1; i <= ROD_SIZE; i++) {
-			drawSprite(0, i * ROD_HEIGHT, &greenRod, TRUE);
+		if (currentLoadState == ERASE) {
+			for (int i = 0; i < currentRod; i++) {
+				drawSprite(0, i * ROD_HEIGHT, &greenRod, TRUE);
+			}
 		}
-		drawSprite(currentX, currentRod * ROD_HEIGHT, &greenRodWrite, TRUE);
-		DrawGraph(0, 0, eraseBackImg, TRUE);
 	}
+}
+
+
+void eraseUpdate() {
+	if (currentLoadState == NONE) { return; }
+	if (currentLoadState == BLACKERASE) {
+		currentX += rodSpeed;
+		if (currentX >= 0) {
+			currentX = -WINDOW_WIDTH * 2;
+			currentRod++;
+			if (currentRod > ROD_SIZE - 1) {
+				currentLoadState = ERASE;
+				currentX = -WINDOW_WIDTH;
+				return;
+			}
+		}
+	}
+	else if (currentLoadState == ERASE) {
+		alpha += 5;
+		if (alpha >= 255) {
+			alpha = 255;
+			currentLoadState = MOVE;
+		}
+	}
+	else {
+		alpha -= 5;
+		if (alpha <= 0) {
+			alpha = 0;
+			currentLoadState = NONE;
+		}
+	}
+	return;
+}
+void eraseDraw() {
+
 }
 void flushUpdate() {
 	if (currentLoadState == NONE) { return; }

@@ -33,9 +33,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 				/* Main‚É‘‚­‚Ì‚Í‚±‚Ì“ñ‚Â‚Ì‚İ*/
 				SceneMgr_Update();
 				SceneMgr_Draw();
-				LoadEffect_Draw();
+				boardEraseDraw();
 				Character_Draw();
-				
+				flushDraw();
 		}
 		deleteCharacter();
 		deleteLoadEffect();
