@@ -3,7 +3,6 @@
 #include "Sprite.h"
 #include "MyWindow.h"
 
-
 enum CHAR_TYPE {
 	NONE,
 	CHAR_EASY,
@@ -44,5 +43,5 @@ void setCharacter(CHAR_TYPE type, CHAR_EXPRESSION charEx);
 void setCharacterExpression(CHAR_EXPRESSION charEx);
 void setCharacterMessage(CHAR_MESSAGE charMsg);
 void setMessageFlag(BOOL flag);
-void clearCharacter();
+void clearCharacter(void);
 void setCharDrawFlag(BOOL flag);

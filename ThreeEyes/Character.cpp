@@ -1,5 +1,11 @@
 #include "Character.h"
 
+#define CHAR_WIDTH 200
+#define CHAR_HEIGHT 550
+
+#define MESSAGE_WIDTH 640
+#define MESSAGE_HEIGHT 480
+
 static Sprite character[CHAR_SIZE][CHAR_EX_SIZE];
 static CHAR_TYPE currentChar;
 static CHAR_EXPRESSION currentCharEx;
@@ -14,12 +20,6 @@ void initCharacter(void) {
 	messageFlag = FALSE;
 	drawFlag = FALSE;
 	//画像サイズ要変更
-#define CHAR_WIDTH 200
-#define CHAR_HEIGHT 550
-		
-		
-		
-		
 		
 	character[0][CHAR_EX_NORMAL] = initSprite("images/characters/神代凛/normal.png", CHAR_WIDTH, CHAR_HEIGHT);
 	character[0][CHAR_EX_THINK] = initSprite("images/characters/神代凛/think.png", CHAR_WIDTH, CHAR_HEIGHT);
@@ -64,8 +64,6 @@ void Character_Draw() {
 
 
 void setCharacter(CHAR_TYPE type, CHAR_EXPRESSION charEx) {
-#define MESSAGE_WIDTH 640
-#define MESSAGE_HEIGHT 480
 	drawFlag = TRUE;
 	currentChar = type;
 	switch (type) {

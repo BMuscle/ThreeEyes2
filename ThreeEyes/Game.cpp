@@ -1,10 +1,5 @@
-#include"DxLib.h"
 #include"Game.h"
-#include"SceneMgr.h"
-#include"Result.h"
-#include "Sprite.h"
-#include "LoadEffect.h"
-#include "Character.h"
+
 
 enum TURN {//ターン情報
 	PLAYER = 1,

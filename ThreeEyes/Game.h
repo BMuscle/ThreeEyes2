@@ -3,6 +3,11 @@
 #include "MyWindow.h"
 #include "MyMouse.h"
 #include "Lottery.h"
+#include"SceneMgr.h"
+#include"Result.h"
+#include "Sprite.h"
+#include "LoadEffect.h"
+#include "Character.h"
 
 #define RECT_WIDTH 100	//１マスの幅
 #define RECT_HEIGHT 100	//１マスの高さ

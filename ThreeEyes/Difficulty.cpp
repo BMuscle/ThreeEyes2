@@ -4,6 +4,12 @@
 #define ICON_OFFSET_Y 100
 #define ICON_INTERVAL_Y 130
 
+#define ICON_WIDTH 100
+#define ICON_HEIGHT 100
+
+#define PROF_WIDTH 385
+#define PROF_HEIGHT 289
+
 static Sprite backSprite;	//îwåiâÊëú
 static Sprite profile[CHAR_SIZE];
 static Sprite charIcon[CHAR_SIZE][2];
@@ -14,8 +20,7 @@ static int dif_bgm;								//bgmópÉnÉìÉhÉã
 
 
 void Difficulty_Initialize() {
-	#define ICON_WIDTH 100
-	#define ICON_HEIGHT 100
+
 	backSprite = initSprite("images/difback.png", WINDOW_WIDTH, WINDOW_HEIGHT);
 	charIcon[0][0] = initSprite("images/characters/ê_ë„ôz/icon.png", ICON_WIDTH, ICON_HEIGHT);
 	charIcon[0][1] = initSprite("images/characters/ê_ë„ôz/iconon.png", ICON_WIDTH, ICON_HEIGHT);
@@ -26,8 +31,7 @@ void Difficulty_Initialize() {
 	charIcon[2][0] = initSprite("images/characters/íÜìàî¸â√/icon.png", ICON_WIDTH, ICON_HEIGHT);
 	charIcon[2][1] = initSprite("images/characters/íÜìàî¸â√/iconon.png", ICON_WIDTH, ICON_HEIGHT);
 
-	#define PROF_WIDTH 385
-	#define PROF_HEIGHT 289
+
 	profile[0] = initSprite("images/characters/ê_ë„ôz/prof.png", PROF_WIDTH, PROF_HEIGHT);
 	profile[1] = initSprite("images/characters/ñ]åéÇ≠ÇÈÇ›/prof.png", PROF_WIDTH, PROF_HEIGHT);
 	profile[2] = initSprite("images/characters/íÜìàî¸â√/prof.png", PROF_WIDTH, PROF_HEIGHT);

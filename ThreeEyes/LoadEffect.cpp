@@ -25,7 +25,6 @@ static LOAD_STATE currentLoadState;
 static int eraseBackImg;
 static Sprite greenRod;
 static Sprite greenRodErase;
-static Sprite greenRodWrite;
 static int currentRod; //åªç›ìÆÇ©ÇµÇƒÇ¢ÇÈñ_
 static int currentX;
 static int rodSpeed;
@@ -40,14 +39,14 @@ void initLoadEffect(void) {
 	eraseBackImg = LoadGraph("images/loadeffect/back.png");
 	greenRod = initSprite("images/loadeffect/green.png", WINDOW_WIDTH , ROD_HEIGHT);
 	greenRodErase = initSprite("images/loadeffect/green1.png", WINDOW_WIDTH * 2, ROD_HEIGHT);
-	greenRodWrite = initSprite("images/loadeffect/green3.png", WINDOW_WIDTH * 2, ROD_HEIGHT);
 	currentLoadState = NONE;
 
 	alpha = 0;	
 }
 void deleteLoadEffect(void) {
 	DeleteGraph(eraseBackImg);
-	//deleteSprite(greenRod);
+	deleteSprite(&greenRod);
+	deleteSprite(&greenRodErase);
 }
 
 void onLoadFlag(LOAD_TYPE type) {
