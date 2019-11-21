@@ -18,11 +18,12 @@
 #define METER_Y	(WINDOW_HEIGHT * 0.6)
 
 static Sprite backSprite;
-int nextSelect = 0;		//Ÿ‚Ì‰æ–Ê‚ğ‚Ç‚¤‚·‚é‚©‚Ì”’l‚ğ‚Â
+int nextSelect = 0;		//æ¬¡ã®ç”»é¢ã‚’ã©ã†ã™ã‚‹ã‹ã®æ•°å€¤ã‚’æŒã¤
 
-static int SEnter, SSelect;				//SE—p‚Ìƒnƒ“ƒhƒ‹
-static int startSelect, endSelect;		//SEŠÇ——p•Ï”
-static int fontResult;//ƒtƒHƒ“ƒg—pƒnƒ“ƒhƒ‹
+static int SEnter, SSelect;				//SEç”¨ã®ãƒãƒ³ãƒ‰ãƒ«
+static int result_bgm;					//bgmç”¨ãƒãƒ³ãƒ‰ãƒ«
+static int startSelect, endSelect;		//SEç®¡ç†ç”¨å¤‰æ•°
+static int fontResult;//ãƒ•ã‚©ãƒ³ãƒˆç”¨ãƒãƒ³ãƒ‰ãƒ«
 
 enum BUTTON_TYPE {
 	BUTTON_GAME,
@@ -40,7 +41,7 @@ static BUTTON_TYPE holdType;
 
 
 
-void Result_Initialize(int winlose) {	//winlose‚ª1‚È‚çŸ‚¿A2‚È‚ç•‰‚¯A3‚È‚çˆø‚«•ª‚¯
+void Result_Initialize(int winlose) {	//winloseãŒ1ãªã‚‰å‹ã¡ã€2ãªã‚‰è² ã‘ã€3ãªã‚‰å¼•ãåˆ†ã‘
 	backSprite = initSprite("images/resultback.png", 640, 480);
 	button[0][0] = initSprite("images/button/Result_To_Game.png", BUTTON_WIDTH, BUTTON_HEIGHT);
 	button[0][1] = initSprite("images/button/Result_To_Gameon.png", BUTTON_WIDTH, BUTTON_HEIGHT);
@@ -49,9 +50,14 @@ void Result_Initialize(int winlose) {	//winlose‚ª1‚È‚çŸ‚¿A2‚È‚ç•‰‚¯A3‚È‚çˆø‚«
 	button[2][0] = initSprite("images/button/Result_To_Finish.png", BUTTON_WIDTH, BUTTON_HEIGHT);
 	button[2][1] = initSprite("images/button/Result_To_Finishon.png", BUTTON_WIDTH, BUTTON_HEIGHT);
 
-	fontResult = CreateFontToHandle("ƒSƒVƒbƒN", 15, 6, DX_FONTTYPE_ANTIALIASING);
+	fontResult = CreateFontToHandle("ã‚´ã‚·ãƒƒã‚¯", 15, 6, DX_FONTTYPE_ANTIALIASING);
 	startSelect = 0;
 	endSelect = 0;
+	SEnter = LoadSoundMem("musics/enter_ou.wav");
+	SSelect = LoadSoundMem("musics/select_or_enter.wav");
+	result_bgm = LoadSoundMem("musics/bgm2.wav");
+	ChangeVolumeSoundMem(255 * 40 / 100, result_bgm);
+	PlaySoundMem(result_bgm, DX_PLAYTYPE_LOOP);
 
 	switch(winlose) {
 	case 1:
@@ -69,7 +75,9 @@ void Result_Initialize(int winlose) {	//winlose‚ª1‚È‚çŸ‚¿A2‚È‚ç•‰‚¯A3‚È‚çˆø‚«
 void Result_Finalize() {
 	deleteSprite(&backSprite);
 	nextSelect = 0;
-	
+
+	DeleteSoundMem(result_bgm);
+
 }
 
 void Result_Update() {
@@ -85,7 +93,7 @@ void Result_Update() {
 				clearCharacter();
 				break;
 			case BUTTON_EXIT:
-				//ƒQ[ƒ€I—¹ˆ—‚©‚­
+				//ã‚²ãƒ¼ãƒ çµ‚äº†å‡¦ç†ã‹ã
 				break;
 				
 			}
@@ -93,7 +101,7 @@ void Result_Update() {
 		return;
 	}
 	setMessageFlag(TRUE);
-	//‘I‘ğˆ‚R‚Â•ª
+	//é¸æŠè‚¢ï¼“ã¤åˆ†
 	int mouseX, mouseY;
 	GetMousePoint(&mouseX, &mouseY);
 

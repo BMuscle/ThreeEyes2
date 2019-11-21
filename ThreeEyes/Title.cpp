@@ -7,20 +7,24 @@
 
 static Sprite backSprite;
 static int Title;					//タイトル用のハンドル
-static int SEnter, SSelect;		//音用ハンドル
+static int title_enter_SE, title_select_SE;		//音用ハンドル
 static int Mousex, Mousey;			//マウスのx,y座標
 static int Font00;					//フォント指定用のハンドル
 static int startSelect, endSelect;		//SE管理用の変数
+static int title_bgm;					//bgm用のハンドル
 
 static MassageBox startGame;
 static MassageBox endGame;
 
 void Title_Initialize() {
 	Font00 = CreateFontToHandle("ゴシック", 15, 6, DX_FONTTYPE_ANTIALIASING);
-	backSprite = initSprite("images/titleback.png", 640, 480);
+	backSprite = initSprite("images/titleback2.png", 640, 480);
 	Title = LoadGraph("images/title.png");
-	SEnter = LoadSoundMem("musics/enter4.wav");
-	SSelect = LoadSoundMem("musics/select_or_enter.wav");
+	title_enter_SE = LoadSoundMem("musics/enter_ou.wav");
+	title_select_SE = LoadSoundMem("musics/select_or_enter.wav");
+	title_bgm = LoadSoundMem("musics/bgm_title.wav");
+	ChangeVolumeSoundMem( 255 * 40 / 100 ,title_bgm);
+	PlaySoundMem(title_bgm,DX_PLAYTYPE_LOOP);
 
 	startGame = initMassageBox("images/enpitu.png", "ゲーム開始", GetColor(0, 0, 0), Font00, 180, 370, 170, 60);
 	endGame = initMassageBox("images/enpitu.png", "終了", GetColor(0, 0, 0), Font00, 480, 370, 170, 60);
@@ -35,6 +39,7 @@ void Title_Finalize() {
 	deleteMassageBox(&startGame);
 	deleteMassageBox(&endGame);
 	deleteSprite(&backSprite);
+	DeleteSoundMem(title_bgm);
 }
 
 void Title_Update() {
@@ -64,12 +69,12 @@ void Title_StartMouseSelect() {
 		&& Mousey >= startGame.mystr.y - startGame.sprite.height / 2 + 10 && Mousey <= startGame.mystr.y + startGame.sprite.height / 2 - 10) {
 		startGame.mystr.color = 0xff0000;
 		if (startSelect == 0) {			//SE管理用のIF文
-			PlaySoundMem(SSelect, DX_PLAYTYPE_BACK);
+			PlaySoundMem(title_select_SE, DX_PLAYTYPE_BACK);
 			startSelect = 1;
 		}
 		if ( getLeftDown() != 0) {
 			startGame.mystr.color = 0x00ff00;
-			PlaySoundMem(SEnter, DX_PLAYTYPE_BACK);
+			PlaySoundMem(title_enter_SE, DX_PLAYTYPE_BACK);
 			onLoadFlag(LOAD_FLUSH);
 		}
 	}
@@ -85,11 +90,11 @@ void Title_EndMouseSelect() {
 		&& Mousey >= endGame.mystr.y - endGame.sprite.height / 2 + 10 && Mousey <= endGame.mystr.y + endGame.sprite.height / 2 - 10) {
 		endGame.mystr.color = 0xff0000;
 		if (endSelect == 0) {
-			PlaySoundMem(SSelect, DX_PLAYTYPE_BACK);
+			PlaySoundMem(title_select_SE, DX_PLAYTYPE_BACK);
 			endSelect = 1;
 		}
 		if (getLeftDown() != 0) {
-			PlaySoundMem(SEnter, DX_PLAYTYPE_BACK);
+			PlaySoundMem(title_enter_SE, DX_PLAYTYPE_BACK);
 			endGame.mystr.color = 0x00ff00;
 			/*ここに終了処理を描く*/
 
