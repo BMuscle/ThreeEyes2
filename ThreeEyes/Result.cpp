@@ -17,14 +17,6 @@
 #define METER_X (WINDOW_WIDTH * 0.85)
 #define METER_Y	(WINDOW_HEIGHT * 0.6)
 
-static Sprite backSprite;
-int nextSelect = 0;		//次の画面をどうするかの数値を持つ
-
-static int SEnter, SSelect;				//SE用のハンドル
-static int result_bgm;					//bgm用ハンドル
-static int startSelect, endSelect;		//SE管理用変数
-static int fontResult;//フォント用ハンドル
-
 enum BUTTON_TYPE {
 	BUTTON_GAME,
 	BUTTON_DIF,
@@ -32,14 +24,15 @@ enum BUTTON_TYPE {
 	BUTTON_SIZE,
 };
 
+static Sprite backSprite;
+static int SEnter, SSelect;				//SE用のハンドル
+static int result_bgm;					//bgm用ハンドル
+static int startSelect, endSelect;		//SE管理用変数
+static int fontResult;//フォント用ハンドル
 static Sprite button[BUTTON_SIZE][2];
 static BOOL mouseOnFlag[BUTTON_SIZE];
-
 static Sprite meter;
-
 static BUTTON_TYPE holdType;
-
-
 
 void Result_Initialize(int winlose) {	//winloseが1なら勝ち、2なら負け、3なら引き分け
 	backSprite = initSprite("images/resultback.png", 640, 480);
@@ -68,14 +61,10 @@ void Result_Initialize(int winlose) {	//winloseが1なら勝ち、2なら負け�
 		meter = initSprite("images/meter3.png", 70, 300);
 		break;
 	}
-
-	nextSelect = SCENE_NONE;
 }
 
 void Result_Finalize() {
 	deleteSprite(&backSprite);
-	nextSelect = 0;
-
 	DeleteSoundMem(result_bgm);
 
 }
