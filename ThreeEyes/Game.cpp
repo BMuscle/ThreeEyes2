@@ -47,7 +47,7 @@ void Game_Initialize() {//初期化処理
 		}
 	}
 	//画像の初期化
-	backSprite = initSprite("images/1blackboard.png", 640, 480);
+	backSprite = initSprite("images/gameback.png", 640, 480);
 	frame = initSprite("images/flame.png", 300, 300);
 	maru = initSprite("images/maru.png", 100, 100);
 	batu = initSprite("images/batsu.png", 100, 100);

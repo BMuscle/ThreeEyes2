@@ -18,7 +18,7 @@ static MassageBox endGame;
 
 void Title_Initialize() {
 	Font00 = CreateFontToHandle("ÉSÉVÉbÉN", 15, 6, DX_FONTTYPE_ANTIALIASING);
-	backSprite = initSprite("images/titleback2.png", 640, 480);
+	backSprite = initSprite("images/titleback.png", 640, 480);
 	Title = LoadGraph("images/title.png");
 	title_enter_SE = LoadSoundMem("musics/enter_ou.wav");
 	title_select_SE = LoadSoundMem("musics/select_or_enter.wav");
