@@ -42,12 +42,12 @@ static BUTTON_TYPE holdType;
 
 void Result_Initialize(int winlose) {	//winloseが1なら勝ち、2なら負け、3なら引き分け
 	backSprite = initSprite("images/resultback.png", 640, 480);
-	button[0][0] = initSprite("images/button/sentakusi1.png", BUTTON_WIDTH, BUTTON_HEIGHT);
-	button[0][1] = initSprite("images/button/sentakusi1on.png", BUTTON_WIDTH, BUTTON_HEIGHT);
-	button[1][0] = initSprite("images/button/sentakusi2.png", BUTTON_WIDTH, BUTTON_HEIGHT);
-	button[1][1] = initSprite("images/button/sentakusi2on.png", BUTTON_WIDTH, BUTTON_HEIGHT);
-	button[2][0] = initSprite("images/button/sentakusi3.png", BUTTON_WIDTH, BUTTON_HEIGHT);
-	button[2][1] = initSprite("images/button/sentakusi3on.png", BUTTON_WIDTH, BUTTON_HEIGHT);
+	button[0][0] = initSprite("images/button/Result_To_Game.png", BUTTON_WIDTH, BUTTON_HEIGHT);
+	button[0][1] = initSprite("images/button/Result_To_Gameon.png", BUTTON_WIDTH, BUTTON_HEIGHT);
+	button[1][0] = initSprite("images/button/Result_To_Select.png", BUTTON_WIDTH, BUTTON_HEIGHT);
+	button[1][1] = initSprite("images/button/Result_To_Selecton.png", BUTTON_WIDTH, BUTTON_HEIGHT);
+	button[2][0] = initSprite("images/button/Result_To_Finish.png", BUTTON_WIDTH, BUTTON_HEIGHT);
+	button[2][1] = initSprite("images/button/Result_To_Finishon.png", BUTTON_WIDTH, BUTTON_HEIGHT);
 
 	fontResult = CreateFontToHandle("ゴシック", 15, 6, DX_FONTTYPE_ANTIALIASING);
 	startSelect = 0;
