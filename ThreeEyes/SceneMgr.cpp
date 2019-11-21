@@ -10,8 +10,10 @@ static void(*funcUpdate)();		//Updateの関数ポインタ
 static void(*funcDraw)();		//Drawの関数ポインタ
 static scene nowscene;			//今のシーン変数
 static scene nextscene;			//次のシーン変数
+BOOL MainEndFlag;
 
 void SceneMgr_Initialize() {
+	MainEndFlag = FALSE;
 	Title_Initialize();
 	nowscene = SCENE_NONE;
 	nextscene = SCENE_TITLE;
@@ -57,4 +59,11 @@ void SceneMgr_ChangeScene(scene nextscene) {
 			funcDraw = Result_Draw;
 			break;
 	}
+}
+
+BOOL getMainEndFlag(void) {
+	return MainEndFlag;
+}
+void setMainEndFlag(BOOL flag) {
+	MainEndFlag = flag;
 }

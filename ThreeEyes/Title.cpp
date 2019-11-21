@@ -97,9 +97,8 @@ void Title_EndMouseSelect() {			//x‚Æyè‘Å‚¿‚Í‹–‚µ‚Ä‚­‚¾‚³‚¢
 		}
 		if (getLeftDown() != 0) {
 			PlaySoundMem(title_enter_SE, DX_PLAYTYPE_BACK);
-			/*‚±‚±‚ÉI—¹ˆ—‚ğ•`‚­*/
-			DxLib_End();
-
+			setMainEndFlag(TRUE);
+			Title_Finalize();
 		}
 	}
 	else {

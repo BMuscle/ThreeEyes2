@@ -1,6 +1,8 @@
 #pragma once
+#include "MyWindow.h"
 
 //UpdateとDrawの一括管理の関数
+
 
 typedef enum {				//列挙型、各シーンに番号を付ける
 	SCENE_TITLE,		// 0
@@ -15,3 +17,5 @@ void SceneMgr_Finalize();			//終了処理
 void SceneMgr_Update();				//更新処理
 void SceneMgr_Draw();				//描画処理
 void SceneMgr_ChangeScene(scene nextscene);
+BOOL getMainEndFlag(void);
+void setMainEndFlag(BOOL flag);

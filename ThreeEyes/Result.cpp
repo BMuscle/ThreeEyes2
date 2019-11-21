@@ -8,6 +8,7 @@
 #include"LoadEffect.h"
 #include "Character.h"
 
+
 #define BUTTON_OFFSET_X 200
 #define BUTTON_OFFSET_Y 130
 #define BUTTON_INTERVAL_Y 30
@@ -83,6 +84,8 @@ void Result_Update() {
 				break;
 			case BUTTON_EXIT:
 				//ゲーム終了処理かく
+				setMainEndFlag(TRUE);
+				Result_Finalize();
 				break;
 				
 			}
