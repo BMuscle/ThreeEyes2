@@ -141,6 +141,6 @@ void Result_Draw() {
 	for (int i = 0; i < BUTTON_SIZE; i++) {
 		drawSprite(BUTTON_OFFSET_X, BUTTON_OFFSET_Y + BUTTON_INTERVAL_Y * i + button[i][0].height * i, &button[i][mouseOnFlag[i]], TRUE);
 	}
-	drawAtSprite(METER_X, METER_Y, &meter, TRUE);
+	//drawAtSprite(METER_X, METER_Y, &meter, TRUE);
 	drawAtSprite(WINDOW_WIDTH * 0.55, WINDOW_HEIGHT * 0.3, &judge, TRUE);
 }
