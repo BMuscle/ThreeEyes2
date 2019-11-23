@@ -38,7 +38,7 @@ void Difficulty_Initialize() {
 
 	dif_enter_SE = LoadSoundMem("musics/enter4.wav");
 	dif_select_SE = LoadSoundMem("musics/select_or_enter.wav");
-	dif_bgm = LoadSoundMem("musics/bgm_game.wav");
+	dif_bgm = LoadSoundMem("musics/bgm_dif.wav");
 	ChangeVolumeSoundMem(255 * 40 / 100, dif_bgm);
 	PlaySoundMem(dif_bgm, DX_PLAYTYPE_LOOP);
 

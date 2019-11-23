@@ -69,6 +69,7 @@ void Game_Update() {//計算処理
 	if (getCurrentLoadState() > 0) {//ロード状態ならば
 		if (isLoadEnd()) {//ロードが終わり次のシーンへの移行準備が整ったならば
 			//シーン変更
+			Game_Finalize();
 			SceneMgr_ChangeScene(SCENE_RESULT);
 			Result_Initialize(getGameResult());
 		}
