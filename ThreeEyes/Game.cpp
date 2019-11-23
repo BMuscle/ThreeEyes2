@@ -27,9 +27,12 @@ static int gameResult;		//ゲームの結果情報
 
 static int startTime;
 
+static int seChoke;//効果音　チョーク書く時
+
 
 
 void Game_Initialize() {//初期化処理
+	seChoke = LoadSoundMem("musics/choke.wav");
 	nowTurn = (TURN)(GetRand(1) + 1);
 	initLottery(nowTurn);
 	isGameClear = FALSE;		//ゲームクリアフラグをOFF
@@ -56,6 +59,7 @@ void Game_Finalize() {//終了処理
 	deleteSprite(&frame);
 	deleteSprite(&maru);
 	deleteSprite(&batu);
+	DeleteSoundMem(seChoke);
 }
 
 void Game_Update() {//計算処理
@@ -113,6 +117,7 @@ void Game_Update() {//計算処理
 	}
 
 	if (isSet) {//石置かれたなら エンドチェック&ターンチェンジ
+		PlaySoundMem(seChoke, DX_PLAYTYPE_BACK);
 		if (isWin(myBoard, nowTurn)) {//勝っている
 			isGameClear = TRUE;//勝利フラグON
 			if (nowTurn == PLAYER) {

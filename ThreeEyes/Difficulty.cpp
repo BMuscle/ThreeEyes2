@@ -48,6 +48,9 @@ void Difficulty_Initialize() {
 }
 void Difficulty_Finalize() {
 	deleteSprite(&backSprite);
+	DeleteSoundMem(dif_bgm);
+	DeleteSoundMem(dif_enter_SE);
+	DeleteSoundMem(dif_select_SE);
 	for (int i = 0; i < CHAR_SIZE; i++) {
 		deleteSprite(&charIcon[i][0]);
 		deleteSprite(&charIcon[i][1]);

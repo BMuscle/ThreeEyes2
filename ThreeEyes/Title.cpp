@@ -44,13 +44,20 @@ void Title_Finalize() {
 	deleteSprite(&Title);						//‰æ‘œ‚ÌŠJ•úˆ—
 	deleteSprite(&backSprite);
 	DeleteSoundMem(title_bgm);
+	DeleteSoundMem(startSelect);
+	DeleteSoundMem(endSelect);
 }
 
 void Title_Update() {
 	if (getCurrentLoadState() > 0) {
 		if (isLoadEnd()) {
 			Title_Finalize();
-			SceneMgr_ChangeScene(SCENE_DIFFICULTY);
+			if (startSelect == 1) {
+				SceneMgr_ChangeScene(SCENE_DIFFICULTY);
+			}
+			else if (endSelect == 1) {
+				setMainEndFlag(TRUE);
+			}
 		}
 		return;
 	}
@@ -96,9 +103,8 @@ void Title_EndMouseSelect() {			//x‚ÆyŽè‘Å‚¿‚Í‹–‚µ‚Ä‚­‚¾‚³‚¢
 			endSelect = 1;
 		}
 		if (getLeftDown() != 0) {
-			PlaySoundMem(title_enter_SE, DX_PLAYTYPE_BACK);
-			setMainEndFlag(TRUE);
-			Title_Finalize();
+			//PlaySoundMem(title_enter_SE, DX_PLAYTYPE_BACK);
+			onLoadFlag(LOAD_FLUSH);
 		}
 	}
 	else {

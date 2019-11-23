@@ -15,7 +15,7 @@
 #define BUTTON_WIDTH 300
 #define BUTTON_HEIGHT 60
 
-#define METER_X (WINDOW_WIDTH * 0.85)
+#define METER_X (WINDOW_WIDTH * 0.88)
 #define METER_Y	(WINDOW_HEIGHT * 0.6)
 
 enum BUTTON_TYPE {
@@ -57,15 +57,15 @@ void Result_Initialize(int winlose) {	//winloseが1なら勝ち、2なら負け�
 	switch(winlose) {
 	case 1:
 		judge = initSprite("images/win.png", 300, 100);
-		meter = initSprite("images/meter1.png", 70, 300);
+		meter = initSprite("images/heart333.png", 70, 300);
 		break;
 	case 2:
 		judge = initSprite("images/lose.png", 300, 100);
-		meter = initSprite("images/meter2.png", 70, 300);
+		meter = initSprite("images/heart111.png", 70, 300);
 		break;
 	case 3:
 		judge = initSprite("images/draw.png", 300, 100);
-		meter = initSprite("images/meter3.png", 70, 300);
+		meter = initSprite("images/heart222.png", 70, 300);
 		break;
 	}
 }
@@ -73,6 +73,8 @@ void Result_Initialize(int winlose) {	//winloseが1なら勝ち、2なら負け�
 void Result_Finalize() {
 	deleteSprite(&backSprite);
 	DeleteSoundMem(result_bgm);
+	DeleteSoundMem(SEnter);
+	DeleteSoundMem(SSelect);
 
 }
 
@@ -113,15 +115,17 @@ void Result_Update() {
 			}
 			mouseOnFlag[i] = TRUE;
 			if (getLeftDown()) {
-				PlaySoundMem(SEnter, DX_PLAYTYPE_BACK);
 				switch (i) {
 				case 0:
+					PlaySoundMem(SEnter, DX_PLAYTYPE_BACK);
 					holdType = BUTTON_GAME;
 					break;
 				case 1:
+					PlaySoundMem(SEnter, DX_PLAYTYPE_BACK);
 					holdType = BUTTON_DIF;
 					break;
 				case 2:
+					//PlaySoundMem(SEnter, DX_PLAYTYPE_BACK);
 					holdType = BUTTON_EXIT;
 				}
 				onLoadFlag(LOAD_FLUSH);
@@ -141,6 +145,6 @@ void Result_Draw() {
 	for (int i = 0; i < BUTTON_SIZE; i++) {
 		drawSprite(BUTTON_OFFSET_X, BUTTON_OFFSET_Y + BUTTON_INTERVAL_Y * i + button[i][0].height * i, &button[i][mouseOnFlag[i]], TRUE);
 	}
-	//drawAtSprite(METER_X, METER_Y, &meter, TRUE);
+	drawAtSprite(METER_X, METER_Y, &meter, TRUE);
 	drawAtSprite(WINDOW_WIDTH * 0.55, WINDOW_HEIGHT * 0.3, &judge, TRUE);
 }

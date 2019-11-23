@@ -30,8 +30,10 @@ static int currentX;
 static int rodSpeed;
 //LOAD_FLUSHóp
 static int alpha;
+static int seErase;//å¯â âπÅ@çïî¬è¡Ç∑Ç∆Ç´
 
 void initLoadEffect(void) {
+	seErase = LoadSoundMem("musics/erase.wav");
 	funcUpdate = empty;
 	currentRod = 0;
 	currentX = -WINDOW_WIDTH*2;
@@ -54,6 +56,7 @@ void onLoadFlag(LOAD_TYPE type) {
 	alpha = 0;
 	switch (type) {
 	case LOAD_ERASE:
+		PlaySoundMem(seErase, DX_PLAYTYPE_BACK);
 		currentLoadState = BLACKERASE;
 		funcUpdate = eraseUpdate;
 		currentX = -WINDOW_WIDTH * 2;
@@ -119,6 +122,10 @@ void eraseUpdate() {
 				currentX = -WINDOW_WIDTH;
 				return;
 			}
+			else {
+				PlaySoundMem(seErase, DX_PLAYTYPE_BACK);
+			}
+
 		}
 	}
 	else if (currentLoadState == ERASE) {
