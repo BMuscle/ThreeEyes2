@@ -28,11 +28,13 @@ static int gameResult;		//ゲームの結果情報
 static int startTime;
 
 static int seChoke;//効果音　チョーク書く時
-
+static int game_bgm;								//bgm用ハンドル
 
 
 void Game_Initialize() {//初期化処理
 	seChoke = LoadSoundMem("musics/choke.wav");
+	game_bgm = LoadSoundMem("musics/bgm_game.wav");
+	PlaySoundMem(game_bgm, DX_PLAYTYPE_LOOP);
 	nowTurn = (TURN)(GetRand(1) + 1);
 	initLottery(nowTurn);
 	isGameClear = FALSE;		//ゲームクリアフラグをOFF
@@ -59,6 +61,7 @@ void Game_Finalize() {//終了処理
 	deleteSprite(&frame);
 	deleteSprite(&maru);
 	deleteSprite(&batu);
+	DeleteSoundMem(game_bgm);
 	DeleteSoundMem(seChoke);
 }
 
