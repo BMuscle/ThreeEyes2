@@ -15,7 +15,7 @@ static int Mousex, Mousey;			//マウスのx,y座標
 static int Font00;					//フォント指定用のハンドル
 static int startSelect, endSelect;		//SE管理用の変数
 static int title_bgm;					//bgm用のハンドル
-
+static int titleChime;
 static Sprite startButton[2];			//画像のハンドル
 static Sprite endButton[2];
 
@@ -28,11 +28,11 @@ void Title_Initialize() {
 	title_enter_SE = LoadSoundMem("musics/enter_ou.wav");
 	title_select_SE = LoadSoundMem("musics/select_or_enter.wav");
 	title_bgm = LoadSoundMem("musics/bgm_title.wav");
+	titleChime = LoadSoundMem("musics/chime.wav");
 	ChangeVolumeSoundMem(255 * 40 / 100, title_bgm);
 	ChangeVolumeSoundMem(140, title_enter_SE);
 	ChangeVolumeSoundMem(140, title_select_SE);
-	PlaySoundMem(title_bgm, DX_PLAYTYPE_LOOP);
-
+	PlaySoundMem(titleChime, DX_PLAYTYPE_BACK);
 	startButton[0]= initSprite("images/button/Title_start1.png", BUTTON_W, BUTTON_H);
 	startButton[1] = initSprite("images/button/Title_start2.png", BUTTON_W, BUTTON_H);
 	endButton[0] = initSprite("images/button/Title_end1.png", BUTTON_W, BUTTON_H);
@@ -63,6 +63,11 @@ void Title_Update() {
 		}
 		return;
 	}
+
+	if (CheckSoundMem(titleChime) == 0 && CheckSoundMem(title_bgm) == 0){
+		PlaySoundMem(title_bgm, DX_PLAYTYPE_LOOP);
+	}
+
 	GetMousePoint(&Mousex, &Mousey);
 	Title_StartMouseSelect();
 	Title_EndMouseSelect();
