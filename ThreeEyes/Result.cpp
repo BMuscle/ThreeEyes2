@@ -51,7 +51,10 @@ void Result_Initialize(int winlose) {	//winloseが1なら勝ち、2なら負け�
 	SEnter = LoadSoundMem("musics/enter_ou.wav");
 	SSelect = LoadSoundMem("musics/select_or_enter.wav");
 	result_bgm = LoadSoundMem("musics/bgm_result.wav");
-	ChangeVolumeSoundMem(255 * 40 / 100, result_bgm);
+	ChangeVolumeSoundMem(140, SEnter);
+	ChangeVolumeSoundMem(140, SSelect);
+	ChangeVolumeSoundMem(70, result_bgm);
+
 	PlaySoundMem(result_bgm, DX_PLAYTYPE_LOOP);
 
 	switch(winlose) {

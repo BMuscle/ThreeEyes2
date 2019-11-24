@@ -29,6 +29,8 @@ void Title_Initialize() {
 	title_select_SE = LoadSoundMem("musics/select_or_enter.wav");
 	title_bgm = LoadSoundMem("musics/bgm_title.wav");
 	ChangeVolumeSoundMem(255 * 40 / 100, title_bgm);
+	ChangeVolumeSoundMem(140, title_enter_SE);
+	ChangeVolumeSoundMem(140, title_select_SE);
 	PlaySoundMem(title_bgm, DX_PLAYTYPE_LOOP);
 
 	startButton[0]= initSprite("images/button/Title_start1.png", BUTTON_W, BUTTON_H);

@@ -38,6 +38,9 @@ void Difficulty_Initialize() {
 
 	dif_enter_SE = LoadSoundMem("musics/enter4.wav");
 	dif_select_SE = LoadSoundMem("musics/select_or_enter.wav");
+	ChangeVolumeSoundMem(70, dif_bgm);
+	ChangeVolumeSoundMem(140, dif_enter_SE);
+	ChangeVolumeSoundMem(140, dif_select_SE);
 	dif_bgm = LoadSoundMem("musics/bgm_dif.wav");
 	ChangeVolumeSoundMem(255 * 40 / 100, dif_bgm);
 	PlaySoundMem(dif_bgm, DX_PLAYTYPE_LOOP);
@@ -45,6 +48,7 @@ void Difficulty_Initialize() {
 	for (int i = 0; i < CHAR_SIZE; i++) {
 		mouseOnFlag[i] = 0;
 	}
+	mouseOnFlag[0] = TRUE;
 }
 void Difficulty_Finalize() {
 	deleteSprite(&backSprite);
@@ -76,6 +80,7 @@ void Difficulty_Update() {
 			if (mouseOnFlag[i] == FALSE) {
 				PlaySoundMem(dif_select_SE, DX_PLAYTYPE_BACK);
 			}
+			mouseOnFlag[0] = FALSE; mouseOnFlag[1] = FALSE; mouseOnFlag[2] = FALSE;
 			mouseOnFlag[i] = TRUE;
 			holdChar = (CHAR_TYPE)i;
 			if (getLeftDown()) {
@@ -83,9 +88,6 @@ void Difficulty_Update() {
 				onLoadFlag(LOAD_FLUSH);
 				return;
 			}
-		}
-		else {
-			mouseOnFlag[i] = FALSE;
 		}
 	}
 

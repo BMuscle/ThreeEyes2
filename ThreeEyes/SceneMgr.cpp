@@ -10,7 +10,7 @@ static void(*funcUpdate)();		//Updateの関数ポインタ
 static void(*funcDraw)();		//Drawの関数ポインタ
 static scene nowscene;			//今のシーン変数
 static scene nextscene;			//次のシーン変数
-BOOL MainEndFlag;
+static BOOL MainEndFlag;
 
 void SceneMgr_Initialize() {
 	MainEndFlag = FALSE;

@@ -32,8 +32,9 @@ static int game_bgm;								//bgm用ハンドル
 
 
 void Game_Initialize() {//初期化処理
-	seChoke = LoadSoundMem("musics/choke.wav");
+	seChoke = LoadSoundMem("musics/choke6.wav");
 	game_bgm = LoadSoundMem("musics/bgm_game.wav");
+	ChangeVolumeSoundMem(70, game_bgm);
 	PlaySoundMem(game_bgm, DX_PLAYTYPE_LOOP);
 	nowTurn = (TURN)(GetRand(1) + 1);
 	initLottery(nowTurn);

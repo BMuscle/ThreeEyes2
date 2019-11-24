@@ -27,6 +27,8 @@ void initLottery(int turn) {
 	limitTimes = GetRand(2) + 5;
 	seStopWatch = LoadSoundMem("musics/stopwatch.wav");
 	seStopWatchEnd = LoadSoundMem("musics/stopwatchend.wav");
+	ChangeVolumeSoundMem(140, seStopWatch);
+	ChangeVolumeSoundMem(140, seStopWatchEnd);
 	lottery[0] = initSprite("images/senkou1.png", 274, 318);
 	lottery[1] = initSprite("images/koukou1.png", 274, 318);
 	font = CreateFontToHandle("ÉSÉVÉbÉN", 30, 6, DX_FONTTYPE_ANTIALIASING);

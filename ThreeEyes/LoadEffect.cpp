@@ -34,11 +34,12 @@ static int seErase;//å¯â âπÅ@çïî¬è¡Ç∑Ç∆Ç´
 
 void initLoadEffect(void) {
 	seErase = LoadSoundMem("musics/erase.wav");
+	ChangeVolumeSoundMem(140, seErase);
 	funcUpdate = empty;
 	currentRod = 0;
 	currentX = -WINDOW_WIDTH*2;
 	rodSpeed = 30;
-	eraseBackImg = LoadGraph("images/loadeffect/back.png");
+	eraseBackImg = LoadGraph("images/loadeffect/back3.png");
 	greenRod = initSprite("images/loadeffect/green.png", WINDOW_WIDTH , ROD_HEIGHT);
 	greenRodErase = initSprite("images/loadeffect/green1.png", WINDOW_WIDTH * 2, ROD_HEIGHT);
 	currentLoadState = NONE;
