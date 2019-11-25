@@ -20,7 +20,7 @@ static int dif_bgm;								//bgm—pƒnƒ“ƒhƒ‹
 
 
 void Difficulty_Initialize() {
-
+	holdChar = (CHAR_TYPE)0;
 	backSprite = initSprite("images/difback.png", WINDOW_WIDTH, WINDOW_HEIGHT);
 	charIcon[0][0] = initSprite("images/characters/’·’Jì”ü‰Ã/icon.png", ICON_WIDTH, ICON_HEIGHT);
 	charIcon[0][1] = initSprite("images/characters/’·’Jì”ü‰Ã/iconon.png", ICON_WIDTH, ICON_HEIGHT);
